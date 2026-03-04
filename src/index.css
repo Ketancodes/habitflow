@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+body {
+  font-family: "Inter", sans-serif;
+}
