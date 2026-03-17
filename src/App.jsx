@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import Herosection from "./components/Herosection";
+import Features from "./components/Features";
 
 function App() {
   return (
@@ -7,6 +8,7 @@ function App() {
       <div className="min-h-screen bg-slate-50">
         <Navbar />
         <Herosection />
+        <Features />
       </div>
     </>
   );
