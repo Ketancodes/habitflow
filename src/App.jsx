@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import Herosection from "./components/Herosection";
 import Features from "./components/Features";
+import Placeholder from "./components/Placeholder";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <Navbar />
         <Herosection />
         <Features />
+        <Placeholder />
       </div>
     </>
   );
