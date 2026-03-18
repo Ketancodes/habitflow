@@ -2,6 +2,8 @@ import Navbar from "./components/Navbar";
 import Herosection from "./components/Herosection";
 import Features from "./components/Features";
 import Placeholder from "./components/Placeholder";
+import Cta from "./components/Cta";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
         <Herosection />
         <Features />
         <Placeholder />
+        <Cta />
+        <Footer />
       </div>
     </>
   );
