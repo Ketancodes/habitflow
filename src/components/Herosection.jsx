@@ -1,6 +1,6 @@
 export default function Herosection() {
   const primaryButton =
-    "inline-flex items-center justify-center h-12 px-6 text-base font-medium text-white rounded-lg bg-[#4f46e5] shadow-md transition-all duration-200 hover:bg-[#4338ca] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-inner focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/40";
+    "inline-flex items-center justify-center h-12 px-6 cursor-pointer text-base font-medium text-white rounded-lg bg-[#4f46e5] shadow-md transition-all duration-200 hover:bg-[#4338ca] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-inner focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/40";
   return (
     <>
       <div className="flex flex-col items-center mt-28">
