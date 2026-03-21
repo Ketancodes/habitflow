@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Cta() {
   return (
     <>
@@ -17,12 +19,14 @@ export default function Cta() {
             </span>{" "}
             and take control of your daily routine.
           </p>
-          <button
-            className=" mt-8 inline-flex items-center justify-center h-12 px-6 cursor-pointer text-base font-medium text-white rounded-lg bg-[#4f46e5] shadow-md transition-all duration-200  
+          <Link to="/dashboard">
+            <button
+              className=" mt-8 inline-flex items-center justify-center h-12 px-6 cursor-pointer text-base font-medium text-white rounded-lg bg-[#4f46e5] shadow-md transition-all duration-200  
             hover:bg-[#4338ca] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-inner focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/40"
-          >
-            Get Started
-          </button>
+            >
+              Get Started
+            </button>
+          </Link>
         </div>
       </section>
     </>
