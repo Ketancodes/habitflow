@@ -3,10 +3,8 @@ import Reusable from "../components/Reusable";
 export default function Today() {
   return (
     <>
-      <section className="w-full h-screen bg-[#181717]">
-        <h1 className="ml-8 mt-4 text-2xl text-[#979393] font-semibold">
-          @Today
-        </h1>
+      <section className="w-full h-screen bg-[#181717] pt-3">
+        <h1 className="ml-8  text-2xl text-[#979393] font-semibold">@Today</h1>
         <h4 className="ml-8 mt-2.5 text-lg font-semibold text-[#979393]">
           24/ 03/ 26
         </h4>
@@ -55,7 +53,7 @@ export default function Today() {
 
           {/* Second (yestarday )box */}
           <div className="h-40 w-52 px-3 bg-[#272626] rounded-xl">
-            <h3 className="py-1.5  text-[#9b9999]">@Yestarday</h3>
+            <h3 className="py-1.5  text-[#9b9999]">@Yesterday</h3>
             <div className="flex flex-col gap-2.5 text-[#bdbaba] text-[14px]">
               <Reusable label="Study 6 hours" />
 

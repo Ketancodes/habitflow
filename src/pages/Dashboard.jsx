@@ -1,11 +1,14 @@
 import Sidebar from "../components/Sidebar";
-import Today from "./Today";
+import { Outlet } from "react-router-dom";
+
 export default function Dashboard() {
   return (
     <>
       <div className="min-h-screen flex">
         <Sidebar />
-        <Today />
+        <main className="flex-1">
+          <Outlet />
+        </main>
       </div>
     </>
   );

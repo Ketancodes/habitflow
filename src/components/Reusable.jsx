@@ -8,7 +8,7 @@ export default function Reusable({ label }) {
           className="
                             flex h-4 w-4 items-center justify-center rounded border border-[#3a3a3a] bg-[#222121]
                             transition-all duration-150
-                             group-has-[:checked]:border-indigo-800 group-has-[:checked]:bg-indigo-800 "
+                             group-has-[:checked]:border-blue-600 group-has-[:checked]:bg-blue-600 "
         >
           <span
             className="
