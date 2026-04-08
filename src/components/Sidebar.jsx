@@ -23,7 +23,7 @@ export default function Sidebar() {
     `${baseNavItem} ${isActive ? activeNavState : defaultNavState}`;
 
   return (
-    <section className="min-h-screen max-w-60 border-r-2-[#6e6d6d] bg-[#1f1d1d]">
+    <section className="fixed inset-y-0 left-0 w-60 overflow-y-auto border-r border-[#333131] bg-[#1f1d1d]">
       <div className="flex pl-2.5 py-2 gap-3 items-center">
         <div className="h-5 w-5 bg-[#444242] text-[#d4cfcf] rounded-sm flex justify-center items-center">
           U
