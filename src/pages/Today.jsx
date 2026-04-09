@@ -4,6 +4,7 @@ import { LiaComment } from "react-icons/lia";
 import { CiEdit } from "react-icons/ci";
 import { CgPlayListAdd } from "react-icons/cg";
 import { MdPlaylistRemove } from "react-icons/md";
+import Addmodal from "../components/Addmodal";
 
 export default function Today() {
   const [habits, setHabits] = useState([
@@ -15,6 +16,10 @@ export default function Today() {
   const [showinput, setShowinput] = useState(false);
   const [habittext, setHabittext] = useState("");
 
+  // {//modal logic}
+  const [showaddmodal, setShowAddmodal] = useState(false);
+
+  // progress bar stat checking logic
   const totalHabits = habits.length;
   const completed = habits.filter((habit) => habit.selected).length;
   const notCompleted = habits.length - completed;
@@ -58,6 +63,7 @@ export default function Today() {
         Welcome Warrior, hope your doing well !
       </p>
 
+      {/* stats row  */}
       <div className="ml-12 mt-6 w-60 rounded-xl">
         <h3 className="px-3 py-1.5 text-[#9b9999]">@Today</h3>
         <div className="flex flex-col gap-2 px-3 text-[15px] text-[#aca9a9]">
@@ -97,6 +103,7 @@ export default function Today() {
         )}
       </div>
 
+      {/* Today's habit container */}
       <div className="relative ml-14 mt-10 flex gap-8">
         <div className="relative flex h-40 w-56 flex-col rounded-xl bg-[#272626] px-3 py-1.5 hover:bg-[#2e2d2d]">
           <div className="flex justify-between">
@@ -180,14 +187,27 @@ export default function Today() {
           )}
         </div>
 
-        <div className="flex h-40 w-56 cursor-pointer items-center justify-center rounded-xl bg-[#1f1e1e] text-[#8b8989] hover:bg-[#2c2b2b] hover:text-[#bbb8b8]">
+        {/* Adding new container */}
+        <div
+          onClick={() => setShowAddmodal(true)}
+          className="flex h-40 w-56 cursor-pointer items-center justify-center rounded-xl bg-[#1f1e1e] text-[#8b8989] hover:bg-[#2c2b2b] hover:text-[#bbb8b8]"
+        >
           <span className="text-xl">+</span> Add new
         </div>
+        <Addmodal
+          isOpen={showaddmodal}
+          onClose={() => setShowAddmodal(false)}
+          habits={habits}
+          onTogglehabit={handleToggle}
+        />
 
-        <button className="mt-28 ml-2 inline-flex cursor-pointer items-center gap-2 text-sm text-[#818080] hover:text-[#bbb8b8]">
-          <LiaComment size={18} className="text-inherit" />
-          <span>Comments</span>
-        </button>
+        {/* //third add new container */}
+        <div
+          onClick={() => setShowAddmodal(true)}
+          className="flex h-40 w-56 cursor-pointer items-center justify-center rounded-xl bg-[#1f1e1e] text-[#8b8989] hover:bg-[#2c2b2b] hover:text-[#bbb8b8]"
+        >
+          <span className="text-xl">+</span> Add new
+        </div>
       </div>
 
       <div className="ml-14 mt-8">
@@ -203,9 +223,9 @@ export default function Today() {
             <div>
               <Reusable label="Reading book" />
             </div>
-            <button className="cursor-pointer text-[#9b9999] hover:text-[#999999]">
-              <span className="text-xl">+</span> Habit
-            </button>
+            <div>
+              <Reusable label="Walking 1k steps" />
+            </div>
           </div>
         </div>
       </div>
