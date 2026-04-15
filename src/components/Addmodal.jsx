@@ -3,10 +3,27 @@ import { useState } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdDone } from "react-icons/md";
 
-export default function Addmodal({ isOpen, onClose, habits }) {
+export default function Addmodal({ isOpen, onClose, habits, onApply }) {
   const [modalHabits, setModalHabits] = useState(habits);
   const [showInput, setShowInput] = useState(false);
   const [habitText, setHabitText] = useState("");
+
+  // state for title habit
+  const [modaltitle, setModaltitle] = useState("Today");
+  const [editingtitle, setEditingtitle] = useState(false);
+  const [titleinput, setTitleinput] = useState("Today");
+
+  const handleTitleedit = () => {
+    setEditingtitle(true);
+    setTitleinput(modaltitle);
+  };
+
+  const handleTitlesave = () => {
+    const trimmedTitle = titleinput.trim();
+    if (!trimmedTitle) return;
+    setModaltitle(trimmedTitle);
+    setEditingtitle(false);
+  };
 
   // state for habit edit
   const [editid, setEditid] = useState(null);
@@ -55,6 +72,13 @@ export default function Addmodal({ isOpen, onClose, habits }) {
     setEditid(null);
     setEdittext("");
   };
+  const handleApply = () => {
+    onApply({
+      title: modaltitle,
+      habits: modalHabits,
+    });
+    onClose();
+  };
 
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm py-2.5">
@@ -73,9 +97,28 @@ export default function Addmodal({ isOpen, onClose, habits }) {
           <CiCircleRemove size={32} />
         </button>
 
-        <h2 className="mt-2 text-2xl font-semibold text-center text-[#9b9999]">
-          @Today
-        </h2>
+        <div className="mt-2 flex justify-center">
+          {editingtitle ? (
+            <div className="flex items-center  gap-1 text-2xl font-semibold text-[#9b9999]">
+              <input
+                type="text"
+                value={titleinput}
+                onChange={(e) => setTitleinput(e.target.value)}
+                onBlur={handleTitlesave}
+                autoFocus
+                className="min-w-0 border-none bg-transparent text-center text-2xl font-semibold text-[#9b9999] outline-none"
+              />
+            </div>
+          ) : (
+            <h2
+              onClick={handleTitleedit}
+              className="cursor-pointer text-2xl font-semibold text-[#9b9999]"
+            >
+              @{modaltitle}
+            </h2>
+          )}
+        </div>
+
         <h4 className=" mt-3 text-lg text-[#9b9999] text-center">
           Date : 9/ 4/ 26
         </h4>
@@ -175,7 +218,7 @@ export default function Addmodal({ isOpen, onClose, habits }) {
         </div>
         <div className="mt-12 flex justify-end">
           <button
-            onClick={handleEditSave}
+            onClick={handleApply}
             className="border px-4.5 bg-[#302f2f] py-1.5 text-[#b6b2b2] rounded-3xl cursor-pointer"
           >
             Apply

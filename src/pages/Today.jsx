@@ -19,6 +19,9 @@ export default function Today() {
   // {//modal logic}
   const [showaddmodal, setShowAddmodal] = useState(false);
 
+  // new container state
+  const [newmodaldata, setNewmodaldata] = useState({ title: "", habits: [] });
+
   // progress bar stat checking logic
   const totalHabits = habits.length;
   const completed = habits.filter((habit) => habit.selected).length;
@@ -53,6 +56,15 @@ export default function Today() {
     addHabit();
   };
 
+  //new container toggle logic
+  const handleNewmodaltoggle = (id) => {
+    setNewmodaldata((prev) => ({
+      ...prev,
+      habits: prev.habits.map((habit) =>
+        habit.id === id ? { ...habit, selected: !habit.selected } : habit,
+      ),
+    }));
+  };
   return (
     <section className="w-full min-h-screen bg-[#181717] pt-3">
       <h1 className="ml-8 text-2xl font-semibold text-[#979393]">@Today</h1>
@@ -188,17 +200,53 @@ export default function Today() {
         </div>
 
         {/* Adding new container */}
-        <div
-          onClick={() => setShowAddmodal(true)}
-          className="flex h-40 w-56 cursor-pointer items-center justify-center rounded-xl bg-[#1f1e1e] text-[#8b8989] hover:bg-[#2c2b2b] hover:text-[#bbb8b8]"
-        >
-          <span className="text-xl">+</span> Add new
-        </div>
+
+        {newmodaldata.habits.length === 0 ? (
+          <>
+            <div
+              onClick={() => setShowAddmodal(true)}
+              className=" flex h-40 w-56 cursor-pointer items-center justify-center rounded-xl bg-[#1f1e1e] text-[#8b8989] hover:bg-[#2c2b2b] hover:text-[#bbb8b8]"
+            >
+              {" "}
+              <span>+</span>Add new
+            </div>
+          </>
+        ) : (
+          <div className="h-40 w-56 rounded-xl bg-[#272626] px-3 py-1.5 text-[#bdbaba] hover:bg-[#2e2d2d] cursor-pointer">
+            <div className="flex justify-between">
+              <h3 className="py-1.5 text-[#9b9999]">@{newmodaldata.title}</h3>
+
+              <div className="relative group mt-1.5 cursor-pointer">
+                <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-[#141414] px-2 py-1 text-[12px] text-[#d6d2d2] opacity-0 transition-all duration-150 group-hover:opacity-100">
+                  Edit
+                </span>
+                <CiEdit
+                  size={28}
+                  className="rounded-md border-[0.7px] border-[#3a3a3a] px-1 py-1 text-[#9b9999] transition-colors duration-150 group-hover:bg-[#1a1919] group-hover:text-[#d8d3d3]"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 text-[14px]">
+              {newmodaldata.habits.map((habit) => (
+                <div key={habit.id}>
+                  <Reusable
+                    label={habit.text}
+                    checked={habit.selected}
+                    onChange={() => handleNewmodaltoggle(habit.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <Addmodal
           isOpen={showaddmodal}
           onClose={() => setShowAddmodal(false)}
           habits={habits}
           onTogglehabit={handleToggle}
+          onApply={setNewmodaldata}
         />
 
         {/* //third add new container */}
