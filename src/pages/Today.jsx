@@ -5,6 +5,7 @@ import { CiEdit } from "react-icons/ci";
 import { CgPlayListAdd } from "react-icons/cg";
 import { MdPlaylistRemove } from "react-icons/md";
 import Addmodal from "../components/Addmodal";
+import Editcont from "../components/Editcont";
 
 export default function Today() {
   const [habits, setHabits] = useState([
@@ -18,6 +19,10 @@ export default function Today() {
 
   // {//modal logic}
   const [showaddmodal, setShowAddmodal] = useState(false);
+
+  // edit mode state
+  const [showtodayedit, setShowTodayEdit] = useState(false);
+  const [shownewcontedit, setShowNewContEdit] = useState(false);
 
   // new container state
   const [newmodaldata, setNewmodaldata] = useState({ title: "", habits: [] });
@@ -64,6 +69,14 @@ export default function Today() {
         habit.id === id ? { ...habit, selected: !habit.selected } : habit,
       ),
     }));
+  };
+  const todayContdata = {
+    title: "Today",
+    habits,
+  };
+  const handleTodayapply = (updatedata) => {
+    setHabits(updatedata.habits);
+    setShowTodayEdit(false);
   };
   return (
     <section className="w-full min-h-screen bg-[#181717] pt-3">
@@ -141,7 +154,10 @@ export default function Today() {
                 </button>
               </div>
 
-              <div className="relative group cursor-pointer">
+              <div
+                className="relative group cursor-pointer"
+                onClick={() => setShowTodayEdit(true)}
+              >
                 <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-[#141414] px-2 py-1 text-[12px] text-[#d6d2d2] opacity-0 transition-all duration-150 group-hover:opacity-100 ">
                   Edit
                 </span>
@@ -199,6 +215,14 @@ export default function Today() {
           )}
         </div>
 
+        <Editcont
+          key={`today-${habits.length}-${habits.map((h) => h.text).join("|")}`}
+          isOpen={showtodayedit}
+          onClose={() => setShowTodayEdit(false)}
+          containerData={todayContdata}
+          onApply={handleTodayapply}
+        />
+
         {/* Adding new container */}
 
         {newmodaldata.habits.length === 0 ? (
@@ -212,11 +236,14 @@ export default function Today() {
             </div>
           </>
         ) : (
-          <div className="h-40 w-56 rounded-xl bg-[#272626] px-3 py-1.5 text-[#bdbaba] hover:bg-[#2e2d2d] cursor-pointer">
+          <div className=" flex flex-col h-40 w-56 rounded-xl bg-[#272626] px-3 py-1.5 text-[#bdbaba] hover:bg-[#2e2d2d] cursor-pointer">
             <div className="flex justify-between">
               <h3 className="py-1.5 text-[#9b9999]">@{newmodaldata.title}</h3>
 
-              <div className="relative group mt-1.5 cursor-pointer">
+              <div
+                className="relative group mt-1.5 cursor-pointer"
+                onClick={() => setShowNewContEdit(true)}
+              >
                 <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-[#141414] px-2 py-1 text-[12px] text-[#d6d2d2] opacity-0 transition-all duration-150 group-hover:opacity-100">
                   Edit
                 </span>
@@ -226,20 +253,28 @@ export default function Today() {
                 />
               </div>
             </div>
-
-            <div className="flex flex-col gap-2 text-[14px]">
-              {newmodaldata.habits.map((habit) => (
-                <div key={habit.id}>
-                  <Reusable
-                    label={habit.text}
-                    checked={habit.selected}
-                    onChange={() => handleNewmodaltoggle(habit.id)}
-                  />
-                </div>
-              ))}
+            <div className="mt-1 flex-1 overflow-y-auto pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex flex-col gap-2 text-[14px]">
+                {newmodaldata.habits.map((habit) => (
+                  <div key={habit.id}>
+                    <Reusable
+                      label={habit.text}
+                      checked={habit.selected}
+                      onChange={() => handleNewmodaltoggle(habit.id)}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
+        <Editcont
+          key={`new-${newmodaldata.title}-${newmodaldata.habits.length}-${newmodaldata.habits.map((h) => h.text).join("|")}`}
+          isOpen={shownewcontedit}
+          onClose={() => setShowNewContEdit(false)}
+          containerData={newmodaldata}
+          onApply={setNewmodaldata}
+        />
 
         <Addmodal
           isOpen={showaddmodal}
@@ -258,21 +293,69 @@ export default function Today() {
         </div>
       </div>
 
-      <div className="ml-14 mt-8">
-        <div className="relative h-40 w-56 cursor-pointer rounded-xl bg-[#272626] px-3 hover:bg-[#2e2d2d]">
-          <h3 className="py-1.5 text-[#9b9999]">@Yesterday</h3>
-          <div className="flex flex-col gap-2.5 text-[14px] text-[#bdbaba]">
-            <div>
-              <Reusable label="Study 6 hours" />
+      {/* second main row */}
+      <div className="flex">
+        <div className="ml-14 mt-8">
+          <div className="relative h-40 w-56 cursor-pointer rounded-xl bg-[#272626] px-3 hover:bg-[#2e2d2d]">
+            <h3 className="py-1.5 text-[#9b9696]">@Yesterday</h3>
+            <div className="flex flex-col gap-2.5 text-[14px] text-[#8b8a8a]">
+              <div>
+                <Reusable
+                  label="Study 6 hours"
+                  labelClassName="text-[#8b8a8a]"
+                />
+              </div>
+              <div>
+                <Reusable
+                  label="Exercise for 30 min"
+                  labelClassName="text-[#8b8a8a]"
+                />
+              </div>
+              <div>
+                <Reusable
+                  label="Reading book"
+                  labelClassName="text-[#8b8a8a]"
+                />
+              </div>
+              <div>
+                <Reusable
+                  label="Walking 1k steps"
+                  labelClassName="text-[#8b8a8a]"
+                />
+              </div>
             </div>
-            <div>
-              <Reusable label="Exercise for 30 min" />
-            </div>
-            <div>
-              <Reusable label="Reading book" />
-            </div>
-            <div>
-              <Reusable label="Walking 1k steps" />
+          </div>
+        </div>
+
+        {/* date container  */}
+        <div className="ml-8 mt-8">
+          <div className="relative h-40 w-56 cursor-pointer rounded-xl bg-[#272626] px-3 hover:bg-[#2e2d2d]">
+            <h3 className="py-1.5 text-[#9b9696]">@Apr 15,2026</h3>
+            <div className="flex flex-col gap-2.5 text-[14px] text-[#8b8a8a]">
+              <div>
+                <Reusable
+                  label="Study 6 hours"
+                  labelClassName="text-[#8b8a8a]"
+                />
+              </div>
+              <div>
+                <Reusable
+                  label="Exercise for 30 min"
+                  labelClassName="text-[#8b8a8a]"
+                />
+              </div>
+              <div>
+                <Reusable
+                  label="Reading book"
+                  labelClassName="text-[#8b8a8a]"
+                />
+              </div>
+              <div>
+                <Reusable
+                  label="Walking 1k steps"
+                  labelClassName="text-[#8b8a8a]"
+                />
+              </div>
             </div>
           </div>
         </div>

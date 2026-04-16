@@ -1,34 +1,19 @@
-import Reusable from "./Reusable";
 import { useState } from "react";
+import Reusable from "./Reusable";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdDone } from "react-icons/md";
 
-export default function Addmodal({ isOpen, onClose, habits, onApply }) {
-  const [modalHabits, setModalHabits] = useState(habits);
+export default function Editcont({ isOpen, onClose, containerData, onApply }) {
+  const [editcontHabits, setEditContHabits] = useState(
+    containerData.habits || [],
+  );
   const [showInput, setShowInput] = useState(false);
   const [habitText, setHabitText] = useState("");
 
-  // state for title habit
-  const [modaltitle, setModaltitle] = useState("Today");
-  const [editingtitle, setEditingtitle] = useState(false);
-  const [titleinput, setTitleinput] = useState("Today");
-
-  const handleTitleedit = () => {
-    setEditingtitle(true);
-    setTitleinput(modaltitle);
-  };
-
-  const handleTitlesave = () => {
-    const trimmedTitle = titleinput.trim();
-    if (!trimmedTitle) return;
-    setModaltitle(trimmedTitle);
-    setEditingtitle(false);
-  };
-
-  // state for habit edit
   const [editid, setEditid] = useState(null);
   const [edittext, setEdittext] = useState("");
-  const hasOverflowHabits = modalHabits.length > 4;
+
+  const hasOverflowHabits = editcontHabits.length > 4;
 
   if (!isOpen) return null;
 
@@ -36,7 +21,7 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
     const trimmedHabit = habitText.trim();
     if (!trimmedHabit) return;
 
-    setModalHabits((prev) => [
+    setEditContHabits((prev) => [
       ...prev,
       { id: Date.now(), text: trimmedHabit, selected: false },
     ]);
@@ -49,21 +34,20 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
     handleAddHabit();
   };
 
-  //remove habit logic
   const handleDlthabit = (id) => {
-    setModalHabits((prev) => prev.filter((habit) => habit.id !== id));
+    setEditContHabits((prev) => prev.filter((habit) => habit.id !== id));
   };
 
-  // edit logic
   const handleEdit = (habit) => {
     setEditid(habit.id);
     setEdittext(habit.text);
   };
+
   const handleEditSave = () => {
     const trimmedText = edittext.trim();
     if (!trimmedText) return;
 
-    setModalHabits((prev) =>
+    setEditContHabits((prev) =>
       prev.map((habit) =>
         habit.id === editid ? { ...habit, text: trimmedText } : habit,
       ),
@@ -72,10 +56,10 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
     setEditid(null);
     setEdittext("");
   };
+
   const handleApply = () => {
     onApply({
-      title: modaltitle,
-      habits: modalHabits,
+      habits: editcontHabits,
     });
     onClose();
   };
@@ -91,37 +75,20 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-lg text-[#9b9999] transition-colors duration-150 hover:text-[#dfdbdb] cursor-pointer"
+          className="absolute top-4 right-4 cursor-pointer text-lg text-[#9b9999] transition-colors duration-150 hover:text-[#dfdbdb]"
           aria-label="Close modal"
         >
           <CiCircleRemove size={32} />
         </button>
 
         <div className="mt-2 flex justify-center">
-          {editingtitle ? (
-            <div className="flex items-center  gap-1 text-2xl font-semibold text-[#9b9999]">
-              <input
-                type="text"
-                value={titleinput}
-                onChange={(e) => setTitleinput(e.target.value)}
-                onBlur={handleTitlesave}
-                autoFocus
-                className="min-w-0 border-none bg-transparent text-center text-2xl font-semibold text-[#9b9999] outline-none"
-              />
-            </div>
-          ) : (
-            <h2
-              onClick={handleTitleedit}
-              className="cursor-pointer text-2xl font-semibold text-[#9b9999]"
-            >
-              @{modaltitle}
-            </h2>
-          )}
+          <h2 className="text-2xl font-semibold text-[#9b9999]">@Today</h2>
         </div>
 
-        <h4 className=" mt-3 text-lg text-[#9b9999] text-center">
+        <h4 className="mt-3 text-center text-lg text-[#9b9999]">
           Date : 9/ 4/ 26
         </h4>
+
         <div className="relative mt-4 flex justify-center overflow-hidden py-2">
           <div
             className={`h-46 w-72 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${
@@ -129,7 +96,7 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
             } ${showInput ? "blur-[1.5px] opacity-35" : ""}`}
           >
             <div className="flex flex-col gap-3.5 text-lg text-[#7e7c7c]">
-              {modalHabits.map((habit) => (
+              {editcontHabits.map((habit) => (
                 <div
                   key={habit.id}
                   className="flex w-full justify-between gap-4"
@@ -201,11 +168,12 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
             </div>
           )}
         </div>
+
         <div className="mt-2 flex justify-center">
           <button
             type="button"
             onClick={() => setShowInput((prev) => !prev)}
-            className="text-[#9b9999] transition-colors duration-150 hover:text-[#dfdbdb] cursor-pointer"
+            className="cursor-pointer text-[#9b9999] transition-colors duration-150 hover:text-[#dfdbdb]"
           >
             {showInput ? (
               <CiCircleRemove size={28} />
@@ -216,10 +184,11 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
             )}
           </button>
         </div>
+
         <div className="mt-12 flex justify-end">
           <button
             onClick={handleApply}
-            className="border px-4.5 bg-[#302f2f] py-1.5 text-[#b6b2b2] rounded-3xl cursor-pointer"
+            className="cursor-pointer rounded-3xl border bg-[#302f2f] px-4.5 py-1.5 text-[#b6b2b2]"
           >
             Apply
           </button>

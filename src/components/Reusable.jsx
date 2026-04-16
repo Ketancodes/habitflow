@@ -1,4 +1,9 @@
-export default function Reusable({ label, checked, onChange }) {
+export default function Reusable({
+  label,
+  checked,
+  onChange,
+  labelClassName = "",
+}) {
   return (
     <label className="group flex items-center gap-2 cursor-pointer">
       <input
@@ -25,10 +30,15 @@ export default function Reusable({ label, checked, onChange }) {
         </span>
       </span>
 
-      <span
+      {/* <span
         className={`${
           checked ? "text-[#afabab] line-through" : "text-[#bdbaba]"
-        } transition-colors duration-150`}
+        } transition-colors duration-150 ${labelClassName}`}
+      > */}
+      <span
+        className={`transition-colors duration-150 ${
+          checked ? "line-through" : ""
+        } ${labelClassName || (checked ? "text-[#afabab]" : "text-[#bdbaba]")}`}
       >
         {label}
       </span>
