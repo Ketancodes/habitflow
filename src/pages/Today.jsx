@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reusable from "../components/Reusable";
 import { LiaComment } from "react-icons/lia";
 import { CiEdit } from "react-icons/ci";
@@ -7,13 +7,40 @@ import { MdPlaylistRemove } from "react-icons/md";
 import Addmodal from "../components/Addmodal";
 import Editcont from "../components/Editcont";
 
+// local storage init
+const HABITS_STORAGE_KEY = "today-habits";
+const NEW_CONTAINER_STORAGE_KEY = "today-new-container";
+
 export default function Today() {
-  const [habits, setHabits] = useState([
-    { id: 1, text: "Study 6 hours", selected: false },
-    { id: 2, text: "Exercise for 30 min", selected: false },
-    { id: 3, text: "Reading book", selected: false },
-    { id: 4, text: "walking 1k steps ", selected: false },
-  ]);
+  // const [habits, setHabits] = useState([
+  //   { id: 1, text: "Study 6 hours", selected: false },
+  //   { id: 2, text: "Exercise for 30 min", selected: false },
+  //   { id: 3, text: "Reading book", selected: false },
+  //   { id: 4, text: "walking 1k steps ", selected: false },
+  // ]);
+  const [habits, setHabits] = useState(() => {
+    try {
+      const storedHabits = localStorage.getItem(HABITS_STORAGE_KEY);
+      return storedHabits
+        ? JSON.parse(storedHabits)
+        : [
+            { id: 1, text: "Study 6 hours", selected: false },
+            { id: 2, text: "Exercise for 30 min", selected: false },
+            { id: 3, text: "Reading book", selected: false },
+            { id: 4, text: "walking 1k steps ", selected: false },
+          ];
+    } catch (error) {
+      console.error("Failed to load habits from localStorage", error);
+      return [
+        { id: 1, text: "Study 6 hours", selected: false },
+        { id: 2, text: "Exercise for 30 min", selected: false },
+        { id: 3, text: "Reading book", selected: false },
+        { id: 4, text: "walking 1k steps ", selected: false },
+      ];
+    }
+  });
+
+  // habit input logic
   const [showinput, setShowinput] = useState(false);
   const [habittext, setHabittext] = useState("");
 
@@ -25,7 +52,23 @@ export default function Today() {
   const [shownewcontedit, setShowNewContEdit] = useState(false);
 
   // new container state
-  const [newmodaldata, setNewmodaldata] = useState({ title: "", habits: [] });
+  // const [newmodaldata, setNewmodaldata] = useState({ title: "", habits: [] });
+  const [newmodaldata, setNewmodaldata] = useState(() => {
+    try {
+      const storedNewModalData = localStorage.getItem(
+        NEW_CONTAINER_STORAGE_KEY,
+      );
+      return storedNewModalData
+        ? JSON.parse(storedNewModalData)
+        : { title: "", habits: [] };
+    } catch (error) {
+      console.error(
+        "Failed to load new container data from localStorage",
+        error,
+      );
+      return { title: "", habits: [] };
+    }
+  });
 
   // progress bar stat checking logic
   const totalHabits = habits.length;
@@ -78,6 +121,19 @@ export default function Today() {
     setHabits(updatedata.habits);
     setShowTodayEdit(false);
   };
+
+  // local storage logic
+  useEffect(() => {
+    localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(habits));
+  }, [habits]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      NEW_CONTAINER_STORAGE_KEY,
+      JSON.stringify(newmodaldata),
+    );
+  }, [newmodaldata]);
+
   return (
     <section className="w-full min-h-screen bg-[#181717] pt-3">
       <h1 className="ml-8 text-2xl font-semibold text-[#979393]">@Today</h1>
