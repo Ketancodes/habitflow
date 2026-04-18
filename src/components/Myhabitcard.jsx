@@ -6,16 +6,20 @@ export default function Myhabitcard({
   frequency,
   priority,
   streak,
+  onEdit,
 }) {
   return (
     <>
-      <div className="h-48 w-60 bg-[#272626] rounded-xl  px-3 py-1.5 text-[#bdbaba] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]">
+      <div className="h-52 w-60 bg-[#272626] rounded-xl  px-3 py-1.5 text-[#bdbaba] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]">
         <div className="relative">
           <h4 className="text-center text-semibold text-[17px] text-[#d1cece]">
             {title}
           </h4>
 
-          <div className="absolute top-0 right-0 group cursor-pointer">
+          <div
+            className="absolute top-0 right-0 group cursor-pointer"
+            onClick={onEdit}
+          >
             <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-[#141414] px-2 py-1 text-[12px] text-[#d6d2d2] opacity-0 transition-all duration-150 group-hover:opacity-100">
               Edit
             </span>
@@ -34,8 +38,8 @@ export default function Myhabitcard({
           <p>Priority : {priority}</p>
           <p>Streak : {streak}🔥</p>
         </div>
-        <div className="flex  justify-center">
-          <button className=" w-[90%] px-2 py-1.5 rounded-lg bg-[#1f1d1d] text-[#bebaba] cursor-pointer ">
+        <div className="flex  justify-center py-1.5">
+          <button className=" w-[90%] px-2 py-1.5 rounded-lg bg-[#525050] hover:bg-[#3f3e3e] text-[#bebaba] cursor-pointer ">
             Add to today
           </button>
         </div>

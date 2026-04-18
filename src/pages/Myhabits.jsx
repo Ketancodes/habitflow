@@ -1,6 +1,7 @@
 import { CiSearch } from "react-icons/ci";
 import Myhabitcard from "../components/Myhabitcard";
 import { useState } from "react";
+import Edithabitmodal from "../components/Edithabitmodal";
 
 export default function Myhabits() {
   const [myHabits, setMyhabits] = useState([
@@ -38,6 +39,25 @@ export default function Myhabits() {
     },
   ]);
   setMyhabits;
+
+  const totalhabits = myHabits.length;
+
+  const [editinghabit, setEditingHabit] = useState(null);
+
+  const handleSaveHabit = (updatedHabit) => {
+    setMyhabits((prev) =>
+      prev.map((habit) =>
+        habit.id === updatedHabit.id ? updatedHabit : habit,
+      ),
+    );
+    setEditingHabit(null);
+  };
+
+  // delete habit logic
+  const handleDelete = (id) => {
+    setMyhabits((prev) => prev.filter((habit) => habit.id !== id));
+    setEditingHabit(null);
+  };
   return (
     <>
       <section>
@@ -82,8 +102,8 @@ export default function Myhabits() {
                 @My habit list
               </h2>
               <div className="flex flex-col gap-2 text-[16px] text-[#979595]">
-                <p>Total habits = 6</p>
-                <p>Active habits = 5</p>
+                <p>Total habits = {totalhabits}</p>
+                <p>Active habits = 3</p>
                 <p>Inactive habits = 1</p>
               </div>
             </div>
@@ -116,9 +136,24 @@ export default function Myhabits() {
                 frequency={habit.frequency}
                 priority={habit.priority}
                 streak={habit.streak}
+                onEdit={() => setEditingHabit(habit)}
               />
             ))}
+
+            <div className="h-48 w-60 flex justify-center items-center  bg-[#272626] rounded-xl  px-3 py-1.5 text-[#868585] hover:text-[#a8a6a6] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]">
+              + Add habit
+            </div>
           </div>
+
+          {/* Edit habit modal props */}
+          <Edithabitmodal
+            key={editinghabit?.id || "edit-habit"}
+            habit={editinghabit}
+            isOpen={!!editinghabit}
+            onClose={() => setEditingHabit(null)}
+            onSave={handleSaveHabit}
+            onDelete={handleDelete}
+          />
         </div>
       </section>
     </>
