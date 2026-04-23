@@ -38,11 +38,17 @@ export default function Myhabits() {
       streak: 2,
     },
   ]);
-  setMyhabits;
 
   const totalhabits = myHabits.length;
 
   const [editinghabit, setEditingHabit] = useState(null);
+  const [showaddhabitmodal, setShowAddHabitModal] = useState(false);
+
+  //category filter state
+  const [selectcategory, setSelectCategory] = useState("All");
+
+  //input filter state
+  const [input, setInput] = useState("");
 
   const handleSaveHabit = (updatedHabit) => {
     setMyhabits((prev) =>
@@ -58,6 +64,41 @@ export default function Myhabits() {
     setMyhabits((prev) => prev.filter((habit) => habit.id !== id));
     setEditingHabit(null);
   };
+
+  // add habit logic
+  const handleAddHabit = (newHabit) => {
+    setMyhabits((prev) => [
+      ...prev,
+      {
+        ...newHabit,
+        id: Date.now(),
+        streak: 0,
+      },
+    ]);
+    setShowAddHabitModal(false);
+  };
+
+  //logic for input filter
+  const filteredHabits = myHabits.filter((habit) => {
+    const matchesCategory =
+      selectcategory === "All" || habit.category === selectcategory;
+
+    const matchesInput = habit.title
+      .toLowerCase()
+      .includes(input.toLowerCase());
+
+    return matchesCategory && matchesInput;
+  });
+
+  //catergory buttonn class
+
+  const getCategoryButtonClass = (category) =>
+    `rounded-2xl px-4 py-1.5 cursor-pointer transition-colors duration-150 ${
+      selectcategory === category
+        ? "bg-[#5a5858] text-[#f0ecec]"
+        : "bg-[#2f2d2d] text-[#b9b6b6] hover:bg-[#3a3838]"
+    }`;
+
   return (
     <>
       <section>
@@ -76,10 +117,15 @@ export default function Myhabits() {
                   type="text"
                   placeholder="Search habit"
                   className="h-9 rounded-xl border border-[#646262] bg-[#302e2e] pl-9 pr-3 text-sm text-[#d8d3d3] placeholder:text-[#8a8787] focus:border-[#8d8b8b] outline-none focus:outline-none"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
                 />
               </div>
               <div>
-                <button className="border px-4.5 bg-[#494848] py-1.5 text-[#bebaba] rounded-3xl cursor-pointer">
+                <button
+                  className="border px-4.5 bg-[#494848] py-1.5 text-[#bebaba] rounded-3xl cursor-pointer"
+                  onClick={() => setShowAddHabitModal(true)}
+                >
                   + Add habit
                 </button>
               </div>
@@ -110,25 +156,44 @@ export default function Myhabits() {
           </div>
 
           {/* category list  */}
-          <div className="mt-6 ml-12 flex">
+          <div className="mt-8 ml-12 flex">
             <h4 className="text-[#9b9999] text-lg">Category : </h4>
             <div className=" ml-2 flex gap-6">
-              <button className="px-4 py-1 bg-[#383838] text-[#bebaba] rounded-2xl cursor-pointer">
+              <button
+                onClick={() => setSelectCategory("All")}
+                className={getCategoryButtonClass("All")}
+              >
+                All
+              </button>
+
+              <button
+                onClick={() => setSelectCategory("Health")}
+                className={getCategoryButtonClass("Health")}
+              >
                 Health
               </button>
-              <button className="px-4 py-1 bg-[#383838] text-[#bebaba] rounded-2xl cursor-pointer">
+              <button
+                onClick={() => setSelectCategory("Study")}
+                className={getCategoryButtonClass("Study")}
+              >
                 Study
               </button>
-              <button className="px-4 py-1 bg-[#383838] text-[#bebaba] rounded-2xl cursor-pointer">
+              <button
+                onClick={() => setSelectCategory("Discipline")}
+                className={getCategoryButtonClass("Discipline")}
+              >
                 Discipline
               </button>
-              <button className="px-4 py-1 bg-[#383838] text-[#bebaba] rounded-2xl cursor-pointer">
+              <button
+                onClick={() => setSelectCategory("Personal")}
+                className={getCategoryButtonClass("Personal")}
+              >
                 Personal
               </button>
             </div>
           </div>
-          <div className="mt-8 ml-12 w-[85%] grid grid-cols-3 gap-6 ">
-            {myHabits.map((habit) => (
+          <div className="mt-10 ml-12 w-[85%] grid grid-cols-3 gap-6 ">
+            {filteredHabits.map((habit) => (
               <Myhabitcard
                 key={habit.id}
                 title={habit.title}
@@ -140,7 +205,10 @@ export default function Myhabits() {
               />
             ))}
 
-            <div className="h-48 w-60 flex justify-center items-center  bg-[#272626] rounded-xl  px-3 py-1.5 text-[#868585] hover:text-[#a8a6a6] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]">
+            <div
+              className="h-48 w-60 flex justify-center items-center  bg-[#272626] rounded-xl  px-3 py-1.5 text-[#868585] hover:text-[#a8a6a6] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]"
+              onClick={() => setShowAddHabitModal(true)}
+            >
               + Add habit
             </div>
           </div>
@@ -153,6 +221,17 @@ export default function Myhabits() {
             onClose={() => setEditingHabit(null)}
             onSave={handleSaveHabit}
             onDelete={handleDelete}
+            mode="edit"
+          />
+
+          <Edithabitmodal
+            key={showaddhabitmodal ? "add-habit" : "closed-add-habit"}
+            habit={null}
+            isOpen={showaddhabitmodal}
+            onClose={() => setShowAddHabitModal(false)}
+            onSave={handleAddHabit}
+            onDelete={() => {}}
+            mode="add"
           />
         </div>
       </section>

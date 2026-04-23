@@ -39,7 +39,7 @@ export default function Myhabitcard({
           <p>Streak : {streak}🔥</p>
         </div>
         <div className="flex  justify-center py-1.5">
-          <button className=" w-[90%] px-2 py-1.5 rounded-lg bg-[#525050] hover:bg-[#3f3e3e] text-[#bebaba] cursor-pointer ">
+          <button className=" w-[90%] px-2 py-1.5 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] text-[#bebaba] cursor-pointer ">
             Add to today
           </button>
         </div>

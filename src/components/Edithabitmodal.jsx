@@ -8,27 +8,38 @@ export default function Edithabitmodal({
   onClose,
   onSave,
   onDelete,
+  mode = "edit",
 }) {
-  const [title, setTitle] = useState(habit?.title || "");
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [category, setCategory] = useState(habit?.category || "");
-  const [frequency, setFrequency] = useState(habit?.frequency || "");
-  const [priority, setPriority] = useState(habit?.priority || "");
+  const [title, setTitle] = useState(mode === "add" ? "" : habit?.title || "");
+  const [isEditingTitle, setIsEditingTitle] = useState(mode === "add");
+  const [category, setCategory] = useState(
+    mode === "add" ? "" : habit?.category || "",
+  );
+  const [frequency, setFrequency] = useState(
+    mode === "add" ? "" : habit?.frequency || "",
+  );
+  const [priority, setPriority] = useState(
+    mode === "add" ? "" : habit?.priority || "",
+  );
 
-  if (!isOpen || !habit) return null;
+  if (!isOpen) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!title.trim() || !category || !frequency || !priority) return;
+
     onSave({
-      ...habit,
+      ...(habit || {}),
       title,
       category,
       frequency,
       priority,
+      streak: habit?.streak || 0,
     });
   };
 
+  const isFormValid = title.trim() && category && frequency && priority;
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm py-2.5">
       <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
@@ -53,9 +64,10 @@ export default function Edithabitmodal({
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                onBlur={() => setIsEditingTitle(false)}
+                onBlur={() => mode === "edit" && setIsEditingTitle(false)}
                 autoFocus
-                className="border-none bg-transparent text-center text-2xl font-semibold text-[#d8d3d3] outline-none"
+                placeholder="Add title"
+                className="border-none bg-transparent text-center text-2xl font-semibold text-[#d8d3d3] outline-none placeholder:text-[#7f7c7c]"
               />
             ) : (
               <h2
@@ -76,8 +88,10 @@ export default function Edithabitmodal({
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="rounded-lg border border-[#4a4949] bg-[#1d1c1c] px-3 py-1.5 text-sm text-[#d8d3d3] outline-none"
+              className="rounded-lg border border-[#4a4949] bg-[#1d1c1c] px-3 py-1.5 text-sm text-[#d8d3d3] outline-none cursor-pointer"
             >
+              <option value=""> Select Category</option>
+
               <option value="Study">Study</option>
               <option value="Health">Health</option>
               <option value="Personal">Personal</option>
@@ -92,23 +106,26 @@ export default function Edithabitmodal({
             <select
               value={frequency}
               onChange={(e) => setFrequency(e.target.value)}
-              className="rounded-lg border border-[#4a4949] bg-[#1d1c1c] px-3 py-1.5 text-sm text-[#d8d3d3] outline-none"
+              className="rounded-lg border border-[#4a4949] bg-[#1d1c1c] px-3 py-1.5 text-sm text-[#d8d3d3] outline-none cursor-pointer"
             >
+              <option value="">Select Freequency</option>
               <option value="Daily">Daily</option>
               <option value="Weekends">Weekends</option>
               <option value="Mon,Wed,Sat">Mon,Wed,Sat</option>
             </select>
           </div>
 
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-4 ">
             <p className="text-[15px] text-[#b9b6b6]">
               Priority : <span className="text-[#dfdbdb]">{priority}</span>
             </p>
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="rounded-lg border border-[#4a4949] bg-[#1d1c1c] px-3 py-1.5 text-sm text-[#d8d3d3] outline-none"
+              className="rounded-lg border border-[#4a4949] bg-[#1d1c1c] px-3 py-1.5 text-sm text-[#d8d3d3] outline-none cursor-pointer"
             >
+              <option value="">Select Priority</option>
+
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
@@ -118,17 +135,20 @@ export default function Edithabitmodal({
           <div className="flex items-center justify-between gap-4">
             <p className="text-[15px] text-[#b9b6b6]">Streak</p>
             <span className="rounded-full bg-[#3a3939] px-3 py-1 text-sm text-[#dfdbdb]">
-              {habit.streak} 🔥
+              {habit?.streak || 0} 🔥
             </span>
           </div>
           <div className="flex justify-between">
-            <div className="flex justify-center items-center">
-              <MdDelete
-                size={22}
-                className="text-[#6d6b6b] hover:text-[#9b9999] cursor-pointer"
-                onClick={() => onDelete(habit.id)}
-              />
+            <div className="flex items-center justify-center">
+              {mode === "edit" && (
+                <MdDelete
+                  size={22}
+                  className="cursor-pointer text-[#6d6b6b] hover:text-[#9b9999]"
+                  onClick={() => onDelete(habit.id)}
+                />
+              )}
             </div>
+
             <div className="mt-2 flex justify-end gap-3">
               <button
                 type="button"
@@ -140,6 +160,7 @@ export default function Edithabitmodal({
 
               <button
                 type="submit"
+                disabled={!isFormValid}
                 className="cursor-pointer rounded-xl bg-[#494848] px-4 py-2 text-sm text-[#dfdbdb] transition-colors duration-150 hover:bg-[#5a5959]"
               >
                 Save
