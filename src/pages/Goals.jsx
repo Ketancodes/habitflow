@@ -1,6 +1,26 @@
 import { useState } from "react";
 import Goalcard from "../components/Goalcard";
 import Goalmodal from "../components/Goalmodal";
+const goalEmojiMap = [
+  { keywords: ["study", "read", "book", "learn", "exam"], emoji: "📚" },
+  { keywords: ["gym", "fitness", "workout", "exercise", "run"], emoji: "💪" },
+  { keywords: ["walk", "steps", "cardio"], emoji: "🚶" },
+  { keywords: ["water", "drink", "hydrate"], emoji: "💧" },
+  { keywords: ["sleep", "wake", "morning"], emoji: "🌙" },
+  { keywords: ["money", "save", "income", "budget"], emoji: "💰" },
+  { keywords: ["weight", "gain", "muscle"], emoji: "🏋️" },
+];
+
+// getting goal emoji logic function
+const getGoalEmoji = (title) => {
+  const lowerTitle = title.toLowerCase();
+
+  const match = goalEmojiMap.find((group) =>
+    group.keywords.some((word) => lowerTitle.includes(word)),
+  );
+
+  return match ? match.emoji : "🎯";
+};
 
 export default function Goals() {
   const [goalmodal, setGoalModal] = useState(false);
@@ -42,11 +62,17 @@ export default function Goals() {
     ]);
     setGoalModal(false);
   };
-  const activeGoals = goals.filter((goal) => goal.active).length;
-  const inactiveGoals = goals.filter((goal) => !goal.active).length;
-  const completedGoals = goals.filter(
-    (goal) => goal.completedDays >= goal.totalDays,
+
+  // all goals counting logic
+  const activeGoals = goals.filter(
+    (goal) => goal.active && goal.completedDays < goal.totalDays,
   ).length;
+
+  const completedGoals = goals.filter(
+    (goal) => goal.active && goal.completedDays >= goal.totalDays,
+  ).length;
+
+  const inactiveGoals = goals.filter((goal) => !goal.active).length;
 
   //delete logic
   const handleDelete = (id) => {
@@ -65,14 +91,34 @@ export default function Goals() {
     );
   };
 
+  //handle archieve logic
+  const handleArchive = (id) => {
+    setGoals((prev) =>
+      prev.map((goal) => (goal.id === id ? { ...goal, active: false } : goal)),
+    );
+  };
+
+  // order of goals for filterign the goal by status
+  const orderedGoals = [
+    ...goals.filter(
+      (goal) => goal.active && goal.completedDays < goal.totalDays,
+    ),
+    ...goals.filter(
+      (goal) => goal.active && goal.completedDays >= goal.totalDays,
+    ),
+    ...goals.filter((goal) => !goal.active),
+  ];
+
   return (
     <>
       <section>
         <div>
           <div className="px-2.5 mt-3 flex justify-between ">
-            <h1 className="ml-8 mt-3 text-2xl text-[#979393]">@Goals</h1>
+            <h1 className="ml-8 mt-3 text-2xl text-[#979393] font-semibold">
+              @Goals
+            </h1>
             <button
-              className="border px-4.5 bg-[#494848] py-1.5 text-[#bebaba] rounded-3xl cursor-pointer "
+              className="border px-2.5 bg-[#3a3939] hover:bg-[#4d4c4c]  py-1 text-[#bebaba] hover:text-[#dad7d7] rounded-3xl cursor-pointer transition-transform duration-150 active:scale-[0.96]"
               onClick={() => setGoalModal(true)}
             >
               + Add goal
@@ -83,32 +129,58 @@ export default function Goals() {
           </div>
 
           {/* overall goal list */}
-          <div className="ml-8 mt-2 text-[#a8a8a8] text-[16px] leading-relaxed flex flex-col gap-1.5">
-            <h2 className="text-[18px] text-[#bebcbc]">Overall goals 🎯</h2>
-            <p>Total goal list : {goals.length}</p>
-            <p>Active goals : {activeGoals}</p>
-            <p>Inactive goals : {inactiveGoals}</p>
-            <p>Completed goals : {completedGoals}</p>
+          <div className="ml-8 mt-4 text-[#9b9999] text-[16px] leading-relaxed flex flex-col gap-1.5 font-semibold">
+            <h2 className="text-[18px] text-[#cac9c9] font-semibold leading-relaxed">
+              Overall goals 🎯
+            </h2>
+            <p>
+              Total goal list :{" "}
+              <span className="text-[#6d8bcc] font-semibold ">
+                {goals.length}
+              </span>
+            </p>
+            <p>
+              Active goals :{" "}
+              <span className="text-[#6d8bcc] font-semibold ">
+                {activeGoals}
+              </span>
+            </p>
+            <p>
+              Archived goals :{" "}
+              <span className="text-[#6d8bcc] font-semibold ">
+                {inactiveGoals}
+              </span>
+            </p>
+            <p>
+              Completed goals :{" "}
+              <span className="text-[#6d8bcc] font-semibold ">
+                {completedGoals}
+              </span>
+            </p>
           </div>
+
+          {/* main goal card container */}
           <div className=" w-[90%] ml-12 mt-6 grid grid-cols-3 gap-6">
-            {goals.map((goal) => (
+            {orderedGoals.map((goal) => (
               <Goalcard
                 key={goal.id}
                 id={goal.id}
                 title={goal.title}
+                emoji={getGoalEmoji(goal.title)}
                 totalDays={goal.totalDays}
                 completedDays={goal.completedDays}
                 onAddProgress={handleAddProgress}
                 active={goal.active}
                 frequency={goal.frequency}
                 onDelete={handleDelete}
+                onArchive={handleArchive}
               />
             ))}
             <div
               className="h-52 w-60 bg-[#272626] rounded-xl flex items-center justify-center cursor-pointer hover:bg-[#333232] "
               onClick={() => setGoalModal(true)}
             >
-              <h4 className="text-xl text-[#7a7878] hover:text-[#a3a3a3]">
+              <h4 className="text-xl text-[#7a7878] hover:text-[#a3a3a3] transition-transform duration-150 active:scale-[0.95]">
                 + Add Goal
               </h4>
             </div>

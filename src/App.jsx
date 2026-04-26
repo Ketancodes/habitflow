@@ -11,6 +11,7 @@ import Goals from "./pages/Goals";
 import Journal from "./pages/Journal";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -30,6 +31,16 @@ function App() {
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: "#232222",
+            color: "#d6d2d2",
+            border: "1px solid #3f3d3d",
+          },
+        }}
+      />
     </>
   );
 }
