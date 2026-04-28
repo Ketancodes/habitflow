@@ -12,12 +12,6 @@ const HABITS_STORAGE_KEY = "today-habits";
 const NEW_CONTAINER_STORAGE_KEY = "today-new-container";
 
 export default function Today() {
-  // const [habits, setHabits] = useState([
-  //   { id: 1, text: "Study 6 hours", selected: false },
-  //   { id: 2, text: "Exercise for 30 min", selected: false },
-  //   { id: 3, text: "Reading book", selected: false },
-  //   { id: 4, text: "walking 1k steps ", selected: false },
-  // ]);
   const [habits, setHabits] = useState(() => {
     try {
       const storedHabits = localStorage.getItem(HABITS_STORAGE_KEY);
@@ -52,7 +46,6 @@ export default function Today() {
   const [shownewcontedit, setShowNewContEdit] = useState(false);
 
   // new container state
-  // const [newmodaldata, setNewmodaldata] = useState({ title: "", habits: [] });
   const [newmodaldata, setNewmodaldata] = useState(() => {
     try {
       const storedNewModalData = localStorage.getItem(

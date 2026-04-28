@@ -2,10 +2,11 @@ export default function Reusable({
   label,
   checked,
   onChange,
+  emoji = "",
   labelClassName = "",
 }) {
   return (
-    <label className="group flex items-center gap-2 cursor-pointer">
+    <label className="group flex w-full items-center gap-2 cursor-pointer">
       <input
         type="checkbox"
         className="sr-only"
@@ -15,7 +16,7 @@ export default function Reusable({
 
       <span
         className="
-          flex h-4 w-4 items-center justify-center rounded border border-[#3a3a3a] bg-[#222121]
+           shrink-0   flex h-4 w-4 items-center justify-center rounded border border-[#3a3a3a] bg-[#222121]
           transition-all duration-150
           group-has-[:checked]:border-blue-600 group-has-[:checked]:bg-blue-600
         "
@@ -30,18 +31,19 @@ export default function Reusable({
         </span>
       </span>
 
-      {/* <span
-        className={`${
-          checked ? "text-[#afabab] line-through" : "text-[#bdbaba]"
-        } transition-colors duration-150 ${labelClassName}`}
-      > */}
-      <span
-        className={`transition-colors duration-150 ${
-          checked ? "line-through" : ""
-        } ${labelClassName || (checked ? "text-[#afabab]" : "text-[#bdbaba]")}`}
-      >
-        {label}
-      </span>
+      <div className="flex min-w-0 w-full items-center justify-between ">
+        <span
+          className={`block min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap transition-colors duration-150 ${
+            checked ? "line-through" : ""
+          } ${labelClassName || (checked ? "text-[#afabab]" : "text-[#bdbaba]")}`}
+        >
+          {label}
+        </span>
+
+        {emoji && (
+          <span className="ml-2 shrink-0 text-base leading-none">{emoji}</span>
+        )}
+      </div>
     </label>
   );
 }
