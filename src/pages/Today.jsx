@@ -133,31 +133,37 @@ export default function Today() {
       <h4 className="ml-8 mt-2.5 text-lg font-semibold text-[#979393]">
         24/ 03/ 26
       </h4>
+      {/* devider line */}
+      <div className="mt-2 flex justify-center">
+        <div className="h-px w-[94%] bg-[#4a4747]"></div>
+      </div>
       <p className="ml-8 mt-4 text-lg font-medium text-[#a7a4a4]">
-        Welcome Warrior, hope your doing well !
+        Welcome <span className="text-[#6d8bcc]"> Warrior</span>, hope your
+        doing well ! 💪
       </p>
 
-      {/* stats row  */}
-      <div className="ml-12 mt-6 w-60 rounded-xl">
-        <h3 className="px-3 py-1.5 text-[#9b9999]">@Today</h3>
-        <div className="flex flex-col gap-2 px-3 text-[15px] text-[#aca9a9]">
+      {/* stats row  of habits */}
+      <div className="ml-12 mt-6 w-60 rounded-xl font-semibold">
+        <h3 className="px-3 py-1.5 text-[#c7c4c4] text-[17px]">@Today 🎯</h3>
+        <div className="flex flex-col gap-2 px-3 text-[16px] text-[#969494]">
           <h4>
             Completed habits :{" "}
-            <span className="text-[#d3cfcf]">{completed}</span>
+            <span className="text-[#6d8bcc]">{completed}</span>
           </h4>
           <h4>
             Remaining habits :{" "}
-            <span className="text-[#d3cfcf]">{notCompleted}</span>
+            <span className="text-[#6d8bcc]">{notCompleted}</span>
           </h4>
           <h4>
             Today&apos;s streak :{" "}
-            <span className="text-[#d3cfcf]">
-              {totalHabits === completed ? "🔥" : "Null"}
+            <span className="text-[#6d8bcc]">
+              {totalHabits === completed ? "🔥" : "Not yet"}
             </span>
           </h4>
         </div>
       </div>
 
+      {/* visual status /progress bar section */}
       <div className="ml-14 mt-6 flex items-end gap-6">
         <div className="w-60">
           <p className="text-sm text-[#a7a4a4]">
@@ -179,9 +185,9 @@ export default function Today() {
 
       {/* Today's habit container */}
       <div className="relative ml-14 mt-10 flex gap-8">
-        <div className="relative flex h-40 w-56 flex-col rounded-xl bg-[#272626] px-3 py-1.5 hover:bg-[#2e2d2d]">
+        <div className="relative flex h-40 w-56 flex-col rounded-xl bg-[#272626] px-3 py-1.5 hover:bg-[#2e2d2d] cursor-pointer">
           <div className="flex justify-between">
-            <h3 className="py-1.5 text-[#9b9999]">@Today</h3>
+            <h3 className="py-1.5 text-[#9b9999] ">@Today</h3>
 
             <div className="mt-1.5 flex items-center gap-1.5">
               <div className="relative group">
@@ -396,7 +402,7 @@ export default function Today() {
               <div>
                 <Reusable
                   label="Reading book"
-                  labelClassName="text-[#8b8a8a]"
+                  labelClassName="text-[#8b8a8a] "
                 />
               </div>
               <div>
