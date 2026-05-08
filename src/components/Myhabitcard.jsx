@@ -12,7 +12,10 @@ export default function Myhabitcard({
     <>
       <div className="h-52 w-60 bg-[#272626] rounded-xl  px-3 py-1.5 text-[#bdbaba] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]">
         <div className="relative">
-          <h4 className="text-center text-semibold text-[17px] text-[#d1cece]">
+          <h4
+            className=" w-[80%] text-center text-semibold text-[17px] text-[#d1cece] overflow-hidden text-ellipsis  whitespace-nowrap
+          "
+          >
             {title}
           </h4>
 

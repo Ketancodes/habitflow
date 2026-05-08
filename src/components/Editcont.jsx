@@ -1,25 +1,61 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Reusable from "./Reusable";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdDone } from "react-icons/md";
 
-export default function Editcont({ isOpen, onClose, containerData, onApply }) {
+export default function Editcont({
+  isOpen,
+  onClose,
+  containerData,
+  onApply,
+  canEditTitle = false,
+}) {
   const [editcontHabits, setEditContHabits] = useState(
     containerData.habits || [],
   );
+
+  // habit input logic (clicking on habit opnens input)
   const [showInput, setShowInput] = useState(false);
   const [habitText, setHabitText] = useState("");
 
   const [editid, setEditid] = useState(null);
   const [edittext, setEdittext] = useState("");
 
+  // title editing state logics
+  const [editTitle, setEditTitle] = useState(containerData.title || "Today");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [titleInput, setTitleInput] = useState(containerData.title || "Today");
+
+  // title save logic
+  const handleTitleSave = () => {
+    const trimmedTitle = titleInput.trim();
+    if (!trimmedTitle) return;
+
+    setEditTitle(trimmedTitle);
+    setIsEditingTitle(false);
+  };
+
+  // autofocus logic
+  const habitInputref = useRef(null);
+  useEffect(() => {
+    if (showInput) {
+      habitInputref.current?.focus();
+    }
+  }, [showInput]);
+
   const hasOverflowHabits = editcontHabits.length > 4;
 
   if (!isOpen) return null;
 
+  // add habit logic
   const handleAddHabit = () => {
     const trimmedHabit = habitText.trim();
     if (!trimmedHabit) return;
+    const isDuplicate = editcontHabits.some(
+      (habit) => habit.text.trim().toLowerCase() === trimmedHabit.toLowerCase(),
+    );
+
+    if (isDuplicate) return;
 
     setEditContHabits((prev) => [
       ...prev,
@@ -29,20 +65,24 @@ export default function Editcont({ isOpen, onClose, containerData, onApply }) {
     setShowInput(false);
   };
 
+  // onapply submit logic
   const handleSubmit = (e) => {
     e.preventDefault();
     handleAddHabit();
   };
 
+  // handling delete habit
   const handleDlthabit = (id) => {
     setEditContHabits((prev) => prev.filter((habit) => habit.id !== id));
   };
 
+  // edit logic (when we click edit)
   const handleEdit = (habit) => {
     setEditid(habit.id);
     setEdittext(habit.text);
   };
 
+  //edit saving logic
   const handleEditSave = () => {
     const trimmedText = edittext.trim();
     if (!trimmedText) return;
@@ -57,12 +97,19 @@ export default function Editcont({ isOpen, onClose, containerData, onApply }) {
     setEdittext("");
   };
 
+  // onapply logic
   const handleApply = () => {
     onApply({
+      ...containerData,
+      title: editTitle,
       habits: editcontHabits,
     });
     onClose();
   };
+
+  // today date logic
+  const getdate = new Date().toLocaleDateString("en-CA");
+  const showdate = getdate.split("-").reverse().join(" /");
 
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm py-2.5">
@@ -82,11 +129,34 @@ export default function Editcont({ isOpen, onClose, containerData, onApply }) {
         </button>
 
         <div className="mt-2 flex justify-center">
-          <h2 className="text-2xl font-semibold text-[#9b9999]">@Today</h2>
+          {/* <h2 className="text-2xl font-semibold text-[#9b9999]">@Today</h2> */}
+          {canEditTitle && isEditingTitle ? (
+            <input
+              type="text"
+              value={titleInput}
+              onChange={(e) => setTitleInput(e.target.value)}
+              onBlur={handleTitleSave}
+              autoFocus
+              className="min-w-0 border-none bg-transparent text-center text-2xl font-semibold text-[#9b9999] outline-none "
+            />
+          ) : (
+            <h2
+              onClick={() => {
+                if (!canEditTitle) return;
+                setTitleInput(editTitle);
+                setIsEditingTitle(true);
+              }}
+              className={`text-2xl font-semibold text-[#9b9999] ${
+                canEditTitle ? "cursor-pointer" : ""
+              }`}
+            >
+              @{editTitle}
+            </h2>
+          )}
         </div>
 
         <h4 className="mt-3 text-center text-lg text-[#9b9999]">
-          Date : 9/ 4/ 26
+          Date : {showdate}
         </h4>
 
         <div className="relative mt-4 flex justify-center overflow-hidden py-2">
@@ -97,10 +167,7 @@ export default function Editcont({ isOpen, onClose, containerData, onApply }) {
           >
             <div className="flex flex-col gap-3.5 text-lg text-[#7e7c7c]">
               {editcontHabits.map((habit) => (
-                <div
-                  key={habit.id}
-                  className="flex w-full justify-between gap-4"
-                >
+                <div key={habit.id} className="flex w-full items-center gap-4">
                   {editid === habit.id ? (
                     <input
                       type="text"
@@ -111,7 +178,7 @@ export default function Editcont({ isOpen, onClose, containerData, onApply }) {
                     />
                   ) : (
                     <div
-                      className="w-full cursor-pointer"
+                      className="min-w-0 flex-1 cursor-pointer"
                       onClick={() => handleEdit(habit)}
                     >
                       <Reusable
@@ -152,6 +219,7 @@ export default function Editcont({ isOpen, onClose, containerData, onApply }) {
                 className="flex w-60 flex-col gap-1.5"
               >
                 <input
+                  ref={habitInputref}
                   type="text"
                   value={habitText}
                   onChange={(e) => setHabitText(e.target.value)}
@@ -173,7 +241,7 @@ export default function Editcont({ isOpen, onClose, containerData, onApply }) {
           <button
             type="button"
             onClick={() => setShowInput((prev) => !prev)}
-            className="cursor-pointer text-[#9b9999] transition-colors duration-150 hover:text-[#dfdbdb]"
+            className="cursor-pointer text-[#4473da] transition-colors duration-150 hover:text-[#6984be]"
           >
             {showInput ? (
               <CiCircleRemove size={28} />
@@ -188,7 +256,7 @@ export default function Editcont({ isOpen, onClose, containerData, onApply }) {
         <div className="mt-12 flex justify-end">
           <button
             onClick={handleApply}
-            className="cursor-pointer rounded-3xl border bg-[#302f2f] px-4.5 py-1.5 text-[#b6b2b2]"
+            className="cursor-pointer rounded-3xl border bg-[#222121] hover:bg-[#3a3939] px-4.5 py-1.5 text-[#b6b2b2] active:text-[#ffff] active:bg-[#4749e2] transition-transform duration-150 active:scale-[0.98]"
           >
             Apply
           </button>

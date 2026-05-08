@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import Reusable from "../components/Reusable";
 import { LiaComment } from "react-icons/lia";
 import { CiEdit } from "react-icons/ci";
@@ -6,34 +6,31 @@ import { CgPlayListAdd } from "react-icons/cg";
 import { MdPlaylistRemove } from "react-icons/md";
 import Addmodal from "../components/Addmodal";
 import Editcont from "../components/Editcont";
-
-// local storage init
-const HABITS_STORAGE_KEY = "today-habits";
-const NEW_CONTAINER_STORAGE_KEY = "today-new-container";
+import useAppContext from "../context/useAppcontext";
+import { getLastNDays, formatdate } from "../utils/Datehelpers";
+import { fireConfetti } from "../utils/confetti";
+import toast from "react-hot-toast";
 
 export default function Today() {
-  const [habits, setHabits] = useState(() => {
-    try {
-      const storedHabits = localStorage.getItem(HABITS_STORAGE_KEY);
-      return storedHabits
-        ? JSON.parse(storedHabits)
-        : [
-            { id: 1, text: "Study 6 hours", selected: false },
-            { id: 2, text: "Exercise for 30 min", selected: false },
-            { id: 3, text: "Reading book", selected: false },
-            { id: 4, text: "walking 1k steps ", selected: false },
-          ];
-    } catch (error) {
-      console.error("Failed to load habits from localStorage", error);
-      return [
-        { id: 1, text: "Study 6 hours", selected: false },
-        { id: 2, text: "Exercise for 30 min", selected: false },
-        { id: 3, text: "Reading book", selected: false },
-        { id: 4, text: "walking 1k steps ", selected: false },
-      ];
-    }
-  });
+  // context , shared habits logic
+  const { appData, setAppData } = useAppContext();
+  const habits = appData.todayHabits;
+  const newmodaldata = appData.newContainerData;
 
+  //last 7 days of history logic
+  const last7days = getLastNDays(appData.history, 7);
+
+  // yesterday data logic
+  const getYesterdayData = (history) => {
+    const dates = Object.keys(history);
+    if (!dates.length) return [];
+
+    const latestDate = dates.sort().at(-1);
+    return history[latestDate];
+  };
+  const yesterdayHabits = useMemo(() => {
+    return getYesterdayData(appData.history);
+  }, [appData.history]);
   // habit input logic
   const [showinput, setShowinput] = useState(false);
   const [habittext, setHabittext] = useState("");
@@ -45,23 +42,14 @@ export default function Today() {
   const [showtodayedit, setShowTodayEdit] = useState(false);
   const [shownewcontedit, setShowNewContEdit] = useState(false);
 
-  // new container state
-  const [newmodaldata, setNewmodaldata] = useState(() => {
-    try {
-      const storedNewModalData = localStorage.getItem(
-        NEW_CONTAINER_STORAGE_KEY,
-      );
-      return storedNewModalData
-        ? JSON.parse(storedNewModalData)
-        : { title: "", habits: [] };
-    } catch (error) {
-      console.error(
-        "Failed to load new container data from localStorage",
-        error,
-      );
-      return { title: "", habits: [] };
+  //autofocus state logics
+  const habitInputref = useRef(null);
+
+  useEffect(() => {
+    if (showinput) {
+      habitInputref.current.focus();
     }
-  });
+  }, [showinput]);
 
   // progress bar stat checking logic
   const totalHabits = habits.length;
@@ -73,21 +61,30 @@ export default function Today() {
     : 0;
 
   const handleToggle = (id) => {
-    setHabits((prev) =>
-      prev.map((habit) =>
+    setAppData((prev) => ({
+      ...prev,
+      todayHabits: prev.todayHabits.map((habit) =>
         habit.id === id ? { ...habit, selected: !habit.selected } : habit,
       ),
-    );
+    }));
   };
 
   const addHabit = () => {
     const trimmedHabit = habittext.trim();
     if (!trimmedHabit) return;
+    const isDuplicate = habits.some(
+      (habit) => habit.text.trim().toLowerCase() === trimmedHabit.toLowerCase(),
+    );
 
-    setHabits((prev) => [
+    if (isDuplicate) return;
+
+    setAppData((prev) => ({
       ...prev,
-      { id: Date.now(), text: trimmedHabit, selected: false },
-    ]);
+      todayHabits: [
+        ...prev.todayHabits,
+        { id: Date.now(), text: trimmedHabit, selected: false },
+      ],
+    }));
     setHabittext("");
     setShowinput(false);
   };
@@ -99,39 +96,46 @@ export default function Today() {
 
   //new container toggle logic
   const handleNewmodaltoggle = (id) => {
-    setNewmodaldata((prev) => ({
+    setAppData((prev) => ({
       ...prev,
-      habits: prev.habits.map((habit) =>
-        habit.id === id ? { ...habit, selected: !habit.selected } : habit,
-      ),
+      newContainerData: {
+        ...prev.newContainerData,
+        habits: prev.newContainerData.habits.map((habit) =>
+          habit.id === id ? { ...habit, selected: !habit.selected } : habit,
+        ),
+      },
     }));
   };
+
   const todayContdata = {
     title: "Today",
     habits,
   };
   const handleTodayapply = (updatedata) => {
-    setHabits(updatedata.habits);
+    setAppData((prev) => ({
+      ...prev,
+      todayHabits: updatedata.habits,
+    }));
     setShowTodayEdit(false);
   };
 
-  // local storage logic
-  useEffect(() => {
-    localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(habits));
-  }, [habits]);
+  // today date logic
+  const getdate = new Date().toLocaleDateString("en-CA");
+  const showdate = getdate.split("-").reverse().join(" /");
 
+  // confetti logic when all habits are completed
   useEffect(() => {
-    localStorage.setItem(
-      NEW_CONTAINER_STORAGE_KEY,
-      JSON.stringify(newmodaldata),
-    );
-  }, [newmodaldata]);
+    if (totalHabits > 0 && totalHabits === completed) {
+      fireConfetti();
+      toast.success("All habits completed, keep going 🎉");
+    }
+  }, [totalHabits, completed]);
 
   return (
     <section className="w-full min-h-screen bg-[#181717] pt-3">
       <h1 className="ml-8 text-2xl font-semibold text-[#979393]">@Today</h1>
       <h4 className="ml-8 mt-2.5 text-lg font-semibold text-[#979393]">
-        24/ 03/ 26
+        {showdate}
       </h4>
       {/* devider line */}
       <div className="mt-2 flex justify-center">
@@ -177,7 +181,6 @@ export default function Today() {
             ></div>
           </div>
         </div>
-
         {completed === 0 && (
           <p className="text-sm text-[#a7a4a4]">Let&apos;s get started 💪</p>
         )}
@@ -187,12 +190,12 @@ export default function Today() {
       <div className="relative ml-14 mt-10 flex gap-8">
         <div className="relative flex h-40 w-56 flex-col rounded-xl bg-[#272626] px-3 py-1.5 hover:bg-[#2e2d2d] cursor-pointer">
           <div className="flex justify-between">
-            <h3 className="py-1.5 text-[#9b9999] ">@Today</h3>
+            <h3 className="py-1.5 text-[#cecbcb] ">@Today</h3>
 
             <div className="mt-1.5 flex items-center gap-1.5">
               <div className="relative group">
                 <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-[#141414] px-2 py-1 text-[12px] text-[#d6d2d2] opacity-0 transition-all duration-150 group-hover:opacity-100">
-                  Add
+                  {showinput ? "Remove" : "Add"}
                 </span>
                 <button
                   type="button"
@@ -246,6 +249,7 @@ export default function Today() {
             </div>
           </div>
 
+          {/* // conditional adding habit logic */}
           {showinput && (
             <div className="absolute inset-x-3 top-11 bottom-3 rounded-md bg-[#272626]/82 p-2 backdrop-blur-[3px]">
               <form
@@ -253,6 +257,7 @@ export default function Today() {
                 className="flex h-full flex-col gap-2"
               >
                 <input
+                  ref={habitInputref}
                   type="text"
                   value={habittext}
                   placeholder="Enter the habit"
@@ -293,7 +298,9 @@ export default function Today() {
         ) : (
           <div className=" flex flex-col h-40 w-56 rounded-xl bg-[#272626] px-3 py-1.5 text-[#bdbaba] hover:bg-[#2e2d2d] cursor-pointer">
             <div className="flex justify-between">
-              <h3 className="py-1.5 text-[#9b9999]">@{newmodaldata.title}</h3>
+              <h3 className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap  py-1.5 text-[#9b9999]">
+                @{newmodaldata.title}
+              </h3>
 
               <div
                 className="relative group mt-1.5 cursor-pointer"
@@ -328,92 +335,101 @@ export default function Today() {
           isOpen={shownewcontedit}
           onClose={() => setShowNewContEdit(false)}
           containerData={newmodaldata}
-          onApply={setNewmodaldata}
+          canEditTitle={true}
+          onApply={(updatedContainer) =>
+            setAppData((prev) => ({
+              ...prev,
+              newContainerData: updatedContainer,
+            }))
+          }
         />
 
-        <Addmodal
-          isOpen={showaddmodal}
-          onClose={() => setShowAddmodal(false)}
-          habits={habits}
-          onTogglehabit={handleToggle}
-          onApply={setNewmodaldata}
-        />
+        {showaddmodal && (
+          <Addmodal
+            // isOpen={showaddmodal}
+            onClose={() => setShowAddmodal(false)}
+            title={newmodaldata.title || "Today"}
+            habits={
+              newmodaldata.habits.length > 0 ? newmodaldata.habits : habits
+            }
+            // onTogglehabit={handleToggle}
+            onApply={(updatedContainer) =>
+              setAppData((prev) => ({
+                ...prev,
+                newContainerData: updatedContainer,
+              }))
+            }
+          />
+        )}
 
         {/* //third add new container */}
-        <div
-          onClick={() => setShowAddmodal(true)}
-          className="flex h-40 w-56 cursor-pointer items-center justify-center rounded-xl bg-[#1f1e1e] text-[#8b8989] hover:bg-[#2c2b2b] hover:text-[#bbb8b8]"
-        >
-          <span className="text-xl">+</span> Add new
-        </div>
+
+        {newmodaldata.habits.length >= 1 && (
+          <div
+            onClick={() => setShowAddmodal(true)}
+            className="flex h-40 w-56 cursor-pointer items-center justify-center rounded-xl bg-[#1f1e1e] text-[#8b8989] hover:bg-[#2c2b2b] hover:text-[#bbb8b8]"
+          >
+            <span className="text-xl">+</span> Add new
+          </div>
+        )}
       </div>
 
       {/* second main row */}
-      <div className="flex">
-        <div className="ml-14 mt-8">
-          <div className="relative h-40 w-56 cursor-pointer rounded-xl bg-[#272626] px-3 hover:bg-[#2e2d2d]">
-            <h3 className="py-1.5 text-[#9b9696]">@Yesterday</h3>
+
+      {/* yesterday + last 7 days */}
+      <div className="ml-14 mt-8 grid grid-cols-4 gap-5 ">
+        <div className="relative h-40 w-56 flex flex-col cursor-pointer rounded-xl bg-[#272626] opacity-80 px-3 hover:bg-[#2e2d2d]">
+          <h3 className="py-1.5 text-[#9b9696]">@Yesterday</h3>
+
+          <div className="mt-1 flex-1 overflow-y-auto pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex flex-col gap-2.5 text-[14px] text-[#8b8a8a]">
-              <div>
-                <Reusable
-                  label="Study 6 hours"
-                  labelClassName="text-[#8b8a8a]"
-                />
-              </div>
-              <div>
-                <Reusable
-                  label="Exercise for 30 min"
-                  labelClassName="text-[#8b8a8a]"
-                />
-              </div>
-              <div>
-                <Reusable
-                  label="Reading book"
-                  labelClassName="text-[#8b8a8a]"
-                />
-              </div>
-              <div>
-                <Reusable
-                  label="Walking 1k steps"
-                  labelClassName="text-[#8b8a8a]"
-                />
-              </div>
+              {yesterdayHabits.length > 0 ? (
+                yesterdayHabits.map((habit) => (
+                  <div key={habit.id}>
+                    <Reusable
+                      label={habit.text}
+                      checked={habit.selected}
+                      // onChange={() => handleYesterdayToggle(habit.id)}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="mt-6 flex flex-col items-center justify-center text-center text-[#7a7978] font-semibold">
+                  <p className="text-[16px]">No habits from</p>
+                  <p className="text-[16px]">yesterday</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* date container  */}
-        <div className="ml-8 mt-8">
-          <div className="relative h-40 w-56 cursor-pointer rounded-xl bg-[#272626] px-3 hover:bg-[#2e2d2d]">
-            <h3 className="py-1.5 text-[#9b9696]">@Apr 15,2026</h3>
-            <div className="flex flex-col gap-2.5 text-[14px] text-[#8b8a8a]">
-              <div>
-                <Reusable
-                  label="Study 6 hours"
-                  labelClassName="text-[#8b8a8a]"
-                />
-              </div>
-              <div>
-                <Reusable
-                  label="Exercise for 30 min"
-                  labelClassName="text-[#8b8a8a]"
-                />
-              </div>
-              <div>
-                <Reusable
-                  label="Reading book"
-                  labelClassName="text-[#8b8a8a] "
-                />
-              </div>
-              <div>
-                <Reusable
-                  label="Walking 1k steps"
-                  labelClassName="text-[#8b8a8a]"
-                />
+        {last7days.slice(1).map(({ date, habits }) => (
+          <div
+            key={date}
+            className="relative h-40 w-56 rounded-xl bg-[#272626] opacity-75 px-3 py-1.5 hover:bg-[#2e2d2d]"
+          >
+            <h3 className="py-1.5 text-[#9b9696]">@{formatdate(date)}</h3>
+
+            <div className="mt-1 flex h-[calc(100%-2.5rem)] flex-col overflow-y-auto pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex flex-col gap-2.5 text-[14px] text-[#8b8a8a]">
+                {habits.length > 0 ? (
+                  habits.map((habit) => (
+                    <Reusable
+                      key={habit.id}
+                      label={habit.text}
+                      checked={habit.selected}
+                    />
+                  ))
+                ) : (
+                  <div className="mt-6 flex flex-col items-center justify-center text-center text-[#7a7978] font-semibold">
+                    <p className="text-[16px]">No habits</p>
+                    <p className="text-[14px]">@{formatdate(date)}</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </section>
   );

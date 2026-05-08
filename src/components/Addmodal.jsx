@@ -3,15 +3,20 @@ import { useState } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdDone } from "react-icons/md";
 
-export default function Addmodal({ isOpen, onClose, habits, onApply }) {
+export default function Addmodal({ onClose, title, habits, onApply }) {
   const [modalHabits, setModalHabits] = useState(habits);
   const [showInput, setShowInput] = useState(false);
   const [habitText, setHabitText] = useState("");
 
   // state for title habit
-  const [modaltitle, setModaltitle] = useState("Today");
+  const [modaltitle, setModaltitle] = useState(title || "Today");
   const [editingtitle, setEditingtitle] = useState(false);
-  const [titleinput, setTitleinput] = useState("Today");
+  const [titleinput, setTitleinput] = useState(title || "Today");
+
+  // state for habit edit
+  const [editid, setEditid] = useState(null);
+  const [edittext, setEdittext] = useState("");
+  const hasOverflowHabits = modalHabits.length > 4;
 
   const handleTitleedit = () => {
     setEditingtitle(true);
@@ -24,13 +29,6 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
     setModaltitle(trimmedTitle);
     setEditingtitle(false);
   };
-
-  // state for habit edit
-  const [editid, setEditid] = useState(null);
-  const [edittext, setEdittext] = useState("");
-  const hasOverflowHabits = modalHabits.length > 4;
-
-  if (!isOpen) return null;
 
   const handleAddHabit = () => {
     const trimmedHabit = habitText.trim();
@@ -80,6 +78,9 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
     onClose();
   };
 
+  // today date logic
+  const getdate = new Date().toLocaleDateString("en-CA");
+  const showdate = getdate.split("-").reverse().join(" /");
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm py-2.5">
       <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
@@ -119,9 +120,7 @@ export default function Addmodal({ isOpen, onClose, habits, onApply }) {
           )}
         </div>
 
-        <h4 className=" mt-3 text-lg text-[#9b9999] text-center">
-          Date : 9/ 4/ 26
-        </h4>
+        <h4 className=" mt-3 text-lg text-[#9b9999] text-center">{showdate}</h4>
         <div className="relative mt-4 flex justify-center overflow-hidden py-2">
           <div
             className={`h-46 w-72 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${

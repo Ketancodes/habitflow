@@ -106,7 +106,9 @@ export default function Myhabits() {
           {/* main header + input + button */}
 
           <div className=" px-2.5 flex justify-between">
-            <h1 className="ml-8 mt-3 text-2xl text-[#979393]">@My habits</h1>
+            <h1 className="ml-8 mt-3 text-2xl text-[#979393] font-semibold">
+              @My habits
+            </h1>
             <div className=" mt-4 flex gap-14">
               <div className="relative flex items-center">
                 <CiSearch
@@ -123,7 +125,7 @@ export default function Myhabits() {
               </div>
               <div>
                 <button
-                  className="border px-4.5 bg-[#494848] py-1.5 text-[#bebaba] rounded-3xl cursor-pointer"
+                  className="border px-3.5 bg-[#3a3939] hover:bg-[#4d4c4c]  py-1.5 text-[#bebaba] hover:text-[#dad7d7] rounded-3xl cursor-pointer transition-transform duration-150 active:scale-[0.96]"
                   onClick={() => setShowAddHabitModal(true)}
                 >
                   + Add habit
@@ -138,19 +140,27 @@ export default function Myhabits() {
           </div>
 
           <h4 className="ml-8 mt-6 text-lg font-medium text-[#a7a4a4]">
-            Your future is built by what you do today!
+            Your <span className="text-[#6d8bcc]"> future</span> is built by
+            what you do today!
           </h4>
 
           {/* habit list  */}
-          <div className="ml-12 mt-6 px-2.5 ">
+          <div className="ml-12 mt-6 px-2.5 font-semibold ">
             <div>
               <h2 className="text-[#b4b3b3] text-[17px] py-1.5">
-                @My habit list
+                @My habit list 💪
               </h2>
               <div className="flex flex-col gap-2 text-[16px] text-[#979595]">
-                <p>Total habits = {totalhabits}</p>
-                <p>Active habits = 3</p>
-                <p>Inactive habits = 1</p>
+                <p>
+                  Total habits ={" "}
+                  <span className="text-[#6d8bcc]">{totalhabits}</span>
+                </p>
+                <p>
+                  Active habits = <span className="text-[#6d8bcc]">3</span>
+                </p>
+                <p>
+                  Inactive habits = <span className="text-[#6d8bcc]">1</span>
+                </p>
               </div>
             </div>
           </div>
