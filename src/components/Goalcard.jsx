@@ -116,7 +116,7 @@ export default function Goalcard({
             </button>
           ) : (
             <button
-              className="mt-4 w-[90%] px-2 py-1.5 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] hover:scale-[1.01] text-[#bebaba] cursor-pointer active:bg-[#4e51fa] transition-transform duration-150 active:scale-[0.98]
+              className="mt-4 w-[90%] px-2 py-1.5 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] hover:scale-[1.01] text-[#bebaba] cursor-pointer active:bg-[#4e51fa]  transition-transform duration-150 active:scale-[0.98]
  "
               onClick={() => onAddProgress(id)}
             >

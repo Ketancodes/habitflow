@@ -14,6 +14,16 @@ const defaultAppData = {
     { id: 3, text: "Reading book", selected: false },
     { id: 4, text: "walking 1k steps", selected: false },
   ],
+  myHabits: [
+    {
+      id: 1,
+      title: "study 6 hours",
+      category: "Study",
+      frequency: "Daily",
+      priority: "High",
+      streak: 6,
+    },
+  ],
   history: {},
   newContainerData: {
     title: "",

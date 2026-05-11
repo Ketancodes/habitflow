@@ -32,20 +32,6 @@ export default function Goals() {
       completedDays: 60,
       active: true,
     },
-    {
-      id: 2,
-      title: "Study 6 hours",
-      totalDays: 21,
-      completedDays: 0,
-      active: true,
-    },
-    {
-      id: 3,
-      title: "Reading 3 pages",
-      totalDays: 30,
-      completedDays: 0,
-      active: true,
-    },
   ]);
 
   const handleAddGoal = (newGoal) => {

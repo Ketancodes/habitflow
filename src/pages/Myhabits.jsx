@@ -2,42 +2,11 @@ import { CiSearch } from "react-icons/ci";
 import Myhabitcard from "../components/Myhabitcard";
 import { useState } from "react";
 import Edithabitmodal from "../components/Edithabitmodal";
+import useAppContext from "../context/useAppcontext";
 
 export default function Myhabits() {
-  const [myHabits, setMyhabits] = useState([
-    {
-      id: 1,
-      title: "Study 6 hours",
-      category: "Study",
-      frequency: "Daily",
-      priority: "High",
-      streak: 6,
-    },
-    {
-      id: 2,
-      title: "Exercise 30 min",
-      category: "Health",
-      frequency: "Daily",
-      priority: "High",
-      streak: 4,
-    },
-    {
-      id: 3,
-      title: "Read 3 pages",
-      category: "Study",
-      frequency: "Daily",
-      priority: "Medium",
-      streak: 3,
-    },
-    {
-      id: 4,
-      title: "Walking 2km steps",
-      category: "Personal",
-      frequency: "mon,wed,sun",
-      priority: "Medium",
-      streak: 2,
-    },
-  ]);
+  const { appData, setAppData } = useAppContext();
+  const myHabits = appData.myHabits;
 
   const totalhabits = myHabits.length;
 
@@ -51,31 +20,63 @@ export default function Myhabits() {
   const [input, setInput] = useState("");
 
   const handleSaveHabit = (updatedHabit) => {
-    setMyhabits((prev) =>
-      prev.map((habit) =>
+    setAppData((prev) => ({
+      ...prev,
+      myHabits: prev.myHabits.map((habit) =>
         habit.id === updatedHabit.id ? updatedHabit : habit,
       ),
-    );
+    }));
     setEditingHabit(null);
   };
 
   // delete habit logic
   const handleDelete = (id) => {
-    setMyhabits((prev) => prev.filter((habit) => habit.id !== id));
+    setAppData((prev) => ({
+      ...prev,
+      myHabits: prev.myHabits.filter((habit) => habit.id !== id),
+    }));
     setEditingHabit(null);
   };
 
   // add habit logic
   const handleAddHabit = (newHabit) => {
-    setMyhabits((prev) => [
+    const trimmedTitle = newHabit.title.trim();
+    if (!trimmedTitle) return;
+    const isDuplicate = myHabits.some(
+      (habit) =>
+        habit.title.trim().toLowerCase() === trimmedTitle.toLowerCase(),
+    );
+    if (isDuplicate) return;
+    setAppData((prev) => ({
       ...prev,
-      {
-        ...newHabit,
-        id: Date.now(),
-        streak: 0,
-      },
-    ]);
+      myHabits: [
+        ...prev.myHabits,
+        {
+          ...newHabit,
+          id: Date.now(),
+          streak: 0,
+        },
+      ],
+    }));
     setShowAddHabitModal(false);
+  };
+
+  const isHabitAddedToToday = (title) =>
+    appData.todayHabits.some(
+      (habit) => habit.text.trim().toLowerCase() === title.trim().toLowerCase(),
+    );
+
+  const handleAddToToday = (habit) => {
+    const trimmedTitle = habit.title.trim();
+    if (!trimmedTitle || isHabitAddedToToday(trimmedTitle)) return;
+
+    setAppData((prev) => ({
+      ...prev,
+      todayHabits: [
+        ...prev.todayHabits,
+        { id: Date.now(), text: trimmedTitle, selected: false },
+      ],
+    }));
   };
 
   //logic for input filter
@@ -156,7 +157,8 @@ export default function Myhabits() {
                   <span className="text-[#6d8bcc]">{totalhabits}</span>
                 </p>
                 <p>
-                  Active habits = <span className="text-[#6d8bcc]">3</span>
+                  Active habits ={" "}
+                  <span className="text-[#6d8bcc]">{totalhabits - 1}</span>
                 </p>
                 <p>
                   Inactive habits = <span className="text-[#6d8bcc]">1</span>
@@ -212,13 +214,21 @@ export default function Myhabits() {
                 priority={habit.priority}
                 streak={habit.streak}
                 onEdit={() => setEditingHabit(habit)}
+                onAddToToday={() => handleAddToToday(habit)}
+                isAddedToToday={isHabitAddedToToday(habit.title)}
               />
             ))}
 
             <div
-              className="h-48 w-60 flex justify-center items-center  bg-[#272626] rounded-xl  px-3 py-1.5 text-[#868585] hover:text-[#a8a6a6] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]"
+              className="h-48 w-60 flex flex-col gap-4 justify-center items-center  bg-[#272626] rounded-xl  px-3 py-1.5 text-[#868585] hover:text-[#a8a6a6] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]"
               onClick={() => setShowAddHabitModal(true)}
             >
+              {myHabits.length === 0 && (
+                <>
+                  {" "}
+                  <div>NO habits yet </div>
+                </>
+              )}
               + Add habit
             </div>
           </div>

@@ -7,6 +7,8 @@ export default function Myhabitcard({
   priority,
   streak,
   onEdit,
+  onAddToToday,
+  isAddedToToday,
 }) {
   return (
     <>
@@ -37,13 +39,28 @@ export default function Myhabitcard({
           {category}
         </button>
         <div className="py-2 flex flex-col gap-1.5 text-[15px]">
-          <p>Freequecy : {frequency}</p>
-          <p>Priority : {priority}</p>
-          <p>Streak : {streak}🔥</p>
+          <p>
+            Freequecy :<span className="text-[#6d8bcc]"> {frequency}</span>
+          </p>
+          <p>
+            Priority : <span className="text-[#6d8bcc]"> {priority}</span>
+          </p>
+          <p>
+            Streak : <span className="text-[#6d8bcc]"> {streak}</span>🔥
+          </p>
         </div>
         <div className="flex  justify-center py-1.5">
-          <button className=" w-[90%] px-2 py-1.5 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] text-[#bebaba] cursor-pointer ">
-            Add to today
+          <button
+            type="button"
+            disabled={isAddedToToday}
+            onClick={onAddToToday}
+            className={`w-[90%] rounded-lg px-2 py-1.5 text-[#bebaba] ${
+              isAddedToToday
+                ? "cursor-not-allowed bg-[#2f2e2e] text-[#777474]"
+                : "cursor-pointer bg-[#3a3a3a] hover:bg-[#4a4a4a] active:bg-[#4e51fa]"
+            }`}
+          >
+            {isAddedToToday ? "Added to today" : "Add to today"}
           </button>
         </div>
       </div>
