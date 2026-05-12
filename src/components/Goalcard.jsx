@@ -15,6 +15,7 @@ export default function Goalcard({
   onAddProgress,
   onDelete,
   onArchive,
+  isProgressAddedToday,
 }) {
   const progress =
     totalDays && totalDays > 0
@@ -116,11 +117,17 @@ export default function Goalcard({
             </button>
           ) : (
             <button
-              className="mt-4 w-[90%] px-2 py-1.5 rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] hover:scale-[1.01] text-[#bebaba] cursor-pointer active:bg-[#4e51fa]  transition-transform duration-150 active:scale-[0.98]
- "
+              type="button"
+              disabled={isProgressAddedToday}
+              className={`mt-4 w-[90%] rounded-lg px-2 py-1.5 text-[#bebaba] transition-transform duration-150 ${
+                isProgressAddedToday
+                  ? "cursor-not-allowed bg-[#444343] text-[#777474] opacity-70"
+                  : "cursor-pointer bg-[#3a3a3a] hover:scale-[1.01] hover:bg-[#4a4a4a] active:scale-[0.98] active:bg-[#4e51fa]"
+              }`}
               onClick={() => onAddProgress(id)}
             >
-              <span className="text-xl">+</span> 1 day progress
+              <span className="text-xl">+</span>{" "}
+              {isProgressAddedToday ? "Progress added" : "1 day progress"}
             </button>
           )}
         </div>

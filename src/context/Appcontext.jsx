@@ -29,7 +29,17 @@ const defaultAppData = {
     title: "",
     habits: [],
   },
-  goals: [],
+  goals: [
+    {
+      id: 1,
+      title: "study 4 hours ",
+      frequency: "Daily",
+      totalDays: 90,
+      completedDays: 30,
+      active: true,
+      lastProgressDate: null,
+    },
+  ],
 };
 
 // logic for resetting the habit for new day

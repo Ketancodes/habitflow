@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Goalcard from "../components/Goalcard";
 import Goalmodal from "../components/Goalmodal";
+import useAppContext from "../context/useAppcontext";
 const goalEmojiMap = [
   { keywords: ["study", "read", "book", "learn", "exam"], emoji: "📚" },
   { keywords: ["gym", "fitness", "workout", "exercise", "run"], emoji: "💪" },
@@ -23,29 +24,38 @@ const getGoalEmoji = (title) => {
 };
 
 export default function Goals() {
-  const [goalmodal, setGoalModal] = useState(false);
-  const [goals, setGoals] = useState([
-    {
-      id: 1,
-      title: "Gaining 10 kg",
-      totalDays: 90,
-      completedDays: 60,
-      active: true,
-    },
-  ]);
+  const { appData, setAppData } = useAppContext();
+  const goals = appData.goals;
 
+  const [goalmodal, setGoalModal] = useState(false);
+
+  // add goal logic
   const handleAddGoal = (newGoal) => {
-    setGoals((prev) => [
+    const trimmedTitle = newGoal.title.trim();
+    if (!trimmedTitle) return;
+
+    const isDuplicate = goals.some(
+      (goal) => goal.title.trim().toLowerCase() === trimmedTitle.toLowerCase(),
+    );
+
+    if (isDuplicate) return;
+
+    setAppData((prev) => ({
       ...prev,
-      {
-        id: Date.now(),
-        title: newGoal.title,
-        totalDays: Number(newGoal.totalDays) || null,
-        frequency: newGoal.frequency || "",
-        completedDays: 0,
-        active: true,
-      },
-    ]);
+      goals: [
+        ...prev.goals,
+        {
+          id: Date.now(),
+          title: trimmedTitle,
+          totalDays: Number(newGoal.totalDays) || null,
+          frequency: newGoal.frequency || "",
+          completedDays: 0,
+          active: true,
+          lastProgressDate: null,
+        },
+      ],
+    }));
+
     setGoalModal(false);
   };
 
@@ -62,26 +72,41 @@ export default function Goals() {
 
   //delete logic
   const handleDelete = (id) => {
-    setGoals((prev) => prev.filter((goal) => goal.id !== id));
+    setAppData((prev) => ({
+      ...prev,
+      goals: prev.goals.filter((goal) => goal.id !== id),
+    }));
   };
 
   // handle add progress logic
   const handleAddProgress = (id) => {
-    setGoals((prev) =>
-      prev.map((goal) =>
-        goal.id === id &&
-        (!goal.totalDays || goal.completedDays < goal.totalDays)
-          ? { ...goal, completedDays: goal.completedDays + 1 }
-          : goal,
-      ),
-    );
+    const today = new Date().toLocaleDateString("en-CA");
+
+    setAppData((prev) => ({
+      ...prev,
+      goals: prev.goals.map((goal) => {
+        if (goal.id !== id) return goal;
+        if (!goal.active) return goal;
+        if (goal.lastProgressDate === today) return goal;
+        if (goal.totalDays && goal.completedDays >= goal.totalDays) return goal;
+
+        return {
+          ...goal,
+          completedDays: goal.completedDays + 1,
+          lastProgressDate: today,
+        };
+      }),
+    }));
   };
 
-  //handle archieve logic
+  //handle archive logic
   const handleArchive = (id) => {
-    setGoals((prev) =>
-      prev.map((goal) => (goal.id === id ? { ...goal, active: false } : goal)),
-    );
+    setAppData((prev) => ({
+      ...prev,
+      goals: prev.goals.map((goal) =>
+        goal.id === id ? { ...goal, active: false } : goal,
+      ),
+    }));
   };
 
   // order of goals for filterign the goal by status
@@ -146,7 +171,13 @@ export default function Goals() {
           </div>
 
           {/* main goal card container */}
-          <div className=" w-[90%] ml-12 mt-6 grid grid-cols-3 gap-6">
+          <div
+            className={`mt-6 grid w-[90%] gap-6 ${
+              goals.length === 0
+                ? "mx-auto min-h-[45vh] place-items-center"
+                : "ml-12 grid-cols-3"
+            }`}
+          >
             {orderedGoals.map((goal) => (
               <Goalcard
                 key={goal.id}
@@ -160,12 +191,21 @@ export default function Goals() {
                 frequency={goal.frequency}
                 onDelete={handleDelete}
                 onArchive={handleArchive}
+                isProgressAddedToday={
+                  goal.lastProgressDate ===
+                  new Date().toLocaleDateString("en-CA")
+                }
               />
             ))}
             <div
-              className="h-52 w-60 bg-[#272626] rounded-xl flex items-center justify-center cursor-pointer hover:bg-[#333232] "
+              className="h-52 w-60 bg-[#272626] rounded-xl flex flex-col gap-4 items-center justify-center cursor-pointer hover:bg-[#333232] "
               onClick={() => setGoalModal(true)}
             >
+              {goals.length === 0 && (
+                <p className="text-base text-md  text-[#8f8c8c]">
+                  No goals yet
+                </p>
+              )}
               <h4 className="text-xl text-[#7a7878] hover:text-[#a3a3a3] transition-transform duration-150 active:scale-[0.95]">
                 + Add Goal
               </h4>
