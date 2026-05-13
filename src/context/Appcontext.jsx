@@ -29,6 +29,12 @@ const defaultAppData = {
     title: "",
     habits: [],
   },
+
+  streaks: {
+    currentStreak: 0,
+    bestStreak: 0,
+    habitStreaks: {},
+  },
   goals: [
     {
       id: 1,
@@ -49,6 +55,44 @@ const resetHabitsForNewDay = (habits) =>
     selected: false,
   }));
 
+//logic for updatin the habit of streaks
+const updateHabitStreaks = (habits, previousHabitStreaks = {}) => {
+  return habits.reduce((streaks, habit) => {
+    const previousStreak = previousHabitStreaks[habit.id] || {
+      currentStreak: 0,
+      longestStreak: 0,
+    };
+
+    const nextCurrentStreak = habit.selected
+      ? previousStreak.currentStreak + 1
+      : 0;
+
+    streaks[habit.id] = {
+      currentStreak: nextCurrentStreak,
+      longestStreak: Math.max(previousStreak.longestStreak, nextCurrentStreak),
+    };
+
+    return streaks;
+  }, {});
+};
+
+// helper function for overall streak claculation
+const updateOverallStreak = (habits, previousStreaks = {}) => {
+  const hasHabits = habits.length > 0;
+  const allHabitsCompleted =
+    hasHabits && habits.every((habit) => habit.selected);
+
+  const previousCurrentStreak = previousStreaks.currentStreak || 0;
+  const previousBestStreak = previousStreaks.bestStreak || 0;
+
+  const nextCurrentStreak = allHabitsCompleted ? previousCurrentStreak + 1 : 0;
+
+  return {
+    currentStreak: nextCurrentStreak,
+    bestStreak: Math.max(previousBestStreak, nextCurrentStreak),
+  };
+};
+
 // resetting today from yestarday habit
 const syncAppDataWithToday = (data) => {
   const today = getTodayKey();
@@ -56,6 +100,14 @@ const syncAppDataWithToday = (data) => {
   if (data.todayKey === today) {
     return data;
   }
+  const updatedHabitStreaks = updateHabitStreaks(
+    data.todayHabits,
+    data.streaks?.habitStreaks,
+  );
+  const updatedOverallStreak = updateOverallStreak(
+    data.todayHabits,
+    data.streaks,
+  );
 
   return {
     ...data,
@@ -64,6 +116,13 @@ const syncAppDataWithToday = (data) => {
       ...(data.history || {}),
       [data.todayKey]: data.todayHabits.map((habit) => ({ ...habit })),
     },
+    streaks: {
+      ...(data.streaks || {}),
+      currentStreak: updatedOverallStreak.currentStreak,
+      bestStreak: updatedOverallStreak.bestStreak,
+      habitStreaks: updatedHabitStreaks,
+    },
+
     todayHabits: resetHabitsForNewDay(data.todayHabits),
   };
 };
