@@ -31,8 +31,14 @@ export default function Daymodal({ selectedDay, onClose }) {
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-[#353754] bg-[#101011] p-6 shadow-2xl">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md rounded-2xl border border-[#353754] bg-[#101011] p-6 shadow-2xl"
+      >
         <div className="flex items-start justify-between gap-4">
           <div>
             {/* main heading date+ status section */}
@@ -46,7 +52,7 @@ export default function Daymodal({ selectedDay, onClose }) {
               </p>
             </div>
 
-            <p className="mt-5 text-sm font-semibold text-[#8b8dff]">
+            <p className="mt-5 text-md font-semibold text-[#8b8dff]">
               {selectedDay.status}
             </p>
           </div>
@@ -62,14 +68,14 @@ export default function Daymodal({ selectedDay, onClose }) {
         {/* heading section end */}
 
         {/* progress bar section */}
-        <div className="mt-7 flex items-center gap-4 rounded-2xl bg-[#1a1919] p-4">
+        <div className="mt-8 flex items-center gap-4 rounded-2xl bg-[#1a1919] p-4">
           <div
             className="flex h-22 w-22 shrink-0 items-center justify-center rounded-full text-xl font-semibold text-white"
             style={{
               background: `conic-gradient(#4e51fa ${selectedDay.percentage * 3.6}deg, #11121f 0deg)`,
             }}
           >
-            <div className="flex h-[65px] w-[65px] items-center justify-center rounded-full bg-[#202135]">
+            <div className="flex h-16.25 w-16.25 items-center justify-center rounded-full bg-[#202135]">
               {selectedDay.percentage}%
             </div>
           </div>
@@ -85,7 +91,7 @@ export default function Daymodal({ selectedDay, onClose }) {
         {/* progress bar section end */}
 
         {/* habits list section */}
-        <div className="mt-6">
+        <div className="mt-7">
           <h3 className="text-base font-semibold text-white">Habits</h3>
 
           <div className="mt-3 space-y-2">
@@ -120,6 +126,7 @@ export default function Daymodal({ selectedDay, onClose }) {
           </div>
         </div>
         {/* habit list section ends */}
+        <div className=""></div>
       </div>
     </div>
   );

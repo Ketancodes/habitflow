@@ -123,19 +123,19 @@ export default function Calendar() {
     },
     {
       label: "Low energy",
-      className: "border-[#454f7c] bg-[#4e51fa]/20",
+      className: "border-[#454f7c] bg-[#4e51fa]/30",
     },
     {
       label: "Steady",
-      className: "border-[#53619f] bg-[#4e51fa]/35",
+      className: "border-[#53619f] bg-[#4e51fa]/45",
     },
     {
       label: "Productive",
-      className: "border-[#5f72c9] bg-[#4e51fa]/55",
+      className: "border-[#5f72c9] bg-[#4e51fa]/65",
     },
     {
       label: "Perfect",
-      className: "border-[#6d8bcc] bg-[#4e51fa]/80",
+      className: "border-[#6d8bcc] bg-[#4e51fa]/90",
     },
   ];
 
@@ -250,6 +250,19 @@ export default function Calendar() {
                 !isFuture &&
                 stats.total > 0 &&
                 stats.completed === stats.total;
+
+              // tooltip hover missed habit logic
+              const missedHabits = box.isCurrentMonth
+                ? getMissedHabits(box.dayNumber)
+                : [];
+
+              const visibleMissedHabits = missedHabits.slice(0, 3);
+              const hiddenMissedHabitsCount =
+                missedHabits.length - visibleMissedHabits.length;
+
+              // showing hover below for first 2 row
+              const shouldShowTooltipBelow = box.id < 14;
+
               return (
                 <div
                   key={box.id}
@@ -266,7 +279,7 @@ export default function Calendar() {
                       status: getDayStatus(percentage),
                     });
                   }}
-                  className={`group relative h-20 rounded-xl border p-2 transition-all duration-200 ease-out ${
+                  className={`group relative h-20 rounded-xl border p-2 transition-all duration-200 ease-out hover:z-30 ${
                     isFuture
                       ? "cursor-default border-[#2f2d2d] bg-[#181818] opacity-60"
                       : `cursor-pointer hover:-translate-y-1 hover:scale-[0.96] ${getCompletionColor(
@@ -274,29 +287,48 @@ export default function Calendar() {
                           stats.total,
                         )}`
                   } ${perfectDay ? "border-[3px] border-[#f59e0b]" : ""} ${
-                    isToday
+                    isToday && !perfectDay
                       ? "ring-1 ring-[#3c3ff3] ring-offset-1 ring-offset-[#393cf1]"
                       : ""
                   }`}
                 >
                   {box.isCurrentMonth && canShowDayTooltip(box.dayNumber) && (
-                    <div className="pointer-events-none absolute bottom-[calc(100%+10px)] left-1/2 z-20 hidden w-48 -translate-x-1/2 translate-y-2 rounded-xl border border-[#4a4747] bg-[#111111] px-3 py-2 text-left opacity-0 transition-all duration-200 ease-out group-hover:opacity-100 shadow-xl group-hover:block">
+                    <div
+                      className={`pointer-events-none absolute left-1/2 z-50 w-48 -translate-x-1/2 rounded-xl border border-[#4a4747] bg-[#111111] px-3 py-2 text-left opacity-0 shadow-xl transition-all duration-200 ease-out group-hover:opacity-100 ${
+                        shouldShowTooltipBelow
+                          ? "top-[calc(100%+10px)] translate-y-2 group-hover:translate-y-0"
+                          : "bottom-[calc(100%+10px)] translate-y-2 group-hover:translate-y-0"
+                      }`}
+                    >
+                      {" "}
                       <p className="text-[15px] font-semibold text-white">
                         {formatTooltipDate(box.dayNumber)}
                       </p>
-
                       <p className="mt-3.5 text-[13px] text-[#d6d3d3]">
                         Completed : {stats.completed}/{stats.total} (
                         {(stats.completed / stats.total) * 100 || 0}%)
                       </p>
+                      <div className="mt-1.5 text-[13px] text-[#d6d3d3]">
+                        <p>Missed:</p>
 
-                      <p className="mt-1.5 text-[13px] text-[#d6d3d3]">
-                        Missed :{" "}
-                        {getMissedHabits(box.dayNumber).length > 0
-                          ? getMissedHabits(box.dayNumber).join("")
-                          : "None"}
-                      </p>
+                        {missedHabits.length > 0 ? (
+                          <>
+                            <ul className="mt-1 list-disc space-y-1 pl-4">
+                              {visibleMissedHabits.map((habit) => (
+                                <li key={habit}>{habit}</li>
+                              ))}
+                            </ul>
 
+                            {hiddenMissedHabitsCount > 0 && (
+                              <p className="mt-1 text-[#8b8dff]">
+                                +{hiddenMissedHabitsCount} more
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <p className="mt-1">None</p>
+                        )}
+                      </div>
                       <p className="mt-1.5 text-[13px] text-[#d6d3d3]">
                         Perfect day ?{" "}
                         {stats.total > 0 && stats.completed === stats.total
@@ -306,7 +338,6 @@ export default function Calendar() {
                       <p className="mt-3.5 text-[13px] text-[#d6d3d3]">
                         🔥 4 day streak
                       </p>
-
                       <p className="mt-3 text-[#d6d3d3] text-[14px]">
                         {getDayStatus(percentage)}
                       </p>
