@@ -120,3 +120,47 @@ export const getCompletionChartData = (appData) => {
     };
   });
 };
+
+//data for the habit performance card
+
+export const getHabitPerformanceData = (appData) => {
+  const habitStats = {};
+
+  const addHabitsToStats = (habits = []) => {
+    habits.forEach((habit) => {
+      const habitText = habit.text;
+
+      if (!habitStats[habitText]) {
+        habitStats[habitText] = {
+          text: habitText,
+          completed: 0,
+          total: 0,
+        };
+      }
+
+      habitStats[habitText].total += 1;
+
+      if (habit.selected) {
+        habitStats[habitText].completed += 1;
+      }
+    });
+  };
+
+  Object.values(appData.history || {}).forEach((habits) => {
+    addHabitsToStats(habits);
+  });
+
+  addHabitsToStats(appData.todayHabits || []);
+
+  return Object.values(habitStats)
+    .map((habit) => {
+      const percentage =
+        habit.total > 0 ? Math.round((habit.completed / habit.total) * 100) : 0;
+
+      return {
+        ...habit,
+        percentage,
+      };
+    })
+    .sort((a, b) => b.percentage - a.percentage);
+};

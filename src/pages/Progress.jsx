@@ -4,13 +4,16 @@ import useAppContext from "../context/useAppcontext";
 import {
   getProgressSummary,
   getCompletionChartData,
+  getHabitPerformanceData,
 } from "../utils/progressStats";
 import Completiontimechart from "../components/analytics/Completiontimechart";
+import Habitperformance from "../components/analytics/Habitperformance";
 
 export default function Progress() {
   const { appData } = useAppContext();
   const summary = getProgressSummary(appData);
   const completionChartData = getCompletionChartData(appData);
+  const habitPerformanceData = getHabitPerformanceData(appData);
   return (
     <>
       <section>
@@ -62,7 +65,10 @@ export default function Progress() {
           </div>
           {/* monthly filter section ends here */}
           <Analyticstopcards summary={summary} />
-          <Completiontimechart data={completionChartData} />
+          <div className="mt-5 grid grid-cols-1 gap-4 xl:grid-cols-[3fr_2fr]">
+            <Completiontimechart data={completionChartData} />
+            <Habitperformance habits={habitPerformanceData} />
+          </div>
         </div>
       </section>
     </>

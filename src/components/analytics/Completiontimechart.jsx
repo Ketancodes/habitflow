@@ -11,7 +11,7 @@ import {
 export default function Completiontimechart({ data = [] }) {
   const hasEnoughData = data.length >= 7;
   return (
-    <div className="mt-5 w-[60%] rounded-xl border border-[#30313d] bg-[#171820] p-4">
+    <div className=" rounded-xl border border-[#30313d] bg-[#171820] p-4">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-white">
           Completion Over Time
