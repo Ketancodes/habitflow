@@ -5,15 +5,20 @@ import {
   getProgressSummary,
   getCompletionChartData,
   getHabitPerformanceData,
+  getProductivityTrend,
 } from "../utils/progressStats";
 import Completiontimechart from "../components/analytics/Completiontimechart";
 import Habitperformance from "../components/analytics/Habitperformance";
+import Consistencyheatmap from "../components/analytics/Consistencyheatmap";
+import Streakcard from "../components/analytics/Streakcard";
+import Productivitytrend from "../components/analytics/Productivitytrend";
 
 export default function Progress() {
   const { appData } = useAppContext();
   const summary = getProgressSummary(appData);
   const completionChartData = getCompletionChartData(appData);
   const habitPerformanceData = getHabitPerformanceData(appData);
+  const productivityTrend = getProductivityTrend(appData);
   return (
     <>
       <section>
@@ -68,6 +73,12 @@ export default function Progress() {
           <div className="mt-5 grid grid-cols-1 gap-4 xl:grid-cols-[3fr_2fr]">
             <Completiontimechart data={completionChartData} />
             <Habitperformance habits={habitPerformanceData} />
+          </div>
+          <div className="mt-5 grid min-w-0 grid-cols-1 items-stretch gap-4 xl:grid-cols-[2fr_1fr_1fr]">
+            {" "}
+            <Consistencyheatmap />
+            <Streakcard summary={summary} />
+            <Productivitytrend productivityTrend={productivityTrend} />
           </div>
         </div>
       </section>

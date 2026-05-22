@@ -164,3 +164,56 @@ export const getHabitPerformanceData = (appData) => {
     })
     .sort((a, b) => b.percentage - a.percentage);
 };
+
+// data for productivity trend card
+export const getProductivityTrend = (appData) => {
+  const days = getTrackedDays(appData);
+
+  const today = new Date(appData.todayKey);
+
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
+
+  const previousMonthDate = new Date(currentYear, currentMonth - 1, 1);
+  const previousMonth = previousMonthDate.getMonth();
+  const previousYear = previousMonthDate.getFullYear();
+
+  const currentMonthDays = days.filter((day) => {
+    const date = new Date(day.dateKey);
+
+    return (
+      date.getMonth() === currentMonth &&
+      date.getFullYear() === currentYear &&
+      day.total > 0
+    );
+  });
+
+  const previousMonthDays = days.filter((day) => {
+    const date = new Date(day.dateKey);
+
+    return (
+      date.getMonth() === previousMonth &&
+      date.getFullYear() === previousYear &&
+      day.total > 0
+    );
+  });
+
+  const currentRate = getAverageCompletionRate(currentMonthDays);
+  const previousRate = getAverageCompletionRate(previousMonthDays);
+
+  const trend = currentRate - previousRate;
+
+  return {
+    trend,
+    currentRate,
+    previousRate,
+    hasEnoughData: currentMonthDays.length > 0 && previousMonthDays.length > 0,
+  };
+};
+
+const getAverageCompletionRate = (days) => {
+  const totalCompleted = days.reduce((sum, day) => sum + day.completed, 0);
+  const totalHabits = days.reduce((sum, day) => sum + day.total, 0);
+
+  return totalHabits > 0 ? Math.round((totalCompleted / totalHabits) * 100) : 0;
+};
