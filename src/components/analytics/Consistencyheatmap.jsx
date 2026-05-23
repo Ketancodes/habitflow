@@ -1,13 +1,6 @@
 import { CiCircleInfo } from "react-icons/ci";
 
-export default function Consistencyheatmap() {
-  const heatmapData = Array.from({ length: 126 }, (_, index) => {
-    return {
-      id: index,
-      completion: Math.floor(Math.random() * 101),
-    };
-  });
-
+export default function Consistencyheatmap({ data = [] }) {
   const getHeatmapColor = (completion) => {
     if (completion === 100) return "bg-[#28d845]";
     if (completion >= 75) return "bg-[#2EA043]";
@@ -17,6 +10,13 @@ export default function Consistencyheatmap() {
 
     return "bg-[#1d2229]";
   };
+  const todayDate = new Date().getDate();
+
+  const currentMonth = new Date().toLocaleString("default", {
+    month: "long",
+  });
+
+  // const currentYear = new Date().getFullYear();
 
   return (
     <>
@@ -57,15 +57,22 @@ export default function Consistencyheatmap() {
             </div>
 
             {/* heatmap grid */}
+
             <div className="grid grid-flow-col grid-rows-7 gap-2">
-              {heatmapData.map((day) => (
-                <div
-                  key={day.id}
-                  title={`${day.completion}% completed`}
-                  className={`h-4.5 w-4.5 cursor-pointer rounded-sm transition-all duration-150 hover:scale-110 ${getHeatmapColor(
-                    day.completion,
-                  )}`}
-                ></div>
+              {data.map((day) => (
+                <div key={day.dateKey} className="relative group">
+                  <div
+                    className={`h-4.5 w-4.5 cursor-pointer rounded-sm transition-all duration-150 hover:scale-110 ${getHeatmapColor(
+                      day.completion,
+                    )}`}
+                  ></div>
+
+                  {/* custom tooltip */}
+                  <div className="pointer-events-none absolute bottom-7 left-1/2 z-20 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-[#30313d] bg-[#111318] px-2 py-1 text-[11px] font-medium text-[#d7dbe4] shadow-lg group-hover:block">
+                    {currentMonth} {todayDate} : {day.completed}/{day.total}{" "}
+                    completed ({day.completion}%)
+                  </div>
+                </div>
               ))}
             </div>
           </div>

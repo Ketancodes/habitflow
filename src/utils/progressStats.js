@@ -217,3 +217,33 @@ const getAverageCompletionRate = (days) => {
 
   return totalHabits > 0 ? Math.round((totalCompleted / totalHabits) * 100) : 0;
 };
+
+// data for heatmap card
+export const getConsistencyHeatmapData = (appData, daysCount = 126) => {
+  const today = new Date(appData.todayKey);
+
+  return Array.from({ length: daysCount }, (_, index) => {
+    const daysAgo = daysCount - 1 - index;
+    const date = new Date(today);
+    date.setDate(today.getDate() - daysAgo);
+
+    const dateKey = date.toLocaleDateString("en-CA");
+
+    const habits =
+      dateKey === appData.todayKey
+        ? appData.todayHabits || []
+        : appData.history?.[dateKey] || [];
+
+    const total = habits.length;
+    const completed = habits.filter((habit) => habit.selected).length;
+
+    const completion = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    return {
+      dateKey,
+      completion,
+      completed,
+      total,
+    };
+  });
+};

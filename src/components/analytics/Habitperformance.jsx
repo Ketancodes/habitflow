@@ -36,7 +36,7 @@ export default function Habitperformance({ habits = [] }) {
   };
 
   return (
-    <div className="h-full rounded-xl border border-[#30313d] bg-[#171820] p-4">
+    <div className="h-full rounded-xl border border-[#30313d] bg-[#171820] p-4 ">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <h2 className="text-lg font-semibold text-white">
@@ -49,7 +49,7 @@ export default function Habitperformance({ habits = [] }) {
         </div>
       </div>
 
-      <div className="mt-5 max-h-77.5 space-y-5 overflow-y-auto pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="mt-5 max-h-77.5 space-y-5 overflow-y-auto pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ">
         {habits.length > 0 ? (
           habits.map((habit, index) => (
             <div key={habit.text}>

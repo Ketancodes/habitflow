@@ -51,7 +51,7 @@ export default function Analyticstopcards({ summary }) {
       {analyticsCards.map((card) => (
         <div
           key={card.title}
-          className="flex min-h-29.5 items-center gap-4 rounded-xl border border-[#30313d] bg-[#171820] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
+          className="flex min-h-29.5 items-center gap-4 rounded-xl border border-[#30313d] bg-[#171820] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.18)] cursor-pointer hover:scale-[0.98] transition-all duration-150 ease-out"
         >
           <div
             className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${card.iconClass}`}
