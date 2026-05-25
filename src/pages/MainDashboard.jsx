@@ -1,52 +1,31 @@
-import Reusable from "../components/Reusable";
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
-
-const HABITS_STORAGE_KEY = "today-habits";
-
-const habitEmojiMap = [
-  { keywords: ["study", "read", "book", "learn", "exam"], emoji: "📚" },
-  { keywords: ["gym", "fitness", "workout", "exercise", "run"], emoji: "💪" },
-  { keywords: ["walk", "steps", "cardio"], emoji: "🚶" },
-  { keywords: ["water", "drink", "hydrate"], emoji: "💧" },
-  { keywords: ["sleep", "wake", "morning"], emoji: "🌙" },
-  { keywords: ["money", "save", "income", "budget"], emoji: "💰" },
-  { keywords: ["weight", "gain", "muscle"], emoji: "🏋️" },
-];
-
-const getHabitEmoji = (text) => {
-  const lowerText = text.toLowerCase();
-
-  const match = habitEmojiMap.find((group) =>
-    group.keywords.some((word) => lowerText.includes(word)),
-  );
-
-  return match ? match.emoji : "✨";
-};
+import themelogo from "../assets/themelogo.png";
+import useAppContext from "../context/useAppcontext";
+import { Check, Circle, Target, ArrowUpRight } from "lucide-react";
+import {
+  getTodayProgressStats,
+  getTodayFocusHabits,
+  getWeeklyCompletionChartData,
+  getWeeklyConsistencyTrend,
+} from "../utils/progressStats";
+import Weeklychart from "../components/dashboard/Weeklychart";
+import Dashstats from "../components/dashboard/Dashstats";
 
 export default function MainDashboard() {
-  const [habits] = useState(() => {
-    try {
-      const storedHabits = localStorage.getItem(HABITS_STORAGE_KEY);
-      return storedHabits ? JSON.parse(storedHabits) : [];
-    } catch (error) {
-      console.error("Failed to load habits from localStorage", error);
-      return [];
-    }
+  const { appData } = useAppContext();
+
+  const { todayTotal, todayCompleted, completionPercent } =
+    getTodayProgressStats(appData);
+
+  const todayFocusHabits = getTodayFocusHabits(appData);
+  const weeklyCompletionData = getWeeklyCompletionChartData(appData);
+  const weeklyConsistencyTrend = getWeeklyConsistencyTrend(appData);
+
+  const todayDate = new Date().getDate();
+
+  const currentMonth = new Date().toLocaleString("default", {
+    month: "long",
   });
-  const totalHabits = habits.length;
-  const completed = habits.filter((habit) => habit.selected).length;
-  const remainingHabits = totalHabits - completed;
-
-  // habit progress bar logic
-  const habitCompletionRate = totalHabits
-    ? Math.round((completed / totalHabits) * 100)
-    : 0;
-
-  const radius = 42;
-  const circumference = Math.PI * radius;
-  const strokeDashoffset =
-    circumference - (habitCompletionRate / 100) * circumference;
 
   return (
     <section>
@@ -55,7 +34,7 @@ export default function MainDashboard() {
           @Dashboard
         </h1>
         <h4 className="ml-8 mt-3 text-xl text-[#999696] font-semibold">
-          Apr 26
+          {currentMonth} {todayDate}
         </h4>
         <div className="mt-4 flex justify-center">
           <div className="h-px w-[94%] bg-[#4a4747]"></div>
@@ -63,151 +42,149 @@ export default function MainDashboard() {
         <h2 className="mt-4 text-center text-xl text-[#bdbcbc] font-semibold leading-relaxed">
           Good morning,<span className="text-[#6386d1]"> warrior!</span>
         </h2>
-        {/* overview panel+ today overview */}
-        <div className="ml-8 mt-8 flex gap-12">
-          <div>
-            <h2 className="text-[#807f7f] text-lg font-semibold py-2.5 px-2 ">
-              Overview panel
-            </h2>
 
-            {/* overview container */}
-            <div className="flex flex-col">
-              <div
-                className="h-52  w-60 rounded-xl flex flex-col font-semibold leading-relaxed tracking-wide gap-2 px-3 py-1.5 text-[#a09e9e] transition-transform duration-150 
-               bg-[#272626] hover:bg-[#2e2d2d]"
-              >
-                <p className="">
-                  Total current habits :{" "}
-                  <span className="text-[#5f84d4] font-semibold ">
-                    {totalHabits} ⚡
-                  </span>
-                </p>
-                <p>
-                  Total active goals :{" "}
-                  <span className="text-[#5f84d4] font-semibold ">4 🎯</span>
-                </p>
-                <p>
-                  Current streak :{" "}
-                  <span className="text-[#5f85d8] font-semibold ">12 🔥</span>
-                </p>
-                <p>Completion rate :</p>
+        {/* hero section */}
+        <div className="mt-6 flex justify-center">
+          <div className="relative flex h-56 w-[94%] overflow-hidden rounded-3xl border border-[#30313d] bg-[#171820] px-10">
+            {/* left progress side */}
+            <div className="z-10 flex flex-1 items-center gap-12">
+              {/* progress circle */}
+              <div className="relative flex items-center justify-center">
+                {/* outer progress */}
+                <div
+                  className="flex h-48 w-48 items-center justify-center rounded-full"
+                  style={{
+                    background: `conic-gradient(
+                                     #5d5df5 ${completionPercent * 3.6}deg,
+                                     #2a2d3a ${completionPercent * 3.6}deg
+                                   )`,
+                  }}
+                >
+                  {/* inner circle */}
+                  <div className="flex h-38 w-38 flex-col items-center justify-center rounded-full bg-[#171820]">
+                    <span className="text-5xl font-bold text-white">
+                      {completionPercent}%
+                    </span>
 
-                {/* visual progress bar */}
-                <div className="mt-2 w-full">
-                  <div className="h-3.5 w-full rounded-full bg-[#424242]">
-                    <div
-                      className="h-3.5 rounded-full bg-indigo-500 shadow-[0_0_9px_rgba(82,102,225,0.35)] transition-all duration-300"
-                      style={{ width: `${75}%` }}
-                    />
+                    <span className="mt-2 text-sm text-[#9ca3af]">
+                      Today's Progress
+                    </span>
                   </div>
                 </div>
-                <p className="text-sm text-center">(75%) moderate</p>
               </div>
-            </div>
 
-            {/* new habit container created + habit completion progress bar*/}
-            <div
-              className=" mt-2.5 h-28 w-60 rounded-xl flex flex-col font-semibold leading-relaxed tracking-wide gap-2 px-3 py-1.5 text-[#a09e9e] transition-transform duration-150 
-           bg-[#272626] hover:bg-[#2e2d2d]"
-            >
-              <div className="-mt-2 flex flex-col items-center">
-                <svg width="110" height="70" viewBox="0 0 110 70">
-                  <defs>
-                    <linearGradient
-                      id="habitGauge"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="0%"
-                    >
-                      <stop offset="0%" stopColor="#5b67f5" />
-                      <stop offset="50%" stopColor="#6d7cff" />
-                      <stop offset="100%" stopColor="#8a95ff" />
-                    </linearGradient>
-                  </defs>
-
-                  <path
-                    d="M 13 55 A 42 42 0 0 1 97 55"
-                    fill="none"
-                    stroke="#424242"
-                    strokeWidth="10"
-                    strokeLinecap="round"
-                  />
-
-                  <path
-                    d="M 13 55 A 42 42 0 0 1 97 55"
-                    fill="none"
-                    stroke="url(#habitGauge)"
-                    strokeWidth="10"
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={strokeDashoffset}
-                    className="transition-all duration-500"
-                  />
-                </svg>
-
-                <div className="-mt-2 text-center">
-                  <p className="text-lg font-semibold text-[#d6d2d2]">
-                    {habitCompletionRate}%
-                  </p>
-                  <p className="text-sm text-[#adabab]">
-                    Habit completion rate
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* habit completion progress bar ends here */}
-          {/* second column of today overview panel */}
-          <div>
-            <h2 className="text-[#807f7f] text-lg font-semibold py-2.5 px-2">
-              Today's todo
-            </h2>
-            <div
-              className="py-2 h-80 w-64 rounded-xl flex flex-col font-semibold leading-relaxed tracking-wide gap-2.5 px-3  text-[#a09e9e] transition-transform duration-150 
-                bg-[#272626] hover:bg-[#2e2d2d]"
-            >
-              <div className="flex flex-col gap-2 ">
-                <p className="">
-                  Total current habits :{" "}
-                  <span className="text-[#5f84d4] font-semibold ">
-                    {totalHabits} ⚡
+              {/* right content */}
+              <div className="max-w-md">
+                <h3 className="text-5xl font-semibold text-[#6b63ff]">
+                  {todayCompleted}{" "}
+                  <span className="text-4xl font-semibold text-white">
+                    / {todayTotal}
                   </span>
+                </h3>
+
+                <p className="mt-2 text-3xl font-semibold text-white">
+                  Habits Completed Today
                 </p>
-                <p className="">
-                  Habits to complete :{" "}
-                  <span className="text-[#5f84d4] font-semibold ">
-                    {remainingHabits} 🎯
-                  </span>
+
+                <p className="mt-5 text-lg leading-relaxed text-[#a1a1aa]">
+                  Great job! You're one step closer to becoming unstoppable.
                 </p>
               </div>
-              {/* current habit status  */}
-              <div className="mt-1.5 flex-1 overflow-y-auto pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                {/* <h4 className="text-sm text-[#9b9898] ">Habits</h4> */}
-                <div className="mt-2 w-full flex flex-col gap-3.5 text-[18px] text-[#bdbaba]">
-                  {habits.map((habit) => (
-                    <div key={habit.id}>
-                      <Reusable
-                        label={habit.text}
-                        emoji={getHabitEmoji(habit.text)}
-                        checked={habit.selected}
-                        onChange={() => {}}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <NavLink
-                  to="/dashboard/today"
-                  className="mt-4 w-[90%] px-2 py-1.5 text-center text-[17px] rounded-lg bg-[#3a3a3a] hover:bg-[#4a4a4a] hover:scale-[1.01] text-[#bebaba] cursor-pointer active:bg-[#4e51fa] transition-transform duration-150 active:scale-[0.98]"
-                >
-                  Go to today
-                </NavLink>
-              </div>
             </div>
+
+            {/* background glow */}
+            <div className="absolute -right-30 -bottom-30 h-96 w-96 rounded-full bg-[#5d5df5]/20 blur-3xl"></div>
+
+            {/* mountain image */}
+            <img
+              src={themelogo}
+              alt="Mountain"
+              className="pointer-events-none absolute right-4 -top-22  w-70  opacity-85 mix-blend-lighten"
+            />
           </div>
         </div>
+
+        {/* today's focus section */}
+        <div className="mt-6 flex gap-6 ml-8">
+          <div className="w-[36%] rounded-3xl border border-[#30313d] bg-[#171820] px-6 py-5">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Target size={20} className="text-[#6b63ff]" />
+                  <h3 className="text-xl font-semibold text-white">
+                    Today&apos;s Focus
+                  </h3>
+                </div>
+                <p className="mt-1 text-sm text-[#9ca3af]">
+                  Your active habits for today
+                </p>
+              </div>
+
+              <span className="rounded-full border border-[#30313d] px-3 py-1 text-sm font-semibold text-[#9ca3af]">
+                {todayCompleted} / {todayTotal}
+              </span>
+            </div>
+
+            <div
+              className={`mt-5 flex flex-col gap-3 pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${
+                todayFocusHabits.length > 4 ? "max-h-83 overflow-y-auto" : ""
+              }`}
+            >
+              {todayFocusHabits.length > 0 ? (
+                todayFocusHabits.map((habit) => (
+                  <div
+                    key={habit.id}
+                    className="flex items-center justify-between rounded-2xl border border-[#2b2d38] bg-[#1d1e27] px-4 py-3"
+                  >
+                    <div className="min-w-0">
+                      <h4
+                        className={`truncate text-base font-semibold ${
+                          habit.selected ? "text-[#d7fbe2]" : "text-[#e5e7eb]"
+                        }`}
+                      >
+                        {habit.text}
+                      </h4>
+                      <p className="mt-1 text-sm text-[#8f96a3]">
+                        {habit.selected ? "Completed" : "Pending"}
+                      </p>
+                    </div>
+
+                    <div
+                      className={`flex h-9 w-9 items-center justify-center rounded-full border ${
+                        habit.selected
+                          ? "border-[#22c55e] bg-[#22c55e]/10 text-[#22c55e]"
+                          : "border-[#4b5563] text-[#6b7280]"
+                      }`}
+                    >
+                      {habit.selected ? (
+                        <Check size={18} />
+                      ) : (
+                        <Circle size={18} />
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-2xl border border-[#2b2d38] bg-[#1d1e27] px-4 py-6 text-center text-[#9ca3af]">
+                  No habits added for today.
+                </div>
+              )}
+            </div>
+
+            <NavLink
+              to="/dashboard/today"
+              className=" w-[70%] mt-6 flex gap-2 h-11 justify-self-center items-center text-center justify-center rounded-2xl border border-[#30313d] bg-[#20212b] px-4 text-sm font-semibold text-[#e5e7eb] transition-colors hover:bg-[#292b38]"
+            >
+              <span>Go to today</span>
+              <ArrowUpRight size={18} />
+            </NavLink>
+          </div>
+          <Weeklychart
+            data={weeklyCompletionData}
+            weeklyConsistencyTrend={weeklyConsistencyTrend}
+          />
+        </div>
+        <Dashstats />
       </div>
     </section>
   );

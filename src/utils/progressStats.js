@@ -33,6 +33,112 @@ export const getProgressSummary = (appData) => {
   };
 };
 
+// function for dashborad hero section
+export const getTodayProgressStats = (appData) => {
+  const todayHabits = appData?.todayHabits || [];
+
+  const todayTotal = todayHabits.length;
+  const todayCompleted = todayHabits.filter((habit) => habit.selected).length;
+
+  const completionPercent =
+    todayTotal > 0 ? Math.round((todayCompleted / todayTotal) * 100) : 0;
+
+  return {
+    todayTotal,
+    todayCompleted,
+    completionPercent,
+  };
+};
+//ends here..
+
+//function helper for dashboard today preference card
+export const getTodayFocusHabits = (appData) => {
+  const todayHabits = appData?.todayHabits || [];
+
+  return [...todayHabits].sort((a, b) => {
+    return Number(b.selected) - Number(a.selected);
+  });
+};
+// ends here..
+
+// weekly chart funciton helper for dashboard
+export const getWeeklyCompletionChartData = (appData) => {
+  const today = new Date(appData.todayKey);
+
+  return Array.from({ length: 7 }, (_, index) => {
+    const daysAgo = 6 - index;
+    const date = new Date(today);
+    date.setDate(today.getDate() - daysAgo);
+
+    const dateKey = date.toLocaleDateString("en-CA");
+
+    const habits =
+      dateKey === appData.todayKey
+        ? appData.todayHabits || []
+        : appData.history?.[dateKey] || [];
+
+    const total = habits.length;
+    const completed = habits.filter((habit) => habit.selected).length;
+
+    const completion = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    const label = date.toLocaleDateString("en-US", {
+      weekday: "short",
+    });
+
+    return {
+      label,
+      completion,
+      completed,
+      total,
+    };
+  });
+};
+// ends here...
+
+// weekly consistency trend helper function for weekly chart in dashboard
+export const getWeeklyConsistencyTrend = (appData) => {
+  const today = new Date(appData.todayKey);
+
+  const getWeekDays = (startDaysAgo, endDaysAgo) => {
+    return Array.from({ length: endDaysAgo - startDaysAgo + 1 }, (_, index) => {
+      const daysAgo = startDaysAgo + index;
+      const date = new Date(today);
+      date.setDate(today.getDate() - daysAgo);
+
+      const dateKey = date.toLocaleDateString("en-CA");
+
+      const habits =
+        dateKey === appData.todayKey
+          ? appData.todayHabits || []
+          : appData.history?.[dateKey] || [];
+
+      const total = habits.length;
+      const completed = habits.filter((habit) => habit.selected).length;
+
+      return {
+        total,
+        completed,
+      };
+    });
+  };
+
+  const currentWeekDays = getWeekDays(0, 6);
+  const previousWeekDays = getWeekDays(7, 13);
+
+  const currentRate = getAverageCompletionRate(currentWeekDays);
+  const previousRate = getAverageCompletionRate(previousWeekDays);
+
+  return {
+    trend: currentRate - previousRate,
+    currentRate,
+    previousRate,
+    hasEnoughData:
+      currentWeekDays.some((day) => day.total > 0) &&
+      previousWeekDays.some((day) => day.total > 0),
+  };
+};
+
 const getTrackedDays = (appData) => {
   const historyDays = Object.entries(appData.history || {}).map(
     ([dateKey, habits]) => {
