@@ -3,12 +3,29 @@ import Myhabitcard from "../components/Myhabitcard";
 import { useState } from "react";
 import Edithabitmodal from "../components/Edithabitmodal";
 import useAppContext from "../context/useAppcontext";
+import Myhabitsoverview from "../components/myhabits/Myhabitsoverview";
 
 export default function Myhabits() {
   const { appData, setAppData } = useAppContext();
   const myHabits = appData.myHabits;
 
   const totalhabits = myHabits.length;
+  const activeHabits = myHabits.filter((habit) =>
+    appData.todayHabits.some(
+      (todayHabit) =>
+        todayHabit.text.trim().toLowerCase() ===
+        habit.title.trim().toLowerCase(),
+    ),
+  ).length;
+
+  const inactiveHabits = totalhabits - activeHabits;
+
+  const bestStreak =
+    myHabits.length > 0
+      ? Math.max(...myHabits.map((habit) => habit.streak || 0))
+      : 0;
+
+  const topCategory = myHabits[0]?.category || "None";
 
   const [editinghabit, setEditingHabit] = useState(null);
   const [showaddhabitmodal, setShowAddHabitModal] = useState(false);
@@ -94,10 +111,10 @@ export default function Myhabits() {
   //catergory buttonn class
 
   const getCategoryButtonClass = (category) =>
-    `rounded-2xl px-4 py-1.5 cursor-pointer transition-colors duration-150 ${
+    `rounded-2xl border px-5 py-2 cursor-pointer text-sm font-semibold transition-all duration-150 ${
       selectcategory === category
-        ? "bg-[#5a5858] text-[#f0ecec]"
-        : "bg-[#2f2d2d] text-[#b9b6b6] hover:bg-[#3a3838]"
+        ? "border-[#6d5cff] bg-[#6d5cff]/15 text-white shadow-[0_0_18px_rgba(109,92,255,0.25)]"
+        : "border-[#30313d] bg-[#171820] text-[#b9b6c6] hover:border-[#4b4d63] hover:bg-[#20212b] hover:text-white"
     }`;
 
   return (
@@ -119,14 +136,14 @@ export default function Myhabits() {
                 <input
                   type="text"
                   placeholder="Search habit"
-                  className="h-9 rounded-xl border border-[#646262] bg-[#302e2e] pl-9 pr-3 text-sm text-[#d8d3d3] placeholder:text-[#8a8787] focus:border-[#8d8b8b] outline-none focus:outline-none"
+                  className="h-9 rounded-xl border border-[#646262] bg-[#302e2e] pl-9 pr-3 text-sm text-[#d8d3d3] placeholder:text-[#8a8787]  outline-none focus:outline-none focus:border-[#6857ff]"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                 />
               </div>
               <div>
                 <button
-                  className="border px-3.5 bg-[#3a3939] hover:bg-[#4d4c4c]  py-1.5 text-[#bebaba] hover:text-[#dad7d7] rounded-3xl cursor-pointer transition-transform duration-150 active:scale-[0.96]"
+                  className="rounded-3xl border border-[#6857ff] bg-[#6d5cff]/12 px-4 py-2 text-sm font-semibold text-[#dcd7ff]  transition-all duration-150 hover:bg-[#6d5cff]/20 hover:text-white  active:scale-[0.96] cursor-pointer"
                   onClick={() => setShowAddHabitModal(true)}
                 >
                   + Add habit
@@ -146,31 +163,18 @@ export default function Myhabits() {
           </h4>
 
           {/* habit list  */}
-          <div className="ml-12 mt-6 px-2.5 font-semibold ">
-            <div>
-              <h2 className="text-[#b4b3b3] text-[17px] py-1.5">
-                @My habit list 💪
-              </h2>
-              <div className="flex flex-col gap-2 text-[16px] text-[#979595]">
-                <p>
-                  Total habits ={" "}
-                  <span className="text-[#6d8bcc]">{totalhabits}</span>
-                </p>
-                <p>
-                  Active habits ={" "}
-                  <span className="text-[#6d8bcc]">{totalhabits - 1}</span>
-                </p>
-                <p>
-                  Inactive habits = <span className="text-[#6d8bcc]">1</span>
-                </p>
-              </div>
-            </div>
-          </div>
+          <Myhabitsoverview
+            totalHabits={totalhabits}
+            activeHabits={activeHabits}
+            inactiveHabits={inactiveHabits}
+            bestStreak={bestStreak}
+            topCategory={topCategory}
+          />
 
           {/* category list  */}
-          <div className="mt-8 ml-12 flex">
-            <h4 className="text-[#9b9999] text-lg">Category : </h4>
-            <div className=" ml-2 flex gap-6">
+          <div className="mt-8 ml-12 flex items-center">
+            <h4 className="text-[#b9bac6] text-xl">Category :</h4>
+            <div className="ml-4 flex gap-4">
               <button
                 onClick={() => setSelectCategory("All")}
                 className={getCategoryButtonClass("All")}
@@ -204,7 +208,8 @@ export default function Myhabits() {
               </button>
             </div>
           </div>
-          <div className="mt-10 ml-12 w-[85%] grid grid-cols-3 gap-6 ">
+          <div className="mt-10 ml-12 w-[94%] grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            {" "}
             {filteredHabits.map((habit) => (
               <Myhabitcard
                 key={habit.id}
@@ -218,9 +223,8 @@ export default function Myhabits() {
                 isAddedToToday={isHabitAddedToToday(habit.title)}
               />
             ))}
-
             <div
-              className="h-48 w-60 flex flex-col gap-4 justify-center items-center  bg-[#272626] rounded-xl  px-3 py-1.5 text-[#868585] hover:text-[#a8a6a6] hover:bg-[#2e2d2d] cursor-pointer transition-transform duration-150 hover:scale-[1.01]"
+              className="flex h-96 w-72 flex-col items-center justify-center gap-4 rounded-3xl border border-dashed border-[#3f3a68] bg-[#171820] px-5 py-5 text-[#a78bfa] transition-all duration-150 hover:-translate-y-1 hover:border-[#6d5cff] hover:bg-[#1b1d28] cursor-pointer"
               onClick={() => setShowAddHabitModal(true)}
             >
               {myHabits.length === 0 && (
