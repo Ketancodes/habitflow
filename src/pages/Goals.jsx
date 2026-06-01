@@ -2,6 +2,9 @@ import { useState } from "react";
 import Goalcard from "../components/Goalcard";
 import Goalmodal from "../components/Goalmodal";
 import useAppContext from "../context/useAppcontext";
+import Goalsoverview from "../components/goals/Goalsoverview";
+import Goaljourney from "../components/goals/Goaljourney";
+
 const goalEmojiMap = [
   { keywords: ["study", "read", "book", "learn", "exam"], emoji: "📚" },
   { keywords: ["gym", "fitness", "workout", "exercise", "run"], emoji: "💪" },
@@ -129,7 +132,7 @@ export default function Goals() {
               @Goals
             </h1>
             <button
-              className="border px-2.5 bg-[#3a3939] hover:bg-[#4d4c4c]  py-1 text-[#bebaba] hover:text-[#dad7d7] rounded-3xl cursor-pointer transition-transform duration-150 active:scale-[0.96]"
+              className="rounded-3xl border border-[#6857ff] bg-[#6d5cff]/12 px-4 py-2 text-sm font-semibold text-[#dcd7ff]  transition-all duration-150 hover:bg-[#6d5cff]/20 hover:text-white  active:scale-[0.96] cursor-pointer"
               onClick={() => setGoalModal(true)}
             >
               + Add goal
@@ -139,43 +142,20 @@ export default function Goals() {
             <div className="h-px w-[94%] bg-[#4a4747]"></div>
           </div>
 
-          {/* overall goal list */}
-          <div className="ml-8 mt-4 text-[#9b9999] text-[16px] leading-relaxed flex flex-col gap-1.5 font-semibold">
-            <h2 className="text-[18px] text-[#cac9c9] font-semibold leading-relaxed">
-              Overall goals 🎯
-            </h2>
-            <p>
-              Total goal list :{" "}
-              <span className="text-[#6d8bcc] font-semibold ">
-                {goals.length}
-              </span>
-            </p>
-            <p>
-              Active goals :{" "}
-              <span className="text-[#6d8bcc] font-semibold ">
-                {activeGoals}
-              </span>
-            </p>
-            <p>
-              Archived goals :{" "}
-              <span className="text-[#6d8bcc] font-semibold ">
-                {inactiveGoals}
-              </span>
-            </p>
-            <p>
-              Completed goals :{" "}
-              <span className="text-[#6d8bcc] font-semibold ">
-                {completedGoals}
-              </span>
-            </p>
-          </div>
+          <Goalsoverview
+            goals={goals}
+            totalGoals={goals.length}
+            activeGoals={activeGoals}
+            completedGoals={completedGoals}
+            inactiveGoals={inactiveGoals}
+          />
 
           {/* main goal card container */}
           <div
-            className={`mt-6 grid w-[90%] gap-6 ${
+            className={`mt-8 grid w-[94%] gap-6 ${
               goals.length === 0
                 ? "mx-auto min-h-[45vh] place-items-center"
-                : "ml-12 grid-cols-3"
+                : "ml-8 grid-cols-3"
             }`}
           >
             {orderedGoals.map((goal) => (
@@ -198,7 +178,7 @@ export default function Goals() {
               />
             ))}
             <div
-              className="h-52 w-60 bg-[#272626] rounded-xl flex flex-col gap-4 items-center justify-center cursor-pointer hover:bg-[#333232] "
+              className="flex h-95 w-80 flex-col items-center justify-center gap-4 rounded-3xl border border-dashed border-[#3f3a68] bg-[#171820] px-5 py-5 text-[#a78bfa] transition-all duration-150 hover:-translate-y-1 hover:border-[#6d5cff] hover:bg-[#1b1d28] cursor-pointer"
               onClick={() => setGoalModal(true)}
             >
               {goals.length === 0 && (
@@ -211,6 +191,8 @@ export default function Goals() {
               </h4>
             </div>
           </div>
+
+          <Goaljourney goals={goals} />
           <Goalmodal
             isOpen={goalmodal}
             onClose={() => setGoalModal(false)}

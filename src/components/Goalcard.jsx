@@ -33,105 +33,125 @@ export default function Goalcard({
   }, [progress]);
 
   return (
-    <>
-      <div
-        className={`h-52 w-60 rounded-xl px-3 py-1.5 text-[#bdbaba] transition-transform duration-150 ${
-          active ? "bg-[#272626] hover:bg-[#2e2d2d]" : "bg-[#242323] opacity-65"
-        }`}
-      >
-        <div className="flex justify-between">
-          <h4 className="text-[#c7c5c5]">
-            {title}
-            <span className="ml-2"> {emoji}</span>
-          </h4>
-          <div className="flex items-center gap-2.5">
-            {progress === 100 && (
-              <div className="relative group cursor-pointer">
-                <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-[#141414] px-2 py-1 text-[12px] text-[#d6d2d2] opacity-0 transition-all duration-150 group-hover:opacity-100">
-                  Archive
-                </span>
-                <MdArchive
-                  size={18}
-                  className="text-[#7d8aa5] transition-colors duration-150 hover:text-[#bcc6dd]"
-                  onClick={() => {
-                    onArchive(id);
-                  }}
-                />
-              </div>
-            )}
+    <div
+      className={`flex h-95 w-80 flex-col rounded-3xl border border-[#30313d] bg-[#171820] p-5 text-[#d8d5d5] transition-all duration-150 hover:-translate-y-1 hover:border-[#45475a] hover:bg-[#1b1d28] ${
+        !active ? "opacity-65" : ""
+      }`}
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#6d5cff]/15 text-2xl">
+            {emoji}
+          </div>
 
-            <div className="relative group cursor-pointer">
-              <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md bg-[#141414] px-2 py-1 text-[12px] text-[#d6d2d2] opacity-0 transition-all duration-150 group-hover:opacity-100">
-                Delete
-              </span>
-              <MdDelete
-                size={18}
-                className="text-[#818080] transition-colors duration-150 hover:text-[#bebcbc]"
-                onClick={() => onDelete(id)}
-              />
-            </div>
+          <div className="min-w-0">
+            <h3 className="max-w-48 overflow-hidden text-ellipsis whitespace-nowrap text-lg font-bold text-white">
+              {title}
+            </h3>
+
+            <span
+              className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                !active
+                  ? "bg-[#64748b]/15 text-[#cbd5e1]"
+                  : progress === 100
+                    ? "bg-[#22c55e]/12 text-[#4ade80]"
+                    : "bg-[#22c55e]/12 text-[#4ade80]"
+              }`}
+            >
+              {!active ? "Archived" : progress === 100 ? "Completed" : "Active"}
+            </span>
           </div>
         </div>
 
-        {/* dynamic status  */}
-        {!active ? (
-          <button className="mt-2.5 rounded-2xl bg-[#3f434d] px-2 py-0.5 text-[11px] text-[#cfd4dd]">
-            Archived
-          </button>
-        ) : progress === 100 ? (
-          <>
-            <button className="mt-2.5 rounded-2xl bg-[#5c5a5a] px-2 py-0.5 text-[11px] text-[#cfcece]">
-              Completed
+        <div className="flex items-center gap-2">
+          {progress === 100 && active && (
+            <button
+              type="button"
+              onClick={() => onArchive(id)}
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#30313d] bg-[#111219] text-[#9ca3af] transition-colors hover:bg-[#242634] hover:text-white"
+              title="Archive"
+            >
+              <MdArchive size={18} />
             </button>
-            <span className="ml-2">🏆</span>
-          </>
-        ) : (
-          <button className="mt-2.5 rounded-2xl bg-[#494848] px-2 py-0.5 text-[11px]">
-            Active
-          </button>
-        )}
+          )}
 
-        {/* visual progress bar */}
-        <div className="mt-6 w-full">
-          <div className="h-3.5 w-full rounded-full bg-[#424242]">
-            <div
-              className="h-3.5 rounded-full bg-indigo-500 shadow-[0_0_9px_rgba(82,102,225,0.35)] transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+          <button
+            type="button"
+            onClick={() => onDelete(id)}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#30313d] bg-[#111219] text-[#9ca3af] transition-colors hover:bg-[#242634] hover:text-[#ff6b8a]"
+            title="Delete"
+          >
+            <MdDelete size={18} />
+          </button>
         </div>
-        <div className="mt-3 text-center">
-          <p className="text-sm text-[#adabab]">
-            {frequency
-              ? `${frequency} (${progress}%)`
-              : `${completedDays} / ${totalDays} days (${progress}%)`}
+      </div>
+
+      <p className="mt-4.5 min-h-12 text-sm leading-relaxed text-[#9ca3af]">
+        Keep moving forward one day at a time.
+      </p>
+
+      <div className="mt-2 flex items-center justify-between text-sm">
+        <span className="text-[#9ca3af]">
+          {completedDays} / {totalDays} days
+        </span>
+        <span className="font-semibold text-white">{progress}%</span>
+      </div>
+
+      <div className="mt-3 h-2.5 rounded-full bg-[#252735]">
+        <div
+          className="h-2.5 rounded-full bg-[#8b5cf6] shadow-[0_0_14px_rgba(139,92,246,0.35)] transition-all duration-300"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <div className="mt-4 grid grid-cols-3 divide-x divide-[#30313d] rounded-2xl border border-[#252735] bg-[#111219] px-3 py-3">
+        <div className="text-center">
+          <p className="text-xs text-[#8f96a3]">Target</p>
+          <p className="mt-1 text-sm font-semibold text-[#d8d5d5]">
+            {totalDays || 0}d
           </p>
         </div>
 
-        {/* dynamic goal  button jsx */}
-        <div className="flex  justify-center">
-          {progress === 100 ? (
-            <button className="mt-5 flex w-[90%] items-center justify-center gap-3 rounded-lg bg-[#4e51fa] px-2 py-1.5 text-[#d1cccc]">
-              <FaCheck size={16} className="text-[#d1cccc]" />
-              <span>Achieved</span>
-            </button>
-          ) : (
-            <button
-              type="button"
-              disabled={isProgressAddedToday}
-              className={`mt-4 w-[90%] rounded-lg px-2 py-1.5 text-[#bebaba] transition-transform duration-150 ${
-                isProgressAddedToday
-                  ? "cursor-not-allowed bg-[#444343] text-[#777474] opacity-70"
-                  : "cursor-pointer bg-[#3a3a3a] hover:scale-[1.01] hover:bg-[#4a4a4a] active:scale-[0.98] active:bg-[#4e51fa]"
-              }`}
-              onClick={() => onAddProgress(id)}
-            >
-              <span className="text-xl">+</span>{" "}
-              {isProgressAddedToday ? "Progress added" : "1 day progress"}
-            </button>
-          )}
+        <div className="text-center">
+          <p className="text-xs text-[#8f96a3]">Remaining</p>
+          <p className="mt-1 text-sm font-semibold text-[#d8d5d5]">
+            {Math.max((totalDays || 0) - completedDays, 0)}d
+          </p>
+        </div>
+
+        <div className="text-center">
+          <p className="text-xs text-[#8f96a3]">Freq.</p>
+          <p className="mt-1 truncate text-sm font-semibold text-[#d8d5d5]">
+            {frequency || "Daily"}
+          </p>
         </div>
       </div>
-    </>
+
+      <div className="mt-auto">
+        {progress === 100 ? (
+          <button
+            type="button"
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#22c55e]/12 text-sm font-semibold text-[#4ade80]"
+          >
+            <FaCheck size={15} />
+            Achieved
+          </button>
+        ) : (
+          <button
+            type="button"
+            disabled={isProgressAddedToday || !active}
+            className={`flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold transition-colors  ${
+              isProgressAddedToday || !active
+                ? "cursor-not-allowed bg-[#252735] text-[#6b7280]"
+                : "bg-[#6d5cff]/15 text-[#a78bfa] hover:bg-[#6d5cff]/25 cursor-pointer"
+            }`}
+            onClick={() => onAddProgress(id)}
+          >
+            <span className="text-lg">+</span>
+            {isProgressAddedToday ? "Progress added" : "Add Progress"}
+          </button>
+        )}
+      </div>
+    </div>
   );
 }

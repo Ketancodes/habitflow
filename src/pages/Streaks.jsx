@@ -1,4 +1,7 @@
 import useAppContext from "../context/useAppcontext";
+import Streakoverview from "../components/streaks/Streakoverview";
+import Streakcard from "../components/streaks/Streakcard";
+
 export default function Streaks() {
   const { appData } = useAppContext();
   const todayHabits = appData.todayHabits;
@@ -37,6 +40,59 @@ export default function Streaks() {
     });
   };
 
+  // helper function for momentum overview card
+  const getMomentumStats = () => {
+    const todayKey = new Date().toLocaleDateString("en-CA");
+
+    const monthDays = [
+      ...Object.entries(appData.history || {}).map(([dateKey, habits]) => ({
+        dateKey,
+        habits,
+      })),
+      {
+        dateKey: todayKey,
+        habits: todayHabits,
+      },
+    ].filter((day) => {
+      const date = new Date(day.dateKey);
+      const today = new Date(todayKey);
+
+      return (
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      );
+    });
+
+    const trackedDays = monthDays.filter((day) => day.habits.length > 0);
+
+    const successfulDays = trackedDays.filter((day) =>
+      day.habits.every((habit) => habit.selected),
+    ).length;
+
+    const brokenStreaks = trackedDays.filter((day) =>
+      day.habits.some((habit) => !habit.selected),
+    ).length;
+
+    const totalCompleted = trackedDays.reduce((sum, day) => {
+      return sum + day.habits.filter((habit) => habit.selected).length;
+    }, 0);
+
+    const totalHabits = trackedDays.reduce((sum, day) => {
+      return sum + day.habits.length;
+    }, 0);
+
+    const consistency =
+      totalHabits > 0 ? Math.round((totalCompleted / totalHabits) * 100) : 0;
+
+    return {
+      successfulDays,
+      brokenStreaks,
+      consistency,
+    };
+  };
+
+  const momentumStats = getMomentumStats();
+
   return (
     <>
       <section>
@@ -51,83 +107,54 @@ export default function Streaks() {
             Track your consistency and see how well you stick to your habits.
             Build momentum by maintaining streaks and showing up every day!.
           </p>
-          <div className="ml-10 mt-4 py-3 flex flex-col gap-2.5 text-[#9c9a9a] font-semibold">
-            <h2 className="text-[#c7c5c5]">Overall streaks ⚡</h2>
-            <p>
-              Current Streak :{" "}
-              <span className="text-[#6d8bcc]">
-                {overallStreak.currentStreak}
-              </span>{" "}
-              🔥
-            </p>
-            <p>
-              Best Streak :{" "}
-              <span className="text-[#6d8bcc]">{overallStreak.bestStreak}</span>{" "}
-              🏆
-            </p>
-          </div>
-          <div className="mt-8 grid grid-cols-4 gap-5 px-8">
-            {todayHabits.length === 0 && (
-              <div className="col-span-4 flex h-48 items-center justify-center rounded-xl bg-[#252424] text-[#8f8c8c]">
+
+          <Streakoverview
+            currentStreak={overallStreak.currentStreak}
+            bestStreak={overallStreak.bestStreak}
+            momentumStats={momentumStats}
+          />
+
+          <div className="mt-8 px-8">
+            <div className="mb-5 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <h2 className="text-2xl font-semibold text-white">
+                  Habit Streaks
+                </h2>
+              </div>
+
+              <span className="rounded-full border border-[#30313d] bg-[#171820] px-4 py-2 text-sm font-semibold text-[#9ca3af]">
+                {todayHabits.length} habits
+              </span>
+            </div>
+
+            {todayHabits.length === 0 ? (
+              <div className="flex h-48 items-center justify-center rounded-3xl border border-[#30313d] bg-[#171820] text-[#8f96a3]">
                 No habits in today yet
               </div>
+            ) : (
+              <div className="grid grid-cols-3 gap-5">
+                {todayHabits.map((habit) => {
+                  const habitStreak = overallStreak.habitStreaks?.[
+                    habit.id
+                  ] || {
+                    currentStreak: 0,
+                    longestStreak: 0,
+                  };
+
+                  return (
+                    <Streakcard
+                      key={habit.id}
+                      habit={habit}
+                      habitStreak={habitStreak}
+                      last7Days={getLast7DaysForHabit(habit)}
+                    />
+                  );
+                })}
+              </div>
             )}
-
-            {todayHabits.map((habit) => {
-              const habitStreak = overallStreak.habitStreaks?.[habit.id] || {
-                currentStreak: 0,
-                longestStreak: 0,
-              };
-
-              return (
-                <div
-                  key={habit.id}
-                  className="rounded-2xl bg-[#252424] px-4 py-4 text-[#bdbcbc] transition-all hover:scale-[1.01] hover:bg-[#2e2d2d]"
-                >
-                  <h3 className="text-center text-[17px] text-[#d2cfcf]">
-                    {habit.text}
-                  </h3>
-
-                  <div className="mt-4 flex flex-col items-center gap-2 text-sm text-[#c0bebe]">
-                    <p>
-                      Current streak :{" "}
-                      <span className="font-semibold text-[#6d8bcc]">
-                        {habitStreak.currentStreak}
-                      </span>
-                    </p>
-
-                    <p className="text-[#a1a1a1]">
-                      Longest streak :{" "}
-                      <span className="font-semibold text-[#6d8bcc]">
-                        {habitStreak.longestStreak}
-                      </span>
-                    </p>
-
-                    <h4 className="mt-3 text-[13px] text-[#bdbcbc]">
-                      Last 7 days
-                    </h4>
-
-                    <div className="mt-1 flex gap-2">
-                      {getLast7DaysForHabit(habit).map((day) => (
-                        <div
-                          key={day.dateKey}
-                          className={`h-4 w-4 rounded-md border ${
-                            day.completed
-                              ? "bg-[#bdbcbc] border-[#bdbcbc]"
-                              : "bg-[#444242] border-[#5c5a5a]"
-                          } ${day.isToday ? "ring-2 ring-[#6d8bcc]" : ""}`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>
     </>
   );
 }
-
-// myhabits finished work push to github
