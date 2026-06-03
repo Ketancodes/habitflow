@@ -1,17 +1,23 @@
-import logo from "../assets/habit-logo-removebg-preview.png";
 import { Link } from "react-router-dom";
-import { SunMoon } from "lucide-react";
+import { SunMoon, Infinity as InfinityIcon } from "lucide-react";
 
 export default function Navbar() {
   const hoverunderline =
-    "relative inline-block transition-all duration-300 ease-out after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-full after:h-[2px] after:bg-[#000000] after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:text-[#4f46e5] hover:after:scale-x-100 ";
+    "relative inline-block transition-colors duration-200 after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-[#7c5cff] after:transition-transform after:duration-200 hover:text-white hover:after:scale-x-100";
   return (
     <>
-      <nav className="w-full bg-[#f8fafc] border-b border-b-[#e9e6e6] ">
-        <div className="max-w-[98%] mx-auto px-8 py-2  flex items-center justify-between">
-          <img src={logo} alt="HabitFlow logo" className="h-12 w-auto" />
-
-          <div className=" flex gap-20 items-center text-[17px] text-[#1d1c1c]   ">
+      <nav className="w-full bg-[#030612] text-white ">
+        <div className="mx-auto flex max-w-[94%] items-center justify-between px-2 py-4.5">
+          {" "}
+          {/* <img src={logo} alt="HabitFlow logo" className="h-12 w-auto" /> */}
+          <div className="flex items-center gap-3">
+            <InfinityIcon size={36} className="text-[#7c5cff]" />
+            <span className="text-2xl font-bold text-white">
+              Habit <span className="text-[#7c5cff]">flow</span>
+            </span>
+          </div>
+          <div className="flex items-center gap-16 text-[16px] font-medium text-[#d8d5e5]">
+            {" "}
             <a href="/features" className={`${hoverunderline} cursor-pointer `}>
               Features
             </a>

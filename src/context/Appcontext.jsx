@@ -46,6 +46,7 @@ const defaultAppData = {
       lastProgressDate: null,
     },
   ],
+  journalEntries: [],
 };
 
 // logic for resetting the habit for new day

@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 export default function Landing() {
   return (
     <>
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_72%_22%,rgba(109,92,255,0.22),transparent_30%),radial-gradient(circle_at_85%_62%,rgba(124,58,237,0.16),transparent_32%),linear-gradient(180deg,#030612_0%,#050816_45%,#07051a_100%)] text-white">
         <Navbar />
         <Herosection />
         <Features />
