@@ -1,6 +1,7 @@
 import Progressimage from "../assets/Progressimage.png";
 import Todayimage from "../assets/Todayimage.png";
 import Goalsimage from "../assets/Goalsimage.png";
+import { Link } from "react-router-dom";
 
 export default function Herosection() {
   const primaryButton =
@@ -37,7 +38,10 @@ export default function Herosection() {
             </div>
 
             <div className="mt-8 flex gap-6">
-              <button className={primaryButton}>Try Habitflow</button>
+              <Link to="/dashboard">
+                <button className={primaryButton}>Try Habitflow</button>
+              </Link>
+
               <button className="inline-flex h-12 cursor-pointer items-center justify-center rounded-lg border border-[#6d5cff]/50 bg-[#111427]/60 px-6 text-base font-medium text-white transition-all duration-200 hover:border-[#8b7cff] hover:bg-[#1a1d35] hover:-translate-y-0.5 active:translate-y-0.5">
                 Learn More
               </button>
@@ -57,7 +61,7 @@ export default function Herosection() {
             <img
               src={Goalsimage}
               alt="Goals page preview"
-              className="absolute -left-12 top-30 w-[80%] rotate-x-12 rotate-y-[-16deg] rounded-3xl opacity-75 shadow-[0_30px_80px_rgba(0,0,0,0,58)]"
+              className="absolute -left-12 top-30 w-[80%] rotate-x-12 rotate-y-[-16deg] rounded-3xl opacity-70 shadow-[0_30px_80px_rgba(0,0,0,0,58)]"
             />
             <div
               className="
@@ -92,15 +96,15 @@ export default function Herosection() {
         {/* stas info card */}
         <div className="flex gap-6 text-[#e0dede] -mt-8 ml-6 text-[16px]">
           <div className="flex flex-col text-center">
-            <h4>1.2K</h4>
+            <h4 className="text-[#7c5cff] font-semibold">1.2K</h4>
             <p className="text-[14px] text-[#c0bebe]">Active users</p>
           </div>
           <div className="flex flex-col text-center">
-            <h4>100K</h4>
+            <h4 className="text-[#7c5cff] font-semibold">100K</h4>
             <p className="text-[14px] text-[#c0bebe]">Total habit tracked</p>
           </div>
           <div className="flex flex-col text-center">
-            <h4>98%</h4>
+            <h4 className="text-[#7c5cff] font-semibold">98%</h4>
             <p className="text-[14px] text-[#c0bebe]">User satisfaction</p>
           </div>
         </div>

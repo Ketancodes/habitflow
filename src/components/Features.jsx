@@ -36,7 +36,7 @@ export default function Features() {
   return (
     <>
       {/* heading n subtext */}
-      <section className="relative overflow-hidden py-14 text-white">
+      <section className="relative overflow-hidden py-18 text-white">
         {" "}
         {/* <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(109,92,255,0.10),transparent_28%)]"></div> */}
         <div className="pointer-events-none absolute right-0 top-24 h-130 w-130 rounded-full bg-[#6d5cff]/10 blur-3xl"></div>
@@ -63,7 +63,7 @@ export default function Features() {
               return (
                 <div
                   key={feature.title}
-                  className="group relative overflow-hidden rounded-2xl border border-[#30313d] bg-[#111427]/70 px-5 py-5 shadow-[0_18px_60px_rgba(0,0,0,0.22)] transition-all duration-200 hover:-translate-y-1 hover:border-[#6d5cff]/70 hover:bg-[#151832]/85 cursor-pointer"
+                  className="group relative overflow-hidden rounded-2xl border border-[#30313d] bg-[#111427]/70 px-4 py-4 shadow-[0_18px_60px_rgba(0,0,0,0.22)] transition-all duration-200 hover:-translate-y-1 hover:border-[#6d5cff]/70 hover:bg-[#151832]/85 cursor-pointer"
                 >
                   <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-[#6d5cff]/18 blur-3xl transition-opacity duration-200 group-hover:opacity-100"></div>
 

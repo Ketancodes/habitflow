@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { SunMoon, Infinity as InfinityIcon } from "lucide-react";
+import { Infinity as InfinityIcon } from "lucide-react";
 
 export default function Navbar() {
   const hoverunderline =
@@ -30,7 +30,6 @@ export default function Navbar() {
             <Link to="/login" className={`${hoverunderline} cursor-pointer `}>
               Login
             </Link>
-            <button>{<SunMoon size={24} />}</button>
           </div>
         </div>
       </nav>
