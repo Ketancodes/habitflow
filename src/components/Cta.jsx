@@ -4,18 +4,18 @@ import { Play } from "lucide-react";
 export default function Cta() {
   return (
     <>
-      <section className="w-full py-12">
+      <section className="w-[98%] py-12">
         <div className="text-center">
-          <h2 className="text-[35px] font-semibold">
+          <h2 className="text-[32px] md:text-[35px] font-semibold">
             Start building better{" "}
             <span className="text-[36px] font-semibold text-[#4f46e5]">
               habits
             </span>{" "}
             from today{" "}
           </h2>
-          <p className="text-[22px] font-medium mt-5">
+          <p className="text-[18px] md:text-[22px] font-medium mt-5">
             Join{" "}
-            <span className="text-[24px] font-medium text-[#4f46e5]">
+            <span className="text-[20px] md:text-[24px] font-medium text-[#4f46e5]">
               Habitflow
             </span>{" "}
             and take control of your daily routine.

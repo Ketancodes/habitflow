@@ -54,7 +54,7 @@ export default function Placeholder() {
     <section className="relative overflow-hidden py-20 text-white">
       <div className="pointer-events-none absolute left-1/2 top-20 h-134 w-137 -translate-x-1/2 rounded-full bg-[#6d5cff]/10 blur-3xl"></div>
 
-      <div className="relative z-10 mx-auto w-[94%]">
+      <div className="-mt-10 md:mt-0 relative z-10 mx-auto w-[94%]">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-white">
             See <span className="text-[#4f46e5]">Habitflow</span> in action
@@ -64,7 +64,7 @@ export default function Placeholder() {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-6 ">
+        <div className="mt-8  grid-cols-1 gap-4 sm:grid-cols-2   md:mt-10 grid lg:grid-cols-2 lg:gap-6 ">
           {previewCards.map((card, index) => {
             const Icon = card.icon;
 
@@ -83,14 +83,15 @@ export default function Placeholder() {
                 className="rounded-3xl border border-[#30313d] bg-[#111427]/70 p-5 shadow-[0_18px_70px_rgba(0,0,0,0.28)] hover:-translate-y-1
                     hover:border-purple-500/40 transition-all duration-300"
               >
-                <div className="flex items-start justify-between gap-5">
-                  <div className="flex items-start gap-4">
-                    <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-[#8b5cf6]/35 bg-[#6d5cff]/18 text-[#c4b5fd] shadow-[0_0_28px_rgba(109,92,255,0.28)]">
+                {/* <div className="flex items-start justify-between gap-3 sm:gap-5">
+                  {" "}
+                  <div className="flex min-w-0 items-start gap-4">
+                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#8b5cf6]/35 bg-[#6d5cff]/18 text-[#c4b5fd] shadow-[0_0_28px_rgba(109,92,255,0.28)]">
                       <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[#8b5cf6]/10 blur-md"></div>
                       <Icon size={25} className="relative z-10" />
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
                       <h3 className="text-xl font-bold text-white">
                         {card.title}
                       </h3>
@@ -99,17 +100,39 @@ export default function Placeholder() {
                       </p>
                     </div>
                   </div>
-
-                  <span className="rounded-full bg-[#6d5cff]/18 px-3 py-1 text-xs font-semibold text-[#c4b5fd]">
+                  <span className="shrink-0 rounded-full bg-[#6d5cff]/18 px-3 py-1 text-xs font-semibold text-[#c4b5fd]">
                     {card.badge}
                   </span>
+                </div> */}
+
+                <div>
+                  <div className="flex items-start justify-between gap-3 sm:gap-5">
+                    <div className="flex min-w-0 items-start gap-4">
+                      <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#8b5cf6]/35 bg-[#6d5cff]/18 text-[#c4b5fd] shadow-[0_0_28px_rgba(109,92,255,0.28)]">
+                        <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[#8b5cf6]/10 blur-md"></div>
+                        <Icon size={25} className="relative z-10" />
+                      </div>
+
+                      <h3 className="min-w-0 text-xl font-bold text-white">
+                        {card.title}
+                      </h3>
+                    </div>
+
+                    <span className="shrink-0 rounded-full bg-[#6d5cff]/18 px-2.5 py-1 text-[11px] font-semibold text-[#c4b5fd] sm:px-3 sm:text-xs">
+                      {card.badge}
+                    </span>
+                  </div>
+
+                  <p className="mt-3 text-sm leading-relaxed text-[#b9bac6]">
+                    {card.subtitle}
+                  </p>
                 </div>
 
                 {/* screenshot goes here later */}
                 <img
                   src={card.image}
                   alt={`${card.title} preview`}
-                  className="mt-6 h-92 w-full rounded-2xl border border-[#252735] object-cover object-top"
+                  className="mt-6 h-auto md:h-92 w-full object-contain rounded-2xl border border-[#252735] md:object-cover object-top"
                 />
               </motion.div>
             );

@@ -42,21 +42,22 @@ export default function Features() {
         <div className="pointer-events-none absolute right-0 top-24 h-130 w-130 rounded-full bg-[#6d5cff]/10 blur-3xl"></div>
         <div className="max-w-[98%]">
           <div className="flex flex-col gap-2 text-center">
-            <h2 className="text-3xl text-center font-semibold">
-              Everything You Need To Know About{" "}
+            <h2 className=" text-3xl text-center font-semibold">
+              Everything You Need To Know{" "}
             </h2>
-            <h2 className="text-3xl font-semibold">
+            <h2 className="-mt-2 md:mt-0 text-3xl font-semibold">
               {" "}
               About <span className="text-[#4f46e5]">Habitflow!</span>
             </h2>
           </div>
 
-          <p className="mt-6 text-center text-xl  mx-auto mb-12">
+          <p className="text-[18px] mt-6 text-center md:text-xl  mx-auto mb-12">
             A simple system designed to help you build habits, track progress,
             and stay focused every day.
           </p>
 
-          <div className="mx-auto mt-10 grid w-[96%] grid-cols-4 gap-5">
+          <div className="mx-auto mt-8 grid w-[92%] grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-10 lg:w-[96%] lg:grid-cols-4 lg:gap-5">
+            {" "}
             {featureCards.map((feature) => {
               const Icon = feature.icon;
 
