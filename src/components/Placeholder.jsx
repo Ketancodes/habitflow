@@ -64,7 +64,7 @@ export default function Placeholder() {
           </p>
         </div>
 
-        <div className="mt-8  grid-cols-1 gap-4 sm:grid-cols-2   md:mt-10 grid lg:grid-cols-2 lg:gap-6 ">
+        <div className="mt-8 grid grid-cols-1 gap-4   md:mt-10  lg:grid-cols-2 lg:gap-6 ">
           {previewCards.map((card, index) => {
             const Icon = card.icon;
 
@@ -80,31 +80,9 @@ export default function Placeholder() {
                   delay: index * 0.14,
                   ease: "easeOut",
                 }}
-                className="rounded-3xl border border-[#30313d] bg-[#111427]/70 p-5 shadow-[0_18px_70px_rgba(0,0,0,0.28)] hover:-translate-y-1
+                className="mx-auto w-full max-w-190 rounded-3xl border border-[#30313d] bg-[#111427]/70 p-5 shadow-[0_18px_70px_rgba(0,0,0,0.28)] hover:-translate-y-1
                     hover:border-purple-500/40 transition-all duration-300"
               >
-                {/* <div className="flex items-start justify-between gap-3 sm:gap-5">
-                  {" "}
-                  <div className="flex min-w-0 items-start gap-4">
-                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#8b5cf6]/35 bg-[#6d5cff]/18 text-[#c4b5fd] shadow-[0_0_28px_rgba(109,92,255,0.28)]">
-                      <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[#8b5cf6]/10 blur-md"></div>
-                      <Icon size={25} className="relative z-10" />
-                    </div>
-
-                    <div className="min-w-0">
-                      <h3 className="text-xl font-bold text-white">
-                        {card.title}
-                      </h3>
-                      <p className="mt-1 max-w-md text-sm leading-relaxed text-[#b9bac6]">
-                        {card.subtitle}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="shrink-0 rounded-full bg-[#6d5cff]/18 px-3 py-1 text-xs font-semibold text-[#c4b5fd]">
-                    {card.badge}
-                  </span>
-                </div> */}
-
                 <div>
                   <div className="flex items-start justify-between gap-3 sm:gap-5">
                     <div className="flex min-w-0 items-start gap-4">
@@ -132,7 +110,7 @@ export default function Placeholder() {
                 <img
                   src={card.image}
                   alt={`${card.title} preview`}
-                  className="mt-6 h-auto md:h-92 w-full object-contain rounded-2xl border border-[#252735] md:object-cover object-top"
+                  className="mt-6 h-auto  w-full object-contain rounded-2xl border border-[#252735]  object-top"
                 />
               </motion.div>
             );

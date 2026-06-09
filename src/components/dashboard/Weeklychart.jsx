@@ -22,7 +22,7 @@ export default function Weeklycompletionchart({
   const isDropped = trend < 0;
 
   return (
-    <div className="w-[56%] rounded-3xl border border-[#30313d] bg-[#171820] px-4 py-5">
+    <div className="w-[96%] md:max-w-210 lg:w-[56%] rounded-3xl border border-[#30313d] bg-[#171820] px-4 py-5">
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-xl font-semibold text-white">This Week</h3>
@@ -151,7 +151,7 @@ export default function Weeklycompletionchart({
                 ) : isDropped ? (
                   <>
                     <span className="text-[#ff5578]">{Math.abs(trend)}%</span>{" "}
-                    consistency needs improvement.
+                    consistency, needs improvement.
                   </>
                 ) : (
                   "Your consistency is steady this week."

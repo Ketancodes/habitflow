@@ -12,17 +12,16 @@ export default function Herosection() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(72,61,139,0.16),transparent_28%)]"></div>
         <div className="pointer-events-none absolute bottom-0 right-0 h-[42%] w-[58%] bg-[radial-gradient(ellipse_at_bottom,rgba(109,92,255,0.32),transparent_65%)] blur-2xl"></div>
 
-        {/* <div className="relative z-10 mx-auto flex min-h-[calc(100vh-96px)] max-w-[94%] items-center gap-12"> */}
-        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-80px)] max-w-[94%] flex-col items-center gap-10 py-10 md:min-h-[calc(100vh-96px)] md:flex-row md:gap-12 md:py-0">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100vh-80px)] max-w-[94%] flex-col items-center gap-10 py-10 lg:min-h-[calc(100vh-96px)] lg:flex-row lg:gap-12 lg:py-0">
           {/* left content */}
-          <div className="flex w-full flex-col items-center text-center md:w-[30%] md:items-start md:text-left">
+          <div className="flex w-full flex-col items-center text-center lg:w-[30%] lg:items-start lg:text-left">
             {" "}
             <div className="inline-flex w-fit">
               <h3 className="px-2 py-1.5 text-[12px] rounded-3xl border border-[#30313d] bg-[#17172a]/85 md:px-4.5 md:py-2.5 md:text-[15px] text-[#bda7ff]">
                 Track. Analyze. Improve. Repeat!
               </h3>
             </div>
-            <div className="mt-3 flex w-full flex-col text-center text-[34px] font-semibold leading-tight text-white md:mt-5 md:text-left md:text-[44px]">
+            <div className="mt-3 flex w-full flex-col text-center text-[34px] font-semibold leading-tight text-white md:mt-5 lg:text-left md:text-[44px]">
               <h1>One System.</h1>
               <h1>
                 Build <span className="text-[#7c5cff]">Discipline.</span>{" "}
@@ -32,7 +31,7 @@ export default function Herosection() {
                 <span className="text-[#7c5cff]">Everyday!</span>
               </h1>
             </div>
-            <div className="mt-2.5 flex w-full flex-col text-center text-[14px] leading-relaxed text-[#c5c0de] md:mt-4 md:text-left md:text-[16px]">
+            <div className="mt-2.5 flex w-full flex-col text-center text-[14px] leading-relaxed text-[#c5c0de] md:mt-4 lg:text-left md:text-[16px]">
               {" "}
               <p>From daily habits to lifetime goals,</p>
               <p>Habitflow keeps you focused and consistent.</p>
@@ -49,7 +48,7 @@ export default function Herosection() {
           </div>
 
           {/* right image stack */}
-          <div className="relative mx-auto  h-90 w-full max-w-130 md:h-147.5 md:max-w-none md:flex-1">
+          <div className="relative mx-auto  h-90 w-full max-w-130 md:h-130 md:max-w-180 lg:h-147.5 lg:max-w-none lg:flex-1">
             {/* left/back today image */}
             {/* <img
               src={Todayimage}
@@ -61,7 +60,7 @@ export default function Herosection() {
             <img
               src={Goalsimage}
               alt="Goals page preview"
-              className="absolute left-[38%] top-20 w-[72%] -translate-x-1/2 md:translate-x-0  md:-left-12 md:top-30 md:w-[80%] rotate-x-12 rotate-y-[-16deg] rounded-3xl opacity-70 shadow-[0_30px_80px_rgba(0,0,0,0,58)]"
+              className="absolute left-[38%] top-20 w-[72%] -translate-x-1/2 md:left-[35%] md:top-24  md:w-[70%] lg:translate-x-0  lg:-left-12 lg:top-30 lg:w-[80%] rotate-x-12 rotate-y-[-16deg] rounded-3xl opacity-70 shadow-[0_30px_80px_rgba(0,0,0,0.58)]"
             />
             <div
               className="
@@ -70,10 +69,11 @@ export default function Herosection() {
                           top-8
                           
                           w-[86%]
-                          md:left-[58%]
-                          md:top-20
+                          md:w-[78%]
+                          lg:left-[58%]
+                          lg:top-20
                           z-30
-                          md:w-[80%]
+                          lg:w-[80%]
                           -translate-x-1/2
                           rounded-[26px]
                           border border-[#45475a]
@@ -98,7 +98,7 @@ export default function Herosection() {
         </div>
 
         {/* stas info card */}
-        <div className="-mt-14  flex gap-6 text-[#e0dede] md:-mt-8 ml-6 md:text-[16px]">
+        <div className="-mt-14  flex items-center justify-center gap-6 text-[#e0dede] md:-mt-12 md:items-center md:justify-center lg:-mt-8 lg:ml-6 lg:justify-start md:text-[16px]">
           <div className="flex flex-col text-center">
             <h4 className="text-[#7c5cff] font-semibold">1.2K</h4>
             <p className="text-[13px] md:text-[14px] text-[#c0bebe]">

@@ -9,7 +9,7 @@ import { GrNotes } from "react-icons/gr";
 import { IoIosNotifications } from "react-icons/io";
 import { IoSettings } from "react-icons/io5";
 
-export default function Sidebar() {
+export default function Sidebar({ className = "", onNavigate }) {
   const baseNavItem =
     "relative flex items-center gap-3 px-3.5 py-1.5 transition-colors duration-150 cursor-pointer";
 
@@ -23,7 +23,9 @@ export default function Sidebar() {
     `${baseNavItem} ${isActive ? activeNavState : defaultNavState}`;
 
   return (
-    <section className="fixed inset-y-0 left-0 w-60 overflow-y-auto border-r border-[#333131] bg-[#1f1d1d]">
+    <section
+      className={`overflow-y-auto border-r border-[#333131] bg-[#1f1d1d] ${className}`}
+    >
       <div className="flex pl-2.5 py-2 gap-3 items-center">
         <div className="h-5 w-5 bg-[#444242] text-[#d4cfcf] rounded-sm flex justify-center items-center">
           U
@@ -33,17 +35,30 @@ export default function Sidebar() {
       </div>
 
       <div className="flex flex-col text-[15px] gap-1 mt-2 pb-4">
-        <NavLink to="/dashboard" end className={getLinkClass}>
+        <NavLink
+          to="/dashboard"
+          end
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <MdDashboard size={18} className="text-inherit" />
           <span>Dashboard</span>
         </NavLink>
 
-        <NavLink to="/dashboard/today" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/today"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <MdToday size={18} className="text-inherit" />
           <span>Today</span>
         </NavLink>
 
-        <NavLink to="/dashboard/myhabits" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/myhabits"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <MdOutlineChecklist size={18} className="text-inherit" />
           <span>My Habits</span>
         </NavLink>
@@ -53,19 +68,35 @@ export default function Sidebar() {
         <h4 className="text-[12px] text-[#868585] ml-2 tracking-wide">
           Insights
         </h4>
-        <NavLink to="/dashboard/progress" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/progress"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <GiProgression size={18} className="text-inherit" />
           <span>Progress /Analytics</span>
         </NavLink>
-        <NavLink to="/dashboard/streaks" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/streaks"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <HiFire size={18} className="text-inherit" />
           <span>Streaks</span>
         </NavLink>
-        <NavLink to="/dashboard/calendar" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/calendar"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <FaCalendarAlt size={18} className="text-inherit" />
           <span>Calendar</span>
         </NavLink>
-        <NavLink to="/dashboard/goals" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/goals"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <GoGoal size={18} className="text-inherit" />
           <span>Goals</span>
         </NavLink>
@@ -75,7 +106,11 @@ export default function Sidebar() {
         <h4 className="text-[12px] text-[#868585] ml-2 tracking-wide">
           Personal
         </h4>
-        <NavLink to="/dashboard/journal" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/journal"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <GrNotes size={18} className="text-inherit" />
           <span>Journal</span>
         </NavLink>
@@ -85,11 +120,19 @@ export default function Sidebar() {
         <h4 className="text-[12px] text-[#868585] ml-2 tracking-wide">
           System
         </h4>
-        <NavLink to="/dashboard/notifications" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/notifications"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <IoIosNotifications size={18} className="text-inherit" />
           <span>Notifications</span>
         </NavLink>
-        <NavLink to="/dashboard/settings" className={getLinkClass}>
+        <NavLink
+          to="/dashboard/settings"
+          className={getLinkClass}
+          onClick={onNavigate}
+        >
           <IoSettings size={18} className="text-inherit" />
           <span>Settings</span>
         </NavLink>

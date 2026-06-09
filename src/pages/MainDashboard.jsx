@@ -30,12 +30,16 @@ export default function MainDashboard() {
   return (
     <section>
       <div>
-        <h1 className="ml-8 mt-3 text-2xl text-[#979393] font-semibold">
-          @Dashboard
-        </h1>
-        <h4 className="ml-8 mt-3 text-xl text-[#999696] font-semibold">
-          {currentMonth} {todayDate}
-        </h4>
+        {/* main title + date n month */}
+        <div className="px-4 flex items-center justify-between lg:block lg:px-0">
+          <h1 className="text-xl mt-2 lg:ml-8 lg:mt-3 lg:text-2xl text-[#979393] font-semibold">
+            @Dashboard
+          </h1>
+          <h4 className="text-md mt-2 lg:ml-8 lg:mt-3 lg:text-xl text-[#999696] font-semibold">
+            {currentMonth} {todayDate}
+          </h4>
+        </div>
+
         <div className="mt-4 flex justify-center">
           <div className="h-px w-[94%] bg-[#4a4747]"></div>
         </div>
@@ -45,14 +49,14 @@ export default function MainDashboard() {
 
         {/* hero section */}
         <div className="mt-6 flex justify-center">
-          <div className="relative flex h-56 w-[94%] overflow-hidden rounded-3xl border border-[#30313d] bg-[#171820] px-10">
+          <div className="relative flex  w-[94%] flex-col overflow-hidden rounded-3xl px-5 py-6 max-w-150 md:max-w-220 md:h-56 md:px-8 lg:h-56 lg:max-w-none border border-[#30313d] bg-[#171820] md:flex-row md:py-2 lg:flex-row lg:px-10 lg:py-0">
             {/* left progress side */}
-            <div className="z-10 flex flex-1 items-center gap-12">
+            <div className="z-10 flex flex-1 flex-col items-center gap-5 text-center md:flex-row md:gap-10 md:text-left lg:flex-row lg:gap-12 lg:text-left">
               {/* progress circle */}
               <div className="relative flex items-center justify-center">
                 {/* outer progress */}
                 <div
-                  className="flex h-48 w-48 items-center justify-center rounded-full"
+                  className="flex h-32 w-32 md:h-40 md:w-40 lg:h-48 lg:w-48 items-center justify-center rounded-full"
                   style={{
                     background: `conic-gradient(
                                      #5d5df5 ${completionPercent * 3.6}deg,
@@ -61,12 +65,12 @@ export default function MainDashboard() {
                   }}
                 >
                   {/* inner circle */}
-                  <div className="flex h-38 w-38 flex-col items-center justify-center rounded-full bg-[#171820]">
-                    <span className="text-5xl font-bold text-white">
+                  <div className="flex h-24 w-24 md:h-32 md:w-32 lg:h-38 lg:w-38 flex-col items-center justify-center rounded-full bg-[#171820]">
+                    <span className="text-2xl md:text-3xl lg:text-5xl font-bold text-white">
                       {completionPercent}%
                     </span>
 
-                    <span className="mt-2 text-sm text-[#9ca3af]">
+                    <span className="mt-2 text-[12px] md:text-[13px] lg:text-sm text-[#9ca3af]">
                       Today's Progress
                     </span>
                   </div>
@@ -75,18 +79,18 @@ export default function MainDashboard() {
 
               {/* right content */}
               <div className="max-w-md">
-                <h3 className="text-5xl font-semibold text-[#6b63ff]">
+                <h3 className="text-4xl md:text-5xl lg:text-5xl font-semibold text-[#6b63ff]">
                   {todayCompleted}{" "}
-                  <span className="text-4xl font-semibold text-white">
+                  <span className="text-3xl md:text-4xl lg:text-4xl font-semibold text-white">
                     / {todayTotal}
                   </span>
                 </h3>
 
-                <p className="mt-2 text-3xl font-semibold text-white">
+                <p className="mt-2 text-2xl md:text-3xl lg:text-3xl font-semibold text-white">
                   Habits Completed Today
                 </p>
 
-                <p className="mt-5 text-lg leading-relaxed text-[#a1a1aa]">
+                <p className="mt-5 text-md md:text-lg lg:text-lg leading-relaxed text-[#a1a1aa]">
                   Great job! You're one step closer to becoming unstoppable.
                 </p>
               </div>
@@ -99,14 +103,14 @@ export default function MainDashboard() {
             <img
               src={themelogo}
               alt="Mountain"
-              className="pointer-events-none absolute right-4 -top-22  w-70  opacity-85 mix-blend-lighten"
+              className="pointer-events-none absolute -right-8 -top-14 w-44 opacity-45 mix-blend-lighten md:w-56 lg:right-4 lg:-top-22 lg:w-70 lg:opacity-85"
             />
           </div>
         </div>
 
         {/* today's focus section */}
-        <div className="mt-6 flex gap-6 ml-8">
-          <div className="w-[36%] rounded-3xl border border-[#30313d] bg-[#171820] px-6 py-5">
+        <div className="mt-6 flex flex-col items-center lg:flex-row  gap-6 lg:ml-8">
+          <div className="w-[96%] max-w-130 lg:w-[36%] rounded-3xl border border-[#30313d] bg-[#171820] px-6 py-5">
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">

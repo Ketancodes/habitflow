@@ -46,7 +46,7 @@ const statCards = [
 
 export default function Dashstats() {
   return (
-    <div className="mt-6 ml-8 grid w-[94%] grid-cols-3 gap-6">
+    <div className="mt-6 max-w-100 sm:max-w-none lg:ml-8 grid w-[94%] justify-self-center grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {statCards.map((card) => {
         const Icon = card.icon;
         const CenterIcon = card.centerIcon || card.icon;
