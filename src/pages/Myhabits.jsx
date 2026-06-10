@@ -111,7 +111,7 @@ export default function Myhabits() {
   //catergory buttonn class
 
   const getCategoryButtonClass = (category) =>
-    `rounded-2xl border px-5 py-2 cursor-pointer text-sm font-semibold transition-all duration-150 ${
+    `rounded-2xl border px-3.5 py-2 md:px-5 md:py-2 cursor-pointer text-sm font-semibold transition-all duration-150 ${
       selectcategory === category
         ? "border-[#6d5cff] bg-[#6d5cff]/15 text-white shadow-[0_0_18px_rgba(109,92,255,0.25)]"
         : "border-[#30313d] bg-[#171820] text-[#b9b6c6] hover:border-[#4b4d63] hover:bg-[#20212b] hover:text-white"
@@ -123,27 +123,27 @@ export default function Myhabits() {
         <div>
           {/* main header + input + button */}
 
-          <div className=" px-2.5 flex justify-between">
-            <h1 className="ml-8 mt-3 text-2xl text-[#979393] font-semibold">
+          <div className="px-2.5 flex justify-between">
+            <h1 className="text-xl mt-3 lg:ml-8  lg:text-2xl text-[#979393] font-semibold">
               @My habits
             </h1>
             <div className=" mt-4 flex gap-14">
               <div className="relative flex items-center">
                 <CiSearch
                   size={18}
-                  className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[#8a8787] "
+                  className="hidden lg:block pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[#8a8787] "
                 />
                 <input
                   type="text"
                   placeholder="Search habit"
-                  className="h-9 rounded-xl border border-[#646262] bg-[#302e2e] pl-9 pr-3 text-sm text-[#d8d3d3] placeholder:text-[#8a8787]  outline-none focus:outline-none focus:border-[#6857ff]"
+                  className="hidden lg:block h-9 rounded-xl border border-[#646262] bg-[#302e2e] pl-9 pr-3 text-sm text-[#d8d3d3] placeholder:text-[#8a8787]  outline-none focus:outline-none focus:border-[#6857ff]"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                 />
               </div>
               <div>
                 <button
-                  className="rounded-3xl border border-[#6857ff] bg-[#6d5cff]/12 px-4 py-2 text-sm font-semibold text-[#dcd7ff]  transition-all duration-150 hover:bg-[#6d5cff]/20 hover:text-white  active:scale-[0.96] cursor-pointer"
+                  className="rounded-3xl  px-3 py-1.5 border border-[#6857ff] bg-[#6d5cff]/12 lg:px-4 lg:py-2 text-sm font-semibold text-[#dcd7ff]  transition-all duration-150 hover:bg-[#6d5cff]/20 hover:text-white  active:scale-[0.96] cursor-pointer"
                   onClick={() => setShowAddHabitModal(true)}
                 >
                   + Add habit
@@ -153,11 +153,11 @@ export default function Myhabits() {
           </div>
 
           {/* divider line */}
-          <div className="mt-6 flex justify-center">
+          <div className="mt-4 lg:mt-6 flex justify-center">
             <div className="h-px w-[94%] bg-[#4a4747]"></div>
           </div>
 
-          <h4 className="ml-8 mt-6 text-lg font-medium text-[#a7a4a4]">
+          <h4 className="mt-4 text-md text-center md:text-left ml-8 lg:mt-6 lg:text-lg font-medium text-[#a7a4a4]">
             Your <span className="text-[#6d8bcc]"> future</span> is built by
             what you do today!
           </h4>
@@ -172,9 +172,9 @@ export default function Myhabits() {
           />
 
           {/* category list  */}
-          <div className="mt-8 ml-12 flex items-center">
-            <h4 className="text-[#b9bac6] text-xl">Category :</h4>
-            <div className="ml-4 flex gap-4">
+          <div className="mt-10 ml-2 flex flex-col md:mt-8 md:ml-12 sm:flex-row sm:gap-4 items-center">
+            <h4 className="text-[#b9bac6] text-lg md:text-xl">Category :</h4>
+            <div className="mt-3 grid grid-cols-3 sm:ml-2 sm:flex gap-4">
               <button
                 onClick={() => setSelectCategory("All")}
                 className={getCategoryButtonClass("All")}
@@ -208,7 +208,7 @@ export default function Myhabits() {
               </button>
             </div>
           </div>
-          <div className="mt-10 ml-12 w-[94%] grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="mt-10 md:ml-12 w-full md:w-[94%] grid grid-cols-1 justify-items-center md:gap-6 sm:grid-cols-2 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {" "}
             {filteredHabits.map((habit) => (
               <Myhabitcard

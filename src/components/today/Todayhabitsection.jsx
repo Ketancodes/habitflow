@@ -21,7 +21,7 @@ export default function Todayhabitsection({
   handleNewmodaltoggle,
 }) {
   return (
-    <div className="mt-6 flex justify-center">
+    <div className="mt-6 flex  justify-center">
       <div className="w-[94%] rounded-3xl   px-6 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -36,7 +36,7 @@ export default function Todayhabitsection({
           </span>
         </div>
 
-        <div className="mt-6 flex gap-6">
+        <div className="mt-6 flex flex-col items-center md:flex-row lg:flex-row gap-6">
           {/* today card */}
           <div className="relative flex h-105 w-86 flex-col rounded-3xl border border-[#30313d] bg-[#111219] p-5">
             <div className="flex items-center justify-between">

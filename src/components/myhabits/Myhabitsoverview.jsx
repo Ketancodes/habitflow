@@ -10,9 +10,9 @@ export default function Myhabitsoverview({
 }) {
   return (
     <div className="mt-6 flex justify-center">
-      <div className="relative w-[94%] overflow-hidden rounded-3xl border border-[#30313d] bg-[#171820] px-8 py-7">
+      <div className="relative flex flex-col w-[94%] overflow-hidden rounded-3xl border border-[#30313d] bg-[#171820] lg:flex-row px-4  md:px-8 py-7">
         <div className="relative z-10">
-          <div className="flex items-center gap-5">
+          <div className="flex flex-col  items-center text-center gap-5 md:flex-row md:text-left">
             <div className="flex h-18 w-18 items-center justify-center rounded-full bg-[#6d5cff]/18 text-[#8b7cff]">
               <Target size={36} />
             </div>
@@ -21,7 +21,7 @@ export default function Myhabitsoverview({
               <p className="text-base font-medium text-[#b9bac6]">
                 Your Habit Overview
               </p>
-              <h2 className="mt-1 text-3xl font-bold text-white">
+              <h2 className="mt-1 text-2xl md:text-3xl font-bold text-white">
                 Keep building. Keep growing.
               </h2>
               <p className="mt-2 text-lg text-[#9ca3af]">
@@ -30,9 +30,9 @@ export default function Myhabitsoverview({
             </div>
           </div>
 
-          <div className="mt-8 grid w-[72%] grid-cols-4 divide-x divide-[#30313d]">
-            <div className="flex items-center gap-4 pr-6">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#6d5cff]/18 text-[#8b7cff]">
+          <div className="grid grid-cols-2 gap-2 w-full mt-4   lg:mt-8  lg:w-[72%] md:grid-cols-4 md:divide-x md:divide-[#30313d]">
+            <div className="flex items-center gap-2 md:gap-4 md:pr-6">
+              <div className="flex   h-14 w-14 items-center justify-center rounded-2xl bg-[#6d5cff]/18 text-[#8b7cff]">
                 <Grid2X2 size={28} />
               </div>
 
@@ -42,8 +42,8 @@ export default function Myhabitsoverview({
               </div>
             </div>
 
-            <div className="flex items-center gap-4 px-6">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#22c55e]/12 text-[#4ade80]">
+            <div className="flex items-center gap-4 md:px-6">
+              <div className="flex    h-14 w-14 items-center justify-center rounded-2xl bg-[#22c55e]/12 text-[#4ade80]">
                 <Zap size={28} />
               </div>
 
@@ -53,8 +53,8 @@ export default function Myhabitsoverview({
               </div>
             </div>
 
-            <div className="flex items-center gap-4 px-6">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f59e0b]/12 text-[#fbbf24]">
+            <div className="flex items-center gap-4 md:px-6">
+              <div className="flex  h-14 w-14 items-center justify-center rounded-2xl bg-[#f59e0b]/12 text-[#fbbf24]">
                 <Pause size={28} />
               </div>
 
@@ -66,8 +66,8 @@ export default function Myhabitsoverview({
               </div>
             </div>
 
-            <div className="flex items-center gap-4 pl-6">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#3b82f6]/14 text-[#60a5fa]">
+            <div className="flex items-center gap-4 md:pl-6">
+              <div className="flex  h-14 w-14 items-center justify-center rounded-2xl bg-[#3b82f6]/14 text-[#60a5fa]">
                 <Flame size={28} />
               </div>
 
@@ -79,7 +79,7 @@ export default function Myhabitsoverview({
           </div>
         </div>
 
-        <div className="absolute right-8 bottom-7 z-10 rounded-3xl border border-[#30313d] bg-[#111219]/70 px-7 py-5 backdrop-blur-md">
+        <div className="hidden lg:block absolute right-8 bottom-7 z-10 rounded-3xl border border-[#30313d] bg-[#111219]/70 px-7 py-5 backdrop-blur-md">
           <p className="text-sm text-[#9ca3af]">Top Category</p>
           <div className="mt-2 flex items-center gap-3">
             <span className="h-3 w-3 rounded-full bg-[#8b5cf6]"></span>

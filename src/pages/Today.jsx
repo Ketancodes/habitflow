@@ -133,16 +133,20 @@ export default function Today() {
 
   return (
     <section className="w-full min-h-screen bg-[#181717] pt-3">
-      <h1 className="ml-8 text-2xl font-semibold text-[#979393]">@Today</h1>
-      <h4 className="ml-8 mt-2.5 text-lg font-semibold text-[#979393]">
-        {showdate}
-      </h4>
+      <div className="px-4 flex items-center justify-between lg:block lg:px-0">
+        <h1 className="text-xl mt-2 lg:ml-8 lg:text-2xl font-semibold text-[#979393]">
+          @Today
+        </h1>
+        <h4 className="mt-2 text-md lg:ml-8 lg:mt-2.5 lg:text-lg font-semibold text-[#979393]">
+          {showdate}
+        </h4>
+      </div>
 
       {/* devider line */}
       <div className="mt-2 flex justify-center">
         <div className="h-px w-[94%] bg-[#4a4747]"></div>
       </div>
-      <p className="ml-8 mt-4 text-lg font-medium text-[#a7a4a4]">
+      <p className="px-1 text-md mt-3  text-center lg:ml-8  lg:px-0 lg:mt-4  lg:text-lg font-medium text-[#a7a4a4]">
         Welcome <span className="text-[#6d8bcc]"> Warrior</span>, hope your
         doing well ! 💪
       </p>

@@ -50,19 +50,6 @@ const getStatus = (percentage) => {
 };
 
 export default function Recentdays({ last7days = [] }) {
-  //   const recentCards = [
-  //     {
-  //       title: "Yesterday",
-  //       date: last7days[0]?.date,
-  //       habits: yesterdayHabits,
-  //     },
-  //     ...last7days.slice(1, 4).map((day) => ({
-  //       title: formatRecentDate(day.date),
-  //       date: day.date,
-  //       habits: day.habits,
-  //     })),
-  //   ].filter((day) => day.date);
-
   const recentCards = last7days.slice(0, 7).map((day, index) => ({
     title: index === 0 ? "Yesterday" : formatRecentDate(day.date),
     date: day.date,
@@ -83,7 +70,7 @@ export default function Recentdays({ last7days = [] }) {
           </span>
         </div>
 
-        <div className="mt-7 grid grid-cols-4 gap-5">
+        <div className="mt-7 grid grid-cols-1 max-w-60 mx-auto sm:grid-cols-2 sm:max-w-none md:grid-cols-3 md:max-w-none   lg:grid-cols-4 lg:max-w-none gap-5">
           {recentCards.map((day) => {
             const { total, completed, percentage } = getCompletionStats(
               day.habits,

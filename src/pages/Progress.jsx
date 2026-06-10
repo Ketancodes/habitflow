@@ -26,7 +26,7 @@ export default function Progress() {
       <section>
         <div className="px-4 py-3">
           <div className="flex justify-between">
-            <h1 className="ml-2 mt-1.5 text-2xl text-[#979393] font-semibold ">
+            <h1 className="text-xl ml-2 mt-1.5 md:text-2xl text-[#979393] font-semibold ">
               @Analytics
             </h1>{" "}
             {/* monthly and yearly filter summary section */}
@@ -70,7 +70,8 @@ export default function Progress() {
               </div>
             </div>
           </div>
-          {/* monthly filter section ends here */}
+          {/* ends here */}
+
           <Analyticstopcards summary={summary} />
           <div className="mt-5 grid grid-cols-1 gap-4 xl:grid-cols-[3fr_2fr]">
             <Completiontimechart data={completionChartData} />

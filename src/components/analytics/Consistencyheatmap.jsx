@@ -34,46 +34,49 @@ export default function Consistencyheatmap({ data = [] }) {
         </div>
 
         {/* heatmap */}
-        <div className="mt-3.5 flex flex-1 items-center justify-center gap-3">
-          {/* weekday labels */}
-          <div className="flex h-full flex-col justify-between py-1 text-[11px] font-semibold text-[#8e929b]">
-            <span></span>
-            <span>Mon</span>
-            <span></span>
-            <span>Wed</span>
-            <span></span>
-            <span>Fri</span>
-            <span></span>
-          </div>
-
-          {/* month labels + heatmap */}
-          <div className="flex flex-col gap-2">
-            {/* month labels */}
-            <div className="grid grid-flow-col gap-2 text-[11px] font-semibold text-[#8e929b]">
-              <span className="text-center">May</span>
-              <span className="text-center">Jun</span>
-              <span className="text-center">Jul</span>
-              <span className="text-center">Aug</span>
+        {/* <div className="mt-3.5 flex flex-1 items-center justify-center gap-3"> */}
+        <div className="mt-3.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex min-w-max items-center gap-3">
+            {/* weekday labels */}
+            <div className="flex h-full flex-col justify-between py-1 text-[11px] font-semibold text-[#8e929b]">
+              <span></span>
+              <span>Mon</span>
+              <span></span>
+              <span>Wed</span>
+              <span></span>
+              <span>Fri</span>
+              <span></span>
             </div>
 
-            {/* heatmap grid */}
+            {/* month labels + heatmap */}
+            <div className="flex flex-col gap-2">
+              {/* month labels */}
+              <div className="grid grid-flow-col gap-2 text-[11px] font-semibold text-[#8e929b]">
+                <span className="text-center">May</span>
+                <span className="text-center">Jun</span>
+                <span className="text-center">Jul</span>
+                <span className="text-center">Aug</span>
+              </div>
 
-            <div className="grid grid-flow-col grid-rows-7 gap-2">
-              {data.map((day) => (
-                <div key={day.dateKey} className="relative group">
-                  <div
-                    className={`h-4.5 w-4.5 cursor-pointer rounded-sm transition-all duration-150 hover:scale-110 ${getHeatmapColor(
-                      day.completion,
-                    )}`}
-                  ></div>
+              {/* heatmap grid */}
 
-                  {/* custom tooltip */}
-                  <div className="pointer-events-none absolute bottom-7 left-1/2 z-20 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-[#30313d] bg-[#111318] px-2 py-1 text-[11px] font-medium text-[#d7dbe4] shadow-lg group-hover:block">
-                    {currentMonth} {todayDate} : {day.completed}/{day.total}{" "}
-                    completed ({day.completion}%)
+              <div className="grid grid-flow-col grid-rows-7  gap-2">
+                {data.map((day) => (
+                  <div key={day.dateKey} className="relative group">
+                    <div
+                      className={`h-4.5 w-4.5 cursor-pointer rounded-sm transition-all duration-150 hover:scale-110 ${getHeatmapColor(
+                        day.completion,
+                      )}`}
+                    ></div>
+
+                    {/* custom tooltip */}
+                    <div className="pointer-events-none absolute bottom-7 left-1/2 z-20 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-[#30313d] bg-[#111318] px-2 py-1 text-[11px] font-medium text-[#d7dbe4] shadow-lg group-hover:block">
+                      {currentMonth} {todayDate} : {day.completed}/{day.total}{" "}
+                      completed ({day.completion}%)
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
