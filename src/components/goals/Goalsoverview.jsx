@@ -49,7 +49,7 @@ export default function Goalsoverview({
     <>
       <div className="mt-6 flex justify-center">
         <div className="relative w-[94%] overflow-hidden rounded-3xl border border-[#30313d] bg-[#171820] px-8 py-8">
-          <div className="relative z-10 flex items-center gap-10">
+          <div className="relative z-10 flex flex-col gap-6 text-center items-center sm:flex-row sm:items-center sm:text-left sm:gap-6 md:gap-10">
             <div>
               <p className="mb-4 text-base font-medium text-[#d8d5d5]">
                 Overall Goals Progress
@@ -79,7 +79,7 @@ export default function Goalsoverview({
                 <p className="text-base font-semibold">Current Focus Goal</p>
               </div>
 
-              <h2 className="mt-4 max-w-xl overflow-hidden text-ellipsis whitespace-nowrap text-4xl font-bold text-white">
+              <h2 className="mt-4 max-w-xl overflow-hidden text-ellipsis whitespace-nowrap text-3xl md:text-4xl font-bold text-white">
                 {focusGoal?.title || "No goals yet"}
               </h2>
 
@@ -130,8 +130,9 @@ export default function Goalsoverview({
         </div>
       </div>
 
+      {/* goal overview stats section cards */}
       <div className="mt-5 flex justify-center">
-        <div className="grid w-[94%] grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 w-[94%] sm:grid-cols-3 md:grid-cols-4 gap-5">
           <div className="rounded-3xl border border-[#30313d] bg-[#171820] px-6 py-5">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#6d5cff]/15 text-[#a78bfa]">

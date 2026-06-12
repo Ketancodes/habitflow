@@ -17,22 +17,23 @@ export default function Streakoverview({
   const consistency = momentumStats?.consistency || 0;
   return (
     <>
-      <div className="mt-6 flex justify-center">
-        <div className="relative w-[94%] overflow-hidden rounded-3xl border border-[#30313d] bg-[#171820] px-6 py-6">
+      {/* top overview cards */}
+      <div className="mt-6  flex justify-center">
+        <div className="relative w-[96%] md:w-[94%] overflow-hidden rounded-3xl border border-[#30313d] bg-[#171820] px-6 py-6">
           <div className="relative z-10">
             <p className="text-lg font-medium text-[#d8d5d5]">
               Your Streak Overview
             </p>
 
-            <div className="mt-8 flex w-[52%] items-center divide-x divide-[#30313d]">
-              <div className="flex flex-1 items-center gap-6 pr-10">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[#6d5cff]/40 bg-[#6d5cff]/18 text-[#a78bfa]">
+            <div className="mt-8 flex w-full flex-col  divide-y sm:flex-row  sm:w-[52%]  sm:divide-x divide-[#30313d] sm:divide-y-0">
+              <div className="flex flex-1 items-center pr-2 py-4 gap-6 md:pr-10">
+                <div className="flex h-14 w-14 md:h-20 md:w-20 items-center justify-center rounded-full border border-[#6d5cff]/40 bg-[#6d5cff]/18 text-[#a78bfa]">
                   <Flame size={38} />
                 </div>
 
                 <div>
-                  <div className="flex items-end gap-2">
-                    <span className="text-6xl font-bold leading-none text-white">
+                  <div className="flex items-end gap-0.5 md:gap-2">
+                    <span className="text-4xl md:text-6xl font-bold leading-none text-white">
                       {currentStreak}
                     </span>
                     <span className="mb-2 text-lg font-semibold text-white">
@@ -45,14 +46,14 @@ export default function Streakoverview({
                 </div>
               </div>
 
-              <div className="flex flex-1 items-center gap-6 pl-10">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[#f59e0b]/30 bg-[#f59e0b]/14 text-[#fbbf24]">
+              <div className="flex flex-1 items-center gap-3 py-4 pl-2.5 md:gap-6 md:pl-10">
+                <div className="flex h-14 w-14 md:h-20 md:w-20 items-center justify-center rounded-full border border-[#f59e0b]/30 bg-[#f59e0b]/14 text-[#fbbf24]">
                   <Trophy size={38} />
                 </div>
 
                 <div>
-                  <div className="flex items-end gap-2">
-                    <span className="text-6xl font-bold leading-none text-white">
+                  <div className="flex items-end gap-0.5 md:gap-2">
+                    <span className="text-4xl md:text-6xl font-bold leading-none text-white">
                       {bestStreak}
                     </span>
                     <span className="mb-2 text-lg font-semibold text-white">
@@ -64,7 +65,7 @@ export default function Streakoverview({
               </div>
             </div>
 
-            <div className="mt-7 w-[52%] border-t border-[#30313d] pt-5">
+            <div className="mt-7 w-[90%] md:w-[52%] border-t border-[#30313d] pt-5">
               <p className="text-lg text-[#b9bac6]">
                 Consistency compounds.{" "}
                 <span className="font-semibold text-[#a78bfa]">
@@ -83,7 +84,9 @@ export default function Streakoverview({
           />
         </div>
       </div>
+      {/* ends here... */}
 
+      {/* overall momentum stats */}
       <div className="mt-6 flex justify-center">
         <div className="w-[94%] rounded-3xl border border-[#30313d] bg-[#171820] px-8 py-7">
           <div className="flex items-center gap-3">
@@ -93,12 +96,12 @@ export default function Streakoverview({
             </h2>
           </div>
 
-          <div className="mt-7 grid grid-cols-3 divide-x divide-[#30313d]">
-            <div className="flex items-center gap-5 pr-8">
+          <div className="mt-7 grid grid-cols-1 divide-y sm:grid-cols-3 sm:divide-x divide-[#30313d] sm:divide-y-0">
+            <div className="flex justify-center items-center gap-5 py-5 md:justify-start sm:pr-4 md:pr-8">
+              {" "}
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#22c55e]/12 text-[#4ade80]">
                 <CheckCircle2 size={34} />
               </div>
-
               <div>
                 <p className="text-4xl font-bold text-white">
                   {successfulDays}
@@ -108,11 +111,11 @@ export default function Streakoverview({
               </div>
             </div>
 
-            <div className="flex items-center gap-5 px-8">
+            <div className="flex justify-center items-center gap-5 py-5 md:justify-start sm:px-4 md:px-8">
+              {" "}
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#ff5578]/12 text-[#ff6b8a]">
                 <Link2Off size={34} />
               </div>
-
               <div>
                 <p className="text-4xl font-bold text-white">{brokenStreaks}</p>
                 <p className="mt-1 text-sm text-[#d8d5d5]">Broken streaks</p>
@@ -120,7 +123,8 @@ export default function Streakoverview({
               </div>
             </div>
 
-            <div className="flex items-center gap-5 pl-8">
+            <div className="flex justify-center items-center gap-5 py-5 md:justify-start sm:pl-4 md:pl-8">
+              {" "}
               <div
                 className="flex h-20 w-20 items-center justify-center rounded-full"
                 style={{
@@ -136,7 +140,6 @@ export default function Streakoverview({
                   </span>
                 </div>
               </div>
-
               <div>
                 <p className="text-lg font-semibold text-[#c4b5fd]">
                   Consistency

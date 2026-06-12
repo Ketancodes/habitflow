@@ -20,7 +20,7 @@ export default function Consistencyheatmap({ data = [] }) {
 
   return (
     <>
-      <div className="flex h-75 min-w-0 flex-col rounded-xl border border-[#30313d] bg-[#171820] p-4">
+      <div className="flex min-h-75  min-w-0 flex-col rounded-xl border border-[#30313d] bg-[#171820] p-4">
         {/* heading */}
         <div className="flex items-center gap-3">
           <h2 className="text-lg font-semibold text-white">
@@ -35,10 +35,10 @@ export default function Consistencyheatmap({ data = [] }) {
 
         {/* heatmap */}
         {/* <div className="mt-3.5 flex flex-1 items-center justify-center gap-3"> */}
-        <div className="mt-3.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex min-w-max items-center gap-3">
+        <div className="mt-3.5 overflow-x-auto md:overflow-visible [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex min-w-max md:min-w-0 items-center gap-3">
             {/* weekday labels */}
-            <div className="flex h-full flex-col justify-between py-1 text-[11px] font-semibold text-[#8e929b]">
+            <div className="grid grid-rows-7 items-center   py-4 text-[11px] font-semibold text-[#8e929b]">
               <span></span>
               <span>Mon</span>
               <span></span>

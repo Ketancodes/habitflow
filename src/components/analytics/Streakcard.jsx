@@ -34,7 +34,7 @@ export default function Streakcard({ summary = {} }) {
   ];
 
   return (
-    <div className="flex h-75 flex-col rounded-xl border border-[#30313d] bg-[#171820] p-4">
+    <div className="flex h-75  flex-col rounded-xl border border-[#30313d] bg-[#171820] p-4">
       <h2 className="text-lg font-semibold text-white">Streak Insights</h2>
 
       <div className="mt-3 flex-1 divide-y divide-[#2b2c38]">

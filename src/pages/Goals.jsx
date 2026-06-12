@@ -127,18 +127,18 @@ export default function Goals() {
     <>
       <section>
         <div>
-          <div className="px-2.5 mt-3 flex justify-between ">
-            <h1 className="ml-8 mt-3 text-2xl text-[#979393] font-semibold">
+          <div className="px-2.5 mt-1.5 md:mt-3 flex justify-between ">
+            <h1 className="ml-0 md:ml-8 mt-3 text-xl md:text-2xl text-[#979393] font-semibold">
               @Goals
             </h1>
             <button
-              className="rounded-3xl border border-[#6857ff] bg-[#6d5cff]/12 px-4 py-2 text-sm font-semibold text-[#dcd7ff]  transition-all duration-150 hover:bg-[#6d5cff]/20 hover:text-white  active:scale-[0.96] cursor-pointer"
+              className="rounded-3xl border border-[#6857ff] bg-[#6d5cff]/12 px-2 py-0.5 md:px-4 md:py-2 text-sm font-semibold text-[#dcd7ff]  transition-all duration-150 hover:bg-[#6d5cff]/20 hover:text-white  active:scale-[0.96] cursor-pointer"
               onClick={() => setGoalModal(true)}
             >
               + Add goal
             </button>
           </div>
-          <div className="mt-6 flex justify-center">
+          <div className="mt-4 md:mt-6 flex justify-center">
             <div className="h-px w-[94%] bg-[#4a4747]"></div>
           </div>
 
@@ -155,7 +155,7 @@ export default function Goals() {
             className={`mt-8 grid w-[94%] gap-6 ${
               goals.length === 0
                 ? "mx-auto min-h-[45vh] place-items-center"
-                : "ml-8 grid-cols-3"
+                : "ml-8 grid-cols-1 justify-items-center sm:grid-cols-2 md:grid-cols-3"
             }`}
           >
             {orderedGoals.map((goal) => (
@@ -178,7 +178,7 @@ export default function Goals() {
               />
             ))}
             <div
-              className="flex h-95 w-80 flex-col items-center justify-center gap-4 rounded-3xl border border-dashed border-[#3f3a68] bg-[#171820] px-5 py-5 text-[#a78bfa] transition-all duration-150 hover:-translate-y-1 hover:border-[#6d5cff] hover:bg-[#1b1d28] cursor-pointer"
+              className="flex h-95 w-full max-w-80 flex-col items-center justify-center gap-4 rounded-3xl border border-dashed border-[#3f3a68] bg-[#171820] px-5 py-5 text-[#a78bfa] transition-all duration-150 hover:-translate-y-1 hover:border-[#6d5cff] hover:bg-[#1b1d28] cursor-pointer"
               onClick={() => setGoalModal(true)}
             >
               {goals.length === 0 && (

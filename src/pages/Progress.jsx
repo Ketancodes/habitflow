@@ -31,7 +31,7 @@ export default function Progress() {
             </h1>{" "}
             {/* monthly and yearly filter summary section */}
             <div className="flex gap-3 mr-2">
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <button
                   type="button"
                   className="flex h-10 items-center gap-3 rounded-xl border border-[#3c3c3d] bg-[#242323] px-3 text-sm font-semibold text-[#e5e2e2]"
@@ -73,15 +73,19 @@ export default function Progress() {
           {/* ends here */}
 
           <Analyticstopcards summary={summary} />
-          <div className="mt-5 grid grid-cols-1 gap-4 xl:grid-cols-[3fr_2fr]">
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-4 xl:grid-cols-[3fr_2fr]">
             <Completiontimechart data={completionChartData} />
             <Habitperformance habits={habitPerformanceData} />
           </div>
-          <div className="mt-5 grid min-w-0 grid-cols-1 items-stretch gap-4 xl:grid-cols-[2fr_1fr_1fr]">
+          <div className="mt-5 grid grid-cols-1  sm:grid-cols-2  md:grid-cols-[2fr_1fr]    gap-4 xl:grid-cols-[2fr_1fr_1fr]">
             {" "}
-            <Consistencyheatmap data={heatmapData} />
+            <div className="sm:col-span-2 md:col-span-1">
+              <Consistencyheatmap data={heatmapData} />
+            </div>
             <Streakcard summary={summary} />
-            <Productivitytrend productivityTrend={productivityTrend} />
+            <div className="md:col-span-2 xl:col-span-1 md:justify-self-center">
+              <Productivitytrend productivityTrend={productivityTrend} />
+            </div>{" "}
           </div>
         </div>
       </section>

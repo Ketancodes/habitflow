@@ -50,7 +50,7 @@ export default function Streakcard({ habit, habitStreak, last7Days = [] }) {
 
       <div className="mt-5 grid grid-cols-2 gap-3">
         <div className="rounded-2xl border border-[#252735] bg-[#111219] px-4 py-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 md:gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#6d5cff]/15 text-[#a78bfa]">
               <Flame size={18} />
             </div>
@@ -63,7 +63,7 @@ export default function Streakcard({ habit, habitStreak, last7Days = [] }) {
         </div>
 
         <div className="rounded-2xl border border-[#252735] bg-[#111219] px-4 py-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 md:gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#f59e0b]/12 text-[#fbbf24]">
               <Trophy size={18} />
             </div>

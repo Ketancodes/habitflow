@@ -8,7 +8,7 @@ export default function Productivitytrend({ productivityTrend }) {
   const progressValue = Math.min(Math.abs(trend), 100);
 
   return (
-    <div className="flex h-75 flex-col rounded-xl border border-[#30313d] bg-[#171820] p-4">
+    <div className="flex h-75  flex-col rounded-xl border border-[#30313d] bg-[#171820] p-4">
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-white">Productivity Trend</h2>
 

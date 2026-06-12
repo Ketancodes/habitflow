@@ -34,7 +34,7 @@ export default function Goalcard({
 
   return (
     <div
-      className={`flex h-95 w-80 flex-col rounded-3xl border border-[#30313d] bg-[#171820] p-5 text-[#d8d5d5] transition-all duration-150 hover:-translate-y-1 hover:border-[#45475a] hover:bg-[#1b1d28] ${
+      className={`flex h-95 w-full max-w-80 flex-col rounded-3xl border border-[#30313d] bg-[#171820] p-5 text-[#d8d5d5] transition-all duration-150 hover:-translate-y-1 hover:border-[#45475a] hover:bg-[#1b1d28] ${
         !active ? "opacity-65" : ""
       }`}
     >

@@ -186,13 +186,13 @@ export default function Calendar() {
     <>
       <section>
         <div>
-          <h1 className="ml-8 mt-3 text-2xl text-[#979393] font-semibold">
+          <h1 className="ml-2 md:ml-8 mt-3 text-xl md:text-2xl text-[#979393] font-semibold">
             @Calendar
           </h1>
-          <div className="mt-6 flex justify-center">
+          <div className="mt-2 md:mt-6 flex justify-center">
             <div className="h-px w-[94%] bg-[#4a4747]"></div>
           </div>
-          <div className=" ml-8 flex items-center gap-3">
+          <div className="ml-2 md:ml-8 flex items-center gap-3">
             <span>
               <PiLessThan
                 size={18}
@@ -221,7 +221,7 @@ export default function Calendar() {
             </span>
           </div>
           {/* weekday grid */}
-          <div className="mt-6 grid grid-cols-7 gap-2 px-8 text-center text-sm text-[#8e8b8b]">
+          <div className="mt-6 grid grid-cols-7 gap-2 px-2 md:px-8 text-center text-sm text-[#8e8b8b]">
             <p>Mon</p>
             <p>Tue</p>
             <p>Wed</p>
@@ -230,7 +230,7 @@ export default function Calendar() {
             <p>Sat</p>
             <p>Sun</p>
           </div>
-          <div className="mt-3 grid grid-cols-7 gap-2 px-8">
+          <div className="mt-3 grid grid-cols-7 gap-2 px-2 md:px-8">
             {calendarBoxes.map((box) => {
               const stats = box.isCurrentMonth
                 ? getCompletionStats(box.dayNumber)
@@ -381,7 +381,7 @@ export default function Calendar() {
           </div>
           <div>
             {/* legend showing color completion info */}
-            <div className="mx-8 mt-5 flex flex-wrap items-center gap-7 text-sm text-[#aaa7a7]">
+            <div className="mx-2 md:mx-8 mt-5 flex flex-wrap items-center gap-4 md:gap-7 text-xs md:text-sm text-[#aaa7a7]">
               {completionLegend.map((item) => (
                 <div key={item.label} className="flex items-center gap-2">
                   <span
@@ -400,7 +400,7 @@ export default function Calendar() {
             </h2>
 
             {/* completion rate card */}
-            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5 ">
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 ">
               <div className="flex items-center gap-3 rounded-xl border border-[#202135] p-4 bg-[#202135] cursor-pointer hover:scale-[0.98] transition-all duration-200">
                 <div
                   className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-lg font-semibold text-white"

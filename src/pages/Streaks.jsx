@@ -97,13 +97,13 @@ export default function Streaks() {
     <>
       <section>
         <div>
-          <h1 className="ml-8 mt-3 text-2xl text-[#979393] font-semibold ">
+          <h1 className="ml-2 text-xl lg:ml-8 mt-3 md:text-2xl text-[#979393] font-semibold ">
             @Streaks
           </h1>
-          <div className="mt-6 flex justify-center">
+          <div className="mt-2 md:mt-6 flex justify-center">
             <div className="h-px w-[94%] bg-[#4a4747]"></div>
           </div>
-          <p className="ml-8 py-3 px-3 text-md text-[#bdbcbc] leading-relaxed">
+          <p className="mx-auto mt-4 md:ml-8 py-3 px-3 text-sm md:text-md lg:text-lg lg:mt-0 text-[#bdbcbc] leading-relaxed">
             Track your consistency and see how well you stick to your habits.
             Build momentum by maintaining streaks and showing up every day!.
           </p>
@@ -115,7 +115,7 @@ export default function Streaks() {
           />
 
           <div className="mt-8 px-8">
-            <div className="mb-5 flex items-center justify-between">
+            <div className="mb-5  flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <h2 className="text-2xl font-semibold text-white">
                   Habit Streaks
@@ -132,7 +132,7 @@ export default function Streaks() {
                 No habits in today yet
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {todayHabits.map((habit) => {
                   const habitStreak = overallStreak.habitStreaks?.[
                     habit.id
