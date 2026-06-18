@@ -67,7 +67,7 @@ export default function Todayreflection({
 
   return (
     <div className="mt-6 flex justify-center">
-      <div className="w-[94%] rounded-3xl border border-[#30313d] bg-[#171820] px-8 py-6">
+      <div className="w-[96%] md:w-[94%] rounded-3xl border border-[#30313d] bg-[#171820] px-2 py-2 md:px-8 md:py-6">
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-semibold text-white">
             Today&apos;s Reflection
@@ -95,7 +95,7 @@ export default function Todayreflection({
           <button
             type="button"
             onClick={handleSaveEntry}
-            className="rounded-xl border border-[#6d5cff] bg-[#6d5cff]/15 px-7 py-3 text-sm font-semibold text-[#dcd7ff] transition-colors hover:bg-[#6d5cff]/25 hover:text-white active:scale-[0.98]"
+            className="rounded-xl border border-[#6d5cff] bg-[#6d5cff]/15 px-3 md:px-7 py-3 text-sm font-semibold text-[#dcd7ff] transition-colors hover:bg-[#6d5cff]/25 hover:text-white active:scale-[0.98]"
           >
             {todayEntry ? "Update Entry" : "Save Entry"}
           </button>

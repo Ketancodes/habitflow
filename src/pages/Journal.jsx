@@ -12,10 +12,10 @@ export default function Journal() {
     <>
       <section>
         <div>
-          <h1 className="ml-8 mt-3 text-2xl text-[#979393] font-semibold ">
+          <h1 className="ml-2 md:ml-8 mt-3 text-xl md:text-2xl text-[#979393] font-semibold ">
             @Journal
           </h1>
-          <div className="mt-6 flex justify-center">
+          <div className="mt-2 md:mt-6 flex justify-center">
             <div className="h-px w-[94%] bg-[#4a4747]"></div>
           </div>
           <p className="ml-8 mt-4 max-w-3xl text-base leading-relaxed text-[#b9bac6]">

@@ -48,7 +48,7 @@ export default function Recententries({ journalEntries = [] }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <BookOpen size={23} className="text-[#a78bfa]" />
-            <h2 className="text-2xl font-semibold text-white">
+            <h2 className="text-lg md:text-2xl font-semibold text-white">
               Recent Entries
             </h2>
           </div>
@@ -78,10 +78,12 @@ export default function Recententries({ journalEntries = [] }) {
               return (
                 <div
                   key={entry.id}
-                  className="flex rounded-3xl border border-[#30313d] bg-[#171820] px-7 py-5"
+                  className="flex rounded-3xl border border-[#30313d] bg-[#171820] px-2 py-2 md:px-7 md:py-5"
                 >
-                  <div className="flex w-24 shrink-0 flex-col items-center border-r border-[#30313d] pr-6 text-center">
-                    <p className="text-4xl font-bold text-white">{date.day}</p>
+                  <div className="flex w-24 shrink-0 flex-col items-center border-r border-[#30313d] pr-2 md:pr-6 text-center">
+                    <p className="text-2xl md:text-4xl font-bold text-white">
+                      {date.day}
+                    </p>
                     <p className="mt-1 text-sm text-[#d8d5d5]">
                       {date.weekday}
                     </p>
